@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [user, setUser] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [error, setError] = useState(null);
@@ -20,6 +20,7 @@ const Login = () => {
       if (response.success) {
         // Đăng nhập thành công, chuyển hướng đến trang chính
         navigate('/'); // Chuyển hướng đến trang chính của ứng dụng
+        localStorage.setItem("auth_token", response.data.auth_token);
       } else {
         // Đăng nhập thất bại, hiển thị thông báo lỗi
         setError(response.message);
@@ -31,14 +32,14 @@ const Login = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (type,value) => {
     setUser({
       ...user,
-      [e.target.id]: e.target.value
+      [type]:value
     });
   };
 
-  const { username, password } = user;
+
 
   return (
     <div className="login-container">
@@ -50,8 +51,8 @@ const Login = () => {
           <input
             type="text"
             id="username"
-            value={username}
-            onChange={handleInputChange}
+            value={user.email}
+            onChange={(e) => handleInputChange('email', e.target.value)}
           />
         </div>
         <div className="form-group">
@@ -59,8 +60,8 @@ const Login = () => {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={handleInputChange}
+            value={user.password}
+            onChange={(e) => handleInputChange('password', e.target.value)}
           />
         </div>
         <button type="submit">Login</button>
