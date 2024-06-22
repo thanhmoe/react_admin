@@ -8,10 +8,12 @@ import {
 } from "react-router-dom";
 import Login from './page/login/login.jsx';
 import Product from './page/Product.jsx';
-import Customer from './page/Customer.jsx';
+import Customer from './page/customer/Customer.jsx';
+import CustomerDetail from './page/customer/CustomerDetail.jsx';
 import Staff from './page/Staff.jsx';
 import News from './page/News.jsx';
 import MainLayout from './layout/Index.jsx';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,6 +47,12 @@ const router = createBrowserRouter([
     path: "/customer",
     element: <MainLayout>
       <Customer/>
+    </MainLayout>
+  },
+  {
+    path: "/customer/:customerId",
+    element: <MainLayout>
+      <CustomerDetail/>
     </MainLayout>
   },
 ]);

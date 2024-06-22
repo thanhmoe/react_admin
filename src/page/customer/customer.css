@@ -1,0 +1,37 @@
+.customer-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .customer-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .customer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .customer-table th,
+  .customer-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .customer-table th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
