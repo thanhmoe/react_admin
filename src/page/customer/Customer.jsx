@@ -8,7 +8,7 @@ export default function Customer() {
   const [customers, setCustomers] = useState([]);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(1); // Number of items per page
+  const [itemsPerPage] = useState(10); // Number of items per page
   const navigate = useNavigate();
 
   useEffect(() => {

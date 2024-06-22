@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchCustomers } from '../../utils/api';
+// import { fetchCustomerById, updateCustomer } from '../utils/api';
 
 const CustomerDetail = () => {
   const { customerId } = useParams();
-  const [customer, setCustomer] = useState([]);
+  const [customer, setCustomer] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -13,8 +14,9 @@ const CustomerDetail = () => {
         const data = await fetchCustomers();
         if (data.success && data.data) {
             console.log(data.data,123123);
-          const thisCustomer =data.data.find(item => item.id === customerId); // Cập nhật danh sách khách hàng từ API
+          const thisCustomer =data.data.find(item => item.id === parseInt(customerId)); // Cập nhật danh sách khách hàng từ API
           setCustomer(thisCustomer)
+          console.log(data.data.id,'id hererere');
           console.log(thisCustomer,999);
         } else {
           setError(data.message || 'Failed to fetch customers'); // Xử lý lỗi từ API
@@ -88,7 +90,8 @@ const CustomerDetail = () => {
             type="date"
             id="dob"
             name="dob"
-            value={customer.dob}
+            // value={customer.dob}
+            value={new Date(customer.dob).toISOString().split('T')[0]}
             onChange={handleChange}
           />
         </div>
