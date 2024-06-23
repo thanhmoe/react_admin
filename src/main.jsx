@@ -12,6 +12,7 @@ import Customer from './page/customer/Customer.jsx';
 import CustomerDetail from './page/customer/CustomerDetail.jsx';
 import Staff from './page/Staff.jsx';
 import News from './page/News.jsx';
+import Category from './page/categoty/category.jsx';
 import MainLayout from './layout/Index.jsx';
 
 const router = createBrowserRouter([
@@ -41,6 +42,12 @@ const router = createBrowserRouter([
     path: "/news",
     element: <MainLayout>
       <News/>
+    </MainLayout>
+  },
+  {
+    path: "/category",
+    element: <MainLayout>
+      <Category/>
     </MainLayout>
   },
   {

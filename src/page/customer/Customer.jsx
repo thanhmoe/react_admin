@@ -23,6 +23,8 @@ export default function Customer() {
       } catch (error) {
         console.error('Error fetching customers:', error);
         setError('An error occurred while fetching customer data. Please try again later.');
+        // setError(data.message);
+
       }
     };
 

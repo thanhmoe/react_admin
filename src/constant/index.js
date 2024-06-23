@@ -14,5 +14,9 @@ export const MENUITEMS = [
     {
         name: 'Staff',
         path: '/staff'
+    },
+    {
+        name: 'Category',
+        path: '/category'
     }
 ]
