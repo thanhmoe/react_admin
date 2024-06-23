@@ -13,11 +13,8 @@ const CustomerDetail = () => {
       try {
         const data = await fetchCustomers();
         if (data.success && data.data) {
-            console.log(data.data,123123);
           const thisCustomer =data.data.find(item => item.id === parseInt(customerId)); // Cập nhật danh sách khách hàng từ API
           setCustomer(thisCustomer)
-          console.log(data.data.id,'id hererere');
-          console.log(thisCustomer,999);
         } else {
           setError(data.message || 'Failed to fetch customers'); // Xử lý lỗi từ API
         }
@@ -38,6 +35,8 @@ const CustomerDetail = () => {
     }));
   };
 
+
+  
   const handleSave = async () => {
     try {
       const response = await updateCustomer(id, customer);

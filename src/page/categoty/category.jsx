@@ -30,7 +30,8 @@ export default function Category() {
     fetchData(); // Fetch data on initial component load
   }, []);
 
-    const handleEdit = ()=>{
+    const handleEdit = (categoryId)=>{
+      navigate(`/category/${categoryId}`)
 
     }
 
@@ -90,7 +91,7 @@ export default function Category() {
                         <td>{category.name}</td>
                         <td>{category.description}</td>
                         <td>
-                            <button> Edit</button>
+                            <button onClick={()=> handleEdit(category.id)}> Edit</button>
                         </td>
                     </tr>
                 ))

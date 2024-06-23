@@ -13,6 +13,7 @@ import CustomerDetail from './page/customer/CustomerDetail.jsx';
 import Staff from './page/Staff.jsx';
 import News from './page/News.jsx';
 import Category from './page/categoty/category.jsx';
+import CategoryDetail from './page/categoty/CategoryDetail.jsx';
 import MainLayout from './layout/Index.jsx';
 
 const router = createBrowserRouter([
@@ -48,6 +49,12 @@ const router = createBrowserRouter([
     path: "/category",
     element: <MainLayout>
       <Category/>
+    </MainLayout>
+  },
+  {
+    path: "/category/:categoryId",
+    element: <MainLayout>
+      <CategoryDetail/>
     </MainLayout>
   },
   {

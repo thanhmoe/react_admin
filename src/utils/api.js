@@ -69,3 +69,13 @@ export const addCategory = async(categoryData) => {
         return error.response.data;
     }
 };
+
+//updateCategory
+export const updateCategory = async (id, updatedCategory) => {
+    try {
+      const response = await instance.put(`/categories/update/${id}`, updatedCategory);
+      return response.data;
+    } catch (error) {
+      return error.response.data;
+    }
+  };
