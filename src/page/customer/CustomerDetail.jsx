@@ -13,7 +13,7 @@ const CustomerDetail = () => {
       try {
         const data = await fetchCustomers();
         if (data.success && data.data) {
-          const thisCustomer =data.data.find(item => item.id === parseInt(customerId)); // Cập nhật danh sách khách hàng từ API
+          const thisCustomer = data.data.find(item => item.id === parseInt(customerId)); // Cập nhật danh sách khách hàng từ API
           setCustomer(thisCustomer)
         } else {
           setError(data.message || 'Failed to fetch customers'); // Xử lý lỗi từ API
@@ -36,7 +36,7 @@ const CustomerDetail = () => {
   };
 
 
-  
+
   const handleSave = async () => {
     try {
       const response = await updateCustomer(id, customer);

@@ -20,53 +20,53 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout>
-      <App/>
+      <App />
     </MainLayout>
   },
   {
     path: "/login",
-    element: <Login/>,
+    element: <Login />,
   },
   {
     path: "/product",
     element: <MainLayout>
-      <Product/>
+      <Product />
     </MainLayout>
   },
   {
     path: "/staff",
     element: <MainLayout>
-      <Staff/>
+      <Staff />
     </MainLayout>
   },
   {
     path: "/news",
     element: <MainLayout>
-      <News/>
+      <News />
     </MainLayout>
   },
   {
     path: "/category",
     element: <MainLayout>
-      <Category/>
+      <Category />
     </MainLayout>
   },
   {
     path: "/category/:categoryId",
     element: <MainLayout>
-      <CategoryDetail/>
+      <CategoryDetail />
     </MainLayout>
   },
   {
     path: "/customer",
     element: <MainLayout>
-      <Customer/>
+      <Customer />
     </MainLayout>
   },
   {
     path: "/customer/:customerId",
     element: <MainLayout>
-      <CustomerDetail/>
+      <CustomerDetail />
     </MainLayout>
   },
 ]);
@@ -74,6 +74,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-     <RouterProvider router={router} />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 )

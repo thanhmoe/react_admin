@@ -1,7 +1,7 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './index.css'
-import { Dropdown,Space } from 'antd';
+import { Dropdown, Space } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
 
@@ -33,17 +33,17 @@ const Header = () => {
   return (
     <header>
       <div>
-      <h1>Header</h1>
+        <h1>Header</h1>
       </div>
-      <div>
-      <Dropdown
+      <div className='admin-profile'>
+        <Dropdown
           menu={{ items }}
           trigger={['click']} >
           <a onClick={(e) => e.preventDefault()}>
-          <Space>
-        admin
-        <DownOutlined />
-      </Space>
+            <Space>
+              admin
+              <DownOutlined />
+            </Space>
           </a>
         </Dropdown>
       </div>
