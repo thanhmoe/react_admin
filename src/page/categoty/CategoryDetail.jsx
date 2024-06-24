@@ -41,13 +41,10 @@ const CategoryDetail = () => {
       if (response.success) {
         alert('Category updated successfully');
       } else {
-        // alert('Failed to update category');
         alert(response.message);
-
       }
     } catch (error) {
       console.error('Error updating category:', error);
-      alert('Đã xảy ra lỗi khi cập nhật dữ liệu category. Vui lòng thử lại sau.');
     }
   };
 

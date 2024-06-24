@@ -3,6 +3,7 @@ import './login.css';
 import { loginStaff } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../../utils/auth';
+import { notify } from '../../main';
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -22,6 +23,7 @@ const Login = () => {
         // Đăng nhập thành công, chuyển hướng đến trang chính
         navigate('/'); // Chuyển hướng đến trang chính của ứng dụng
         setToken(response.data.auth_token);
+        notify('success','Login Successful')
       } else {
         // Đăng nhập thất bại, hiển thị thông báo lỗi
         setError(response.message);

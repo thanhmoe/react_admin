@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken,setToken } from "./auth";
+import { getToken, setToken } from "./auth";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 const instance = axios.create({
@@ -23,7 +23,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     async (config) => {
-        const token = await getToken();
+        const token = getToken();
         if (token) {
             config.headers['auth_token'] = token; // Không cần 'Bearer '
         }
@@ -43,7 +43,29 @@ export const loginStaff = async (user) => {
     }
 };
 
+
+export const logOutStaff = async () => {
+    try {
+        const response = await instance.get("/staffs/logout");
+        if (response.success) {
+            
+        }
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
 export const fetchCustomers = async () => {
+    try {
+        const response = await instance.get("/customers");
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+export const updateCustomer = async () => {
     try {
         const response = await instance.get("/customers");
         return response.data;
@@ -61,7 +83,7 @@ export const fetchCategory = async () => {
     }
 };
 
-export const addCategory = async(categoryData) => {
+export const addCategory = async (categoryData) => {
     try {
         const response = await instance.post("/categories/add", categoryData);
         return response.data;
@@ -73,9 +95,9 @@ export const addCategory = async(categoryData) => {
 //updateCategory
 export const updateCategory = async (id, updatedCategory) => {
     try {
-      const response = await instance.put(`/categories/update/${id}`, updatedCategory);
-      return response.data;
+        const response = await instance.put(`/categories/update/${id}`, updatedCategory);
+        return response.data;
     } catch (error) {
-      return error.response.data;
+        return error.response.data;
     }
-  };
+};
