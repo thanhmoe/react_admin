@@ -82,7 +82,7 @@ const CategoryDetail = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="button" onClick={handleSave}>
+        <button className='btn-save' onClick={handleSave}>
           Save
         </button>
       </form>

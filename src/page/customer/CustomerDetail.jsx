@@ -116,7 +116,7 @@ const CustomerDetail = () => {
             <option value={0}>No</option>
           </select>
         </div>
-        <button type="button" onClick={handleSave}>
+        <button className='btn-save' onClick={handleSave}>
           Save
         </button>
       </form>

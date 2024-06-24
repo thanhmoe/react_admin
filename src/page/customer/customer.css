@@ -34,3 +34,11 @@
   margin-top: 20px;
   text-align: center;
 }
+.btn-edit-customer{
+  width: fit-content;
+  justify-content: center;
+}
+.btn-save-customer{
+  width: fit-content;
+  align-items: center;
+}

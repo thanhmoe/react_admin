@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchCategory, addCategory } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { EditOutlined } from '@ant-design/icons';
 import './category.css'
 
 export default function Category() {
@@ -92,7 +93,7 @@ export default function Category() {
                 <td>{category.name}</td>
                 <td>{category.description}</td>
                 <td>
-                  <button onClick={() => handleEdit(category.id)}> Edit</button>
+                  <button className='btn-edit' onClick={() => handleEdit(category.id)}><EditOutlined /></button>
                 </td>
               </tr>
             ))

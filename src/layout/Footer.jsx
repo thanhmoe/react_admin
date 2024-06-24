@@ -3,7 +3,7 @@ import './index.css'
 const Footer = () => {
   return (
     <footer>
-      <p>Footer</p>
+      <p>@2024</p>
     </footer>
   );
 };

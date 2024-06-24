@@ -3,12 +3,13 @@ import { fetchCustomers } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import './customer.css';
 import { Pagination } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 
 export default function Customer() {
   const [customers, setCustomers] = useState([]);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Number of items per page
+  const [itemsPerPage] = useState(5); // Number of items per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,7 +76,7 @@ export default function Customer() {
                 <td>{new Date(customer.create_at).toLocaleDateString()}</td>
                 <td>{new Date(customer.modify_at).toLocaleDateString()}</td>
                 <td>
-                  <button onClick={() => handleEdit(customer.id)}>Edit</button>
+                  <button className='btn-edit' onClick={() => handleEdit(customer.id)}>{<EditOutlined />}</button>
                 </td>
               </tr>
             ))

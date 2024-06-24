@@ -65,7 +65,7 @@ const Login = () => {
             onChange={(e) => handleInputChange('password', e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button className='btn-login' type="submit">Login</button>
       </form>
     </div>
   );
