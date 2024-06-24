@@ -48,13 +48,23 @@ export const logOutStaff = async () => {
     try {
         const response = await instance.get("/staffs/logout");
         if (response.success) {
-            
+
         }
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
+
+export const addProduct = async (productData) => {
+    try {
+        const response = await instance.post("/products/add", productData);
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
 
 export const fetchCustomers = async () => {
     try {

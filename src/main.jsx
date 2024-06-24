@@ -9,7 +9,7 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './page/login/login.jsx';
-import Product from './page/Product.jsx';
+import Product from './page/product/Product.jsx';
 import Customer from './page/customer/Customer.jsx';
 import CustomerDetail from './page/customer/CustomerDetail.jsx';
 import Staff from './page/Staff.jsx';
