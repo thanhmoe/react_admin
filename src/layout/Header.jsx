@@ -42,7 +42,7 @@ const Header = () => {
   return (
     <header>
       <div>
-        <h1>Admin</h1>
+        <h1 className='label-header' onClick={()=> navigate('/')}>Admin</h1>
       </div>
       <div className='admin-profile'>
         <Dropdown

@@ -7,7 +7,7 @@ const Sidebar = () => {
   return (
     <aside> 
       {MENUITEMS.map((item, index) => (
-          <ul className='item' key={index} onClick={() => navigate(item.path)}>
+          <ul className='list-aside' key={index} onClick={() => navigate(item.path)}>
            <li>{(item.name)}</li> 
           </ul>
         ))}

@@ -7,16 +7,17 @@ const CustomerDetail = () => {
   const { customerId } = useParams();
   const [customer, setCustomer] = useState(null);
   const [error, setError] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchCustomers();
         if (data.success && data.data) {
-          const thisCustomer = data.data.find(item => item.id === parseInt(customerId)); // Cập nhật danh sách khách hàng từ API
-          setCustomer(thisCustomer)
+          const thisCustomer = data.data.find(item => item.id === parseInt(customerId));
+          setCustomer(thisCustomer);
         } else {
-          setError(data.message || 'Failed to fetch customers'); // Xử lý lỗi từ API
+          setError(data.message || 'Failed to fetch customers');
         }
       } catch (error) {
         console.error('Error fetching customers:', error);
@@ -24,7 +25,7 @@ const CustomerDetail = () => {
       }
     };
 
-    fetchData(); // Gọi fetchData khi component được tải lần đầu
+    fetchData();
   }, [customerId]);
 
   const handleChange = (e) => {
@@ -33,13 +34,34 @@ const CustomerDetail = () => {
       ...prevCustomer,
       [name]: value,
     }));
+
+    // Check form validity
+    validateForm({ ...customer, [name]: value });
   };
 
+  const validateForm = (updatedCustomer) => {
+    const { email, gender, dob, phone_number } = updatedCustomer;
+    const isValid =
+      email &&
+      gender &&
+      dob &&
+      phone_number &&
+      email.trim() !== '' &&
+      gender.trim() !== '' &&
+      dob.trim() !== '' &&
+      phone_number.trim() !== '';
+    setIsFormValid(isValid);
+  };
 
+  const handleSave = async (e) => {
+    e.preventDefault();
+    if (!isFormValid) {
+      alert('Please fill in all fields correctly.');
+      return;
+    }
 
-  const handleSave = async () => {
     try {
-      const response = await updateCustomer(id, customer);
+      const response = await updateCustomer(customerId, customer);
       if (response.success) {
         alert('Customer updated successfully');
       } else {
@@ -89,7 +111,6 @@ const CustomerDetail = () => {
             type="date"
             id="dob"
             name="dob"
-            // value={customer.dob}
             value={new Date(customer.dob).toISOString().split('T')[0]}
             onChange={handleChange}
           />
@@ -116,7 +137,7 @@ const CustomerDetail = () => {
             <option value={0}>No</option>
           </select>
         </div>
-        <button className='btn-save' onClick={handleSave}>
+        <button className='btn-save' onClick={handleSave} disabled={!isFormValid}>
           Save
         </button>
       </form>

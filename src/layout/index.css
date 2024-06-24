@@ -9,7 +9,9 @@ body {
   background-color: #f5f5f5;
   color: #333;
 }
-
+.label-header:hover{
+  cursor: pointer;
+}
 a {
   text-decoration: none;
   color: inherit;
@@ -20,10 +22,11 @@ ul {
   padding: 10px;
 }
 
-ul:hover {
+.list-aside:hover {
   cursor: pointer;
   background-color: #585151;
 }
+
 
 .main-layout {
   display: flex;
@@ -50,7 +53,8 @@ header {
   padding: 10px 20px;
   text-align: center;
 }
-.admin-profile{
+
+.admin-profile {
   cursor: pointer;
 }
 
@@ -80,7 +84,7 @@ aside nav ul {
 
 aside nav ul li {
   margin: 10px 0;
-  
+
 }
 
 
@@ -92,7 +96,12 @@ aside nav ul li a {
 h2 {
   color: black;
 }
-.btn-edit{
+input{
+  background-color: white;
+  color: black;
+}
+
+.btn-edit {
   padding: 10px;
   background-color: #4CAF50;
   color: white;
@@ -100,7 +109,8 @@ h2 {
   border-radius: 4px;
   cursor: pointer;
 }
-.btn-save{
+
+.btn-save {
   padding: 10px;
   background-color: #4c7aaf;
   color: white;

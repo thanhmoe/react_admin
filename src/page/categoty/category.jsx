@@ -57,7 +57,6 @@ export default function Category() {
       <button className="add-button" onClick={() => setShowForm(true)}>
         Add Category
       </button>
-
       {showForm && (
         <div className="form-container">
           <h3>Add New Category</h3>
@@ -75,7 +74,6 @@ export default function Category() {
           <button onClick={handleAddCategory}>Add</button>
         </div>
       )}
-
       <table className='category-table'>
         <thead>
           <tr>

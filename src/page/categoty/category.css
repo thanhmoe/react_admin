@@ -34,6 +34,7 @@
 }
 
 .form-container {
+  width: 500px;
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -43,6 +44,8 @@
 .form-container input,
 .form-container textarea,
 .form-container button {
+  background-color: white;
+  color: black;
   margin-bottom: 10px;
   width: 100%;
   padding: 8px;
@@ -53,6 +56,8 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .category-table th,
@@ -66,6 +71,26 @@
   background-color: #4CAF50;
   color: white;
 }
+
+.category-detail-container{
+  width: 500px;
+}
+
+
+
+
 .btn-edit-category{
   width: fit-content;
+}
+.textarea-category-input{
+  width: 500px;
+  height: 200px;
+  background-color: white;
+  color: black;
+}
+
+.category-name-input{
+  width: 50px;
+  background-color: white;
+  color: black;
 }

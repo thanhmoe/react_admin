@@ -63,6 +63,7 @@ const CategoryDetail = () => {
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
+          className='category-name-input'
             type="text"
             id="name"
             name="name"
@@ -73,6 +74,7 @@ const CategoryDetail = () => {
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <textarea
+          className='textarea-category-input'
             id="description"
             name="description"
             value={category.description}
