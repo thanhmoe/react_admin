@@ -20,15 +20,10 @@ const Header = () => {
     },
   ];
 
-  const handleSignOut = async () => {
-    const res = await logOutStaff()
-    if (res.success) {
+  const handleSignOut = () => {
       clearToken()
       navigate('/login');
       notify('success','You have been log out!')
-    }else{
-      notify('error',res.message)
-    }
   }
 
 
