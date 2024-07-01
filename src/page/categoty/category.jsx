@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchCategory, addCategory } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined } from '@ant-design/icons';
+import { Pagination } from 'antd';
 import './category.css'
 
 export default function Category() {
@@ -12,6 +13,8 @@ export default function Category() {
     name: '',
     description: ''
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Number of items per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,13 +30,20 @@ export default function Category() {
         console.error('Error fetching categoies:', error);
       }
     };
-
     fetchData(); // Fetch data on initial component load
   }, []);
 
+  // Calculate current items to display based on pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = categories.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   const handleEdit = (categoryId) => {
     navigate(`/category/${categoryId}`)
-
   }
 
   const handleAddCategory = async () => {
@@ -85,7 +95,7 @@ export default function Category() {
         </thead>
         <tbody>
           {categories.length > 0 ? (
-            categories.map((category) => (
+            currentItems.map((category) => (
               <tr key={category.id}>
                 <td>{category.id}</td>
                 <td>{category.name}</td>
@@ -102,6 +112,13 @@ export default function Category() {
           )}
         </tbody>
       </table>
+      <Pagination
+        defaultCurrent={currentPage}
+        total={categories.length}
+        pageSize={itemsPerPage}
+        onChange={handlePageChange}
+        className="pagination"
+      />
     </div>
   );
 }

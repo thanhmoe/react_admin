@@ -56,6 +56,15 @@ export const logOutStaff = async () => {
     }
 };
 
+export const fetchProduct = async () => {
+    try {
+        const response = await instance.get("/products");
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
 export const addProduct = async (productData) => {
     try {
         const response = await instance.post("/products/add", productData);
