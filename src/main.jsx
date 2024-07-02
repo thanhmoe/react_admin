@@ -67,7 +67,7 @@ const router = createBrowserRouter([
     path: "/products",
     element: (
       <MainLayout>
-        <AddProduct />
+        <FilterableProductTable />
       </MainLayout>
     ),
   },
