@@ -10,9 +10,8 @@ import { fetchProduct } from '../../services/product_services';
 
 function ProductRow({ product }) {
     return (
-        <tr>
-            <td className='border border-slate-600 p-2'>
-                <img className='w-24 h-24 object-contain' src={product.image_path} alt="" />
+        <tr> <td className='border border-slate-600 p-2 w-28'>
+                <img className='w-28 h-28 object-contain' src={product.image_path} alt="" />
             </td>
             <td className='border border-slate-600 p-2'>{product.name}</td>
             {/* <td>{product.quantity_in_stock}</td> */}
@@ -27,7 +26,7 @@ function ProductRow({ product }) {
             <td className='border border-slate-600 p-2'>{product.is_active}</td>
             <td className='border border-slate-600 p-2'>{product.create_at}</td>
             <td className='border border-slate-600 p-2'>{product.modify_at}</td>
-            <td className='border border-slate-600 p-2'>
+            <td className='border border-slate-600 p-2 w-20'>
                 <Space direction='vertical' size='small'>
                     <Button className="bg-transparent border !border-yellow-600 text-yellow-600 hover:!bg-yellow-600 hover:!text-white">
                         Edit
