@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchCustomers } from '../../utils/api';
+import { fetchCustomers } from '../../services/customer_services';
 import { useNavigate } from 'react-router-dom';
 import './customer.css';
 import { Pagination } from 'antd';

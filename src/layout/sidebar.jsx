@@ -1,18 +1,22 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './index.css'
-import { MENUITEMS } from '../constant';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./index.css";
+import { MENU_ITEMS } from "../utils/constants";
 const Sidebar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
-    <aside> 
-      {MENUITEMS.map((item, index) => (
-          <ul className='list-aside' key={index} onClick={() => navigate(item.path)}>
-           <li>{(item.name)}</li> 
-          </ul>
-        ))}
+    <aside>
+      {MENU_ITEMS.map((item, index) => (
+        <ul
+          className="list-aside"
+          key={index}
+          onClick={() => navigate(item.path)}
+        >
+          <li>{item.name}</li>
+        </ul>
+      ))}
     </aside>
-  )
+  );
 };
 
 export default Sidebar;

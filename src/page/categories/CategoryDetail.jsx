@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchCategory, updateCategory } from '../../utils/api';
+import { fetchCategory, addCategory } from '../../services/category_services';
 import './category.css';
 
 const CategoryDetail = () => {
@@ -63,7 +63,7 @@ const CategoryDetail = () => {
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
-          className='category-name-input'
+            className='category-name-input'
             type="text"
             id="name"
             name="name"
@@ -74,7 +74,7 @@ const CategoryDetail = () => {
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <textarea
-          className='textarea-category-input'
+            className='textarea-category-input'
             id="description"
             name="description"
             value={category.description}

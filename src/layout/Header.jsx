@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logOutStaff } from '../utils/api';
-import { getToken, clearToken } from '../utils/auth';
-import './index.css'
+import { logOutStaff } from '../services/account_services';
+import { getToken, clearToken } from '../utils/token_utils';
+import './index.css';
 import { Dropdown, Space } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { notify } from '../main';
@@ -10,8 +10,8 @@ import { notify } from '../main';
 
 
 const Header = () => {
-  const navigate = useNavigate()
-  const token = getToken()
+  const navigate = useNavigate();
+  const token = getToken();
 
   const items = [
     {
@@ -21,23 +21,23 @@ const Header = () => {
   ];
 
   const handleSignOut = () => {
-      clearToken()
-      navigate('/login');
-      notify('success','You have been log out!')
-  }
+    clearToken();
+    navigate('/login');
+    notify('success', 'You have been log out!');
+  };
 
 
   useEffect(() => {
     if (!token) {
-      navigate('/login')
+      navigate('/login');
     }
-  }, [token])
+  }, [token]);
 
 
   return (
     <header>
       <div>
-        <h1 className='label-header' onClick={()=> navigate('/')}>Admin</h1>
+        <h1 className='label-header' onClick={() => navigate('/')}>Admin</h1>
       </div>
       <div className='admin-profile'>
         <Dropdown

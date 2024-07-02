@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { fetchCategory, addCategory } from '../../utils/api';
+import { fetchCategory, addCategory } from '../../services/category_services';
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined } from '@ant-design/icons';
 import { Pagination } from 'antd';
-import './category.css'
+import './category.css';
 
 export default function Category() {
   const [categories, setCategories] = useState([]);
@@ -43,8 +43,8 @@ export default function Category() {
   };
 
   const handleEdit = (categoryId) => {
-    navigate(`/category/${categoryId}`)
-  }
+    navigate(`/category/${categoryId}`);
+  };
 
   const handleAddCategory = async () => {
     try {

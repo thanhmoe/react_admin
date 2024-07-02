@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './login.css';
-import { loginStaff } from '../../utils/api';
+import { loginStaff } from '../../services/account_services';
 import { useNavigate } from 'react-router-dom';
-import { setToken } from '../../utils/auth';
+import { setToken } from '../../utils/token_utils';
 import { notify } from '../../main';
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await loginStaff(user);
       // Xử lý kết quả trả về từ API
@@ -23,7 +23,7 @@ const Login = () => {
         // Đăng nhập thành công, chuyển hướng đến trang chính
         navigate('/'); // Chuyển hướng đến trang chính của ứng dụng
         setToken(response.data.auth_token);
-        notify('success','Login Successful')
+        notify('success', 'Login Successful');
       } else {
         // Đăng nhập thất bại, hiển thị thông báo lỗi
         setError(response.message);
@@ -35,10 +35,10 @@ const Login = () => {
     }
   };
 
-  const handleInputChange = (type,value) => {
+  const handleInputChange = (type, value) => {
     setUser({
       ...user,
-      [type]:value
+      [type]: value
     });
   };
 

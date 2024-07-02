@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './product.css';
+
 import { Pagination } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import { fetchProduct } from '../../utils/api';
 
-export default function Products() {
+import './product.css';
+import { fetchProduct } from '../../services/product_services';
+
+export default function FilterableProductTable() {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +18,7 @@ export default function Products() {
         const fetchData = async () => {
             try {
                 const data = await fetchProduct();
+                console.log(data);
                 if (data.success && data.data) {
                     setProducts(data.data); // Update customer list from API
                 } else {

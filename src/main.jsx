@@ -1,22 +1,24 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Login from './page/login/login.jsx';
-import Product from './page/product/Product.jsx';
-import Customer from './page/customer/Customer.jsx';
-import CustomerDetail from './page/customer/CustomerDetail.jsx';
-import Staff from './page/Staff.jsx';
-import News from './page/News.jsx';
-import Category from './page/categoty/category.jsx';
-import CategoryDetail from './page/categoty/CategoryDetail.jsx';
-import MainLayout from './layout/Index.jsx';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import "./index.css";
+import MainLayout from "./layout/Index.jsx";
+import App from "./App.jsx";
+
+import Login from "./page/login/login.jsx";
+
+import AddProduct from "./page/products/AddProduct.jsx";
+import FilterableProductTable from "./page/products/FilterableProductTable.jsx";
+
+import Categories from "./page/categories/Categories.jsx";
+import CategoryDetail from "./page/categories/CategoryDetail.jsx";
+
+import Customer from "./page/customers/Customer.jsx";
+import CustomerDetail from "./page/customers/CustomerDetail.jsx";
+
 
 //custom notification
 export const notify = (type, content, position) => {
@@ -29,86 +31,91 @@ export const notify = (type, content, position) => {
     draggable: true,
     progress: undefined,
     theme: "light",
-  }
+  };
   switch (type) {
-    case 'success':
+    case "success":
       toast.success(content, config);
       break;
-    case 'warn':
+    case "warn":
       toast.warn(content, config);
       break;
-    case 'error':
+    case "error":
       toast.error(content, config);
       break;
-    case 'info':
+    case "info":
       toast.info(content, config);
       break;
     default:
       break;
   }
-}
-
-
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout>
-      <App />
-    </MainLayout>
+    element: (
+      <MainLayout>
+        <App />
+      </MainLayout>
+    ),
   },
   {
     path: "/login",
     element: <Login />,
   },
   {
-    path: "/product",
-    element: <MainLayout>
-      <Product />
-    </MainLayout>
+    path: "/products",
+    element: (
+      <MainLayout>
+        <AddProduct />
+      </MainLayout>
+    ),
   },
+  // {
+  //   path: "/products/:id",
+  //   element: (
+  //     <MainLayout>
+  //       <AddProduct />
+  //     </MainLayout>
+  //   ),
+  // },
   {
-    path: "/staff",
-    element: <MainLayout>
-      <Staff />
-    </MainLayout>
+    path: "/categories",
+    element: (
+      <MainLayout>
+        <Categories />
+      </MainLayout>
+    ),
   },
+  // {
+  //   path: "/categories/:id",
+  //   element: (
+  //     <MainLayout>
+  //       <CategoryDetail />
+  //     </MainLayout>
+  //   ),
+  // },
   {
-    path: "/news",
-    element: <MainLayout>
-      <News />
-    </MainLayout>
+    path: "/customers",
+    element: (
+      <MainLayout>
+        <Customer />
+      </MainLayout>
+    ),
   },
-  {
-    path: "/category",
-    element: <MainLayout>
-      <Category />
-    </MainLayout>
-  },
-  {
-    path: "/category/:categoryId",
-    element: <MainLayout>
-      <CategoryDetail />
-    </MainLayout>
-  },
-  {
-    path: "/customer",
-    element: <MainLayout>
-      <Customer />
-    </MainLayout>
-  },
-  {
-    path: "/customer/:customerId",
-    element: <MainLayout>
-      <CustomerDetail />
-    </MainLayout>
-  },
+  // {
+  //   path: "/customers/:id",
+  //   element: (
+  //     <MainLayout>
+  //       <CustomerDetail />
+  //     </MainLayout>
+  //   ),
+  // },
 ]);
 
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ToastContainer />
     <RouterProvider router={router} />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
