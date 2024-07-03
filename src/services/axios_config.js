@@ -6,7 +6,7 @@ export const axios_instance = axios.create({
    baseURL: baseURL
 });
 
-axios.interceptors.request.use(
+axios_instance.interceptors.request.use(
    async (config) => {
       const token = getToken();
       if (token) {

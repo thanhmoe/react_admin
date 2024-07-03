@@ -1,11 +1,19 @@
 import { axios_instance } from "./axios_config";
 
-const API_PATH = "/products";
+const API_PATH = "/products/admin";
 
-export const fetchProduct = async () => {
+export const fetchProduct = async (params) => {
+   const { page, limit, textQuery, sortBy, sortOrder, category, isActive } = params;
    try {
-      const response = await axios_instance.get(`${API_PATH}/`);
-      return response.data;
+      let URL = `${API_PATH}/?page=${page}&limit=${limit}`;
+      if (textQuery) URL += `&textQuery=${textQuery}`;
+      if (category) URL += `&category=${category}`;
+      if (sortBy) URL += `&sortBy=${sortBy}`;
+      if (sortOrder) URL += `&sortOrder=${sortOrder}`;
+      if (isActive) URL += `&isActive=${isActive}`;
+      const response = await axios_instance.get(URL);
+      if (response && response.status === 200)
+         return response.data;
    } catch (error) {
       return error.response.data;
    }

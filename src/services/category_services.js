@@ -3,7 +3,8 @@ import { axios_instance } from "../services/axios_config";
 export const fetchCategory = async () => {
    try {
       const response = await axios_instance.get("/categories");
-      return response.data;
+      if (response && response.status === 200)
+         return response.data;
    } catch (error) {
       return error.response.data;
    }
