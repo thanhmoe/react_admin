@@ -1,20 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Pagination, Button, Space, Modal } from 'antd';
+import { Pagination, Button, Space, Select } from 'antd';
 
 import './product.css';
 import { formatISODate } from '../../utils/date_utils';
 
 import ProductModal from './components/ProductModal';
 import { fetchProduct } from '../../services/product_services';
-import { fetchCategory } from '../../services/category_services';
+import DisableProductModal from './components/DisableProductModal';
+
+const sortOptions = [
+    { value: 'name', label: 'Name', },
+    { value: 'quantity_in_stock', label: 'In stock', },
+    { value: 'price', label: 'Price', },
+    { value: "like_count", label: "Like" },
+    { value: 'create_at', label: 'Create at', },
+    { value: 'modify_at', label: 'Modify at', },
+];
+
+const SORT_ORDERS = [{ value: "ASC", label: "ASC" }, { value: "DESC", label: "DESC" }];
 
 function ProductRow({ product }) {
+    const [openDisableModal, setOpenDisableModal] = useState(false);
+    const [openUpdateModal, setOpenUpdateModal] = useState(false);
+
+    const handleCancel = () => {
+        setOpenDisableModal(false);
+        setOpenUpdateModal(false);
+    };
+
     return (
         <tr>
             <td className='border border-slate-600 p-2 whitespace-nowrap'>
-                <img className='w-36 h-36 object-contain' src={product.image_path} alt="" />
+                <img className='w-32 h-32 object-contain' src={product.image_path} alt="" />
             </td>
             <td className='border border-slate-600 p-2 text-left text-ellipsis'>{product.name}</td>
             <td className='border border-slate-600 p-2 flex-1 text-right'>{product.quantity_in_stock}</td>
@@ -32,17 +51,19 @@ function ProductRow({ product }) {
                 {formatISODate(product.modify_at)}
             </td>
             <td className='border border-slate-600 p-2 text-left whitespace-nowrap'>
-                <Space direction='vertical' size='small'>
-                    <Button className="bg-transparent border !border-yellow-600 text-yellow-600 hover:!bg-yellow-600 hover:!text-white">
+                <Space wrap direction='horizontal' size='small'>
+                    <Button className="bg-transparent border !border-yellow-600 text-yellow-600 hover:!bg-yellow-600 hover:!text-white" onClick={() => setOpenUpdateModal(true)}>
                         Edit
                     </Button>
                     <Button className="bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white">
                         View
                     </Button>
-                    <Button className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white">
+                    <Button className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white" onClick={() => setOpenDisableModal(true)}>
                         Disable
                     </Button>
                 </Space>
+                <ProductModal open={openUpdateModal} product={product} onCancel={handleCancel} />
+                <DisableProductModal open={openDisableModal} product={product} onCancel={handleCancel} />
             </td>
         </tr>
     );
@@ -65,7 +86,7 @@ function ProductTable({ products, }) {
                         <th className='border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-24'>React</th>
                         <th className='border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-48 max-w-48'>Create at</th>
                         <th className='border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-48 max-w-48'>Modify at</th>
-                        <th className='border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-28'>Actions</th>
+                        <th className='border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-36'>Actions</th>
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
@@ -78,8 +99,13 @@ export default function FilterableProductTable() {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10); // Number of items per page
+    const [itemsPerPage, setItemPerPage] = useState(10); // Number of items per page
     const [totalProducts, setTotalProducts] = useState(null);
+    const [openProductModal, setOpenProductModal] = useState(false);
+    const [reloadPage, setReloadPage] = useState(false);
+    const [sortOption, setSortOption] = useState(null);
+    const [sortOrder, setSortOrder] = useState(null);
+    const [textQuery, setTextQuery] = useState(null);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -87,20 +113,26 @@ export default function FilterableProductTable() {
             try {
                 const response = await fetchProduct({
                     page: currentPage,
-                    limit: itemsPerPage
+                    limit: itemsPerPage,
+                    textQuery: textQuery,
+                    sortBy: sortOption,
+                    sortOrder: sortOrder
                 });
                 if (response.success && response.products) {
                     setProducts(response.products); // Update customer list from API
                     setTotalProducts(response.total_products);
+                    setError(null);
                 } else {
                     setError(response.message || 'Failed to fetch products!');
                 }
             } catch (error) {
                 setError(data.message);
+            } finally {
+                setReloadPage(false);
             }
         };
         fetchData(); // Fetch data on initial component load
-    }, [currentPage]);
+    }, [currentPage, itemsPerPage, reloadPage, sortOption, sortOrder]);
 
     /* const handleEdit = (customerId) => {
         navigate(`/customer/${customerId}`);
@@ -110,31 +142,61 @@ export default function FilterableProductTable() {
         setCurrentPage(page);
     };
 
-    const [open, setOpen] = useState(false);
+    const onShowSizeChange = (current, pageSize) => {
+        setCurrentPage(current);
+        setItemPerPage(pageSize);
+    };
+
+    const handleSortOptionChange = (value) => setSortOption(value);
+    const handleSortOrderChange = (value) => { setSortOrder(value); console.log("SOrt order:", value); };
+
+    const handleCancelProductModal = (reloadingPage) => {
+        if (reloadingPage) {
+            if (currentPage === 1) setReloadPage(true);
+            setCurrentPage(1);
+        }
+        setOpenProductModal(false);
+    };
 
     return (
         <div className="products-container">
             <h1>Products</h1>
-            <Button
-                className='bg-green-600 text-white hover:!text-green-600 hover:!border-green-600'
-                size='large'
-                onClick={() => setOpen(true)}
-            >
-                Add new
-            </Button>
+            <div className='flex items-center justify-between'>
+                <Button
+                    className='bg-green-600 text-white hover:!text-green-600 hover:!border-green-600'
+                    size='large'
+                    onClick={() => setOpenProductModal(true)}
+                >
+                    Add new
+                </Button>
+                <Space wrap>
+                    <Select
+                        defaultValue="modify_at"
+                        style={{ width: 150, }}
+                        onChange={handleSortOptionChange}
+                        options={sortOptions}
+                    />
+                    <Select
+                        defaultValue="DESC"
+                        style={{ width: 130, }}
+                        options={SORT_ORDERS}
+                        onChange={handleSortOrderChange}
+                    />
+                </Space>
+            </div>
             {error && <div className="error-message">{error}</div>}
             <ProductTable products={products} />
             <Pagination
+                showSizeChanger
+                onShowSizeChange={onShowSizeChange}
                 current={currentPage}
                 total={totalProducts}
-                pageSize={itemsPerPage}
                 onChange={handlePageChange}
 
             />
             <ProductModal
-                open={open}
-                onCreate={() => { }}
-                onCancel={() => setOpen(false)}
+                open={openProductModal}
+                onCancel={handleCancelProductModal}
             />
         </div>
     );

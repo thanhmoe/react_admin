@@ -24,7 +24,7 @@ const normFile = (e) => {
    return e && e.fileList;
 };
 
-const ProductModal = ({ open, onCreate, onCancel }) => {
+const ProductModal = ({ open, onCancel, product }) => {
    const [listCategories, setListCategories] = useState([]);
    const [fileList, setFileList] = useState([]);
    const [form] = Form.useForm();
@@ -53,7 +53,7 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
    const handleCancel = () => {
       form.resetFields();
       setFileList([]);
-      onCancel();
+      onCancel(false);
    };
 
    const handleOk = async () => {
@@ -65,7 +65,7 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
             if (result.success) {
                notify("success", result.message);
                form.resetFields();
-               onCancel();
+               onCancel(true);
             }
             else
                notify("error", result.message);
@@ -76,11 +76,11 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
    return (
       <Modal
          open={open}
-         title="Add a new product"
+         title={!product ? "Add a new product" : "Update product"}
          style={{ top: 100 }}
          cancelText="Cancel"
          onCancel={handleCancel}
-         okText="Create"
+         okText={!product ? "Create" : "Confirm"}
          onOk={handleOk}
       >
          <Form
@@ -98,7 +98,7 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
                   message: "Please input the name!"
                }]}
             >
-               <Input />
+               <Input defaultValue={product ? product.name : ""} />
             </Form.Item>
             <Row gutter={0}>
                <Col span={12}>
@@ -112,7 +112,13 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
                         message: "Please input the quantity!",
                      }]}
                   >
-                     <InputNumber min={0} style={{ width: '100%' }} />
+                     <InputNumber
+                        min={0}
+                        style={{ width: '100%' }}
+                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                        defaultValue={product ? product.quantity_in_stock : 0}
+                     />
                   </Form.Item>
                </Col>
                <Col span={12}>
@@ -126,12 +132,21 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
                         message: "Please input the price!",
                      }]}
                   >
-                     <InputNumber min={0} style={{ width: '100%' }} />
+                     <InputNumber
+                        min={0}
+                        max={99999999.99}
+                        precision={2}
+                        step={0.01}
+                        formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                        style={{ width: '100%' }}
+                        defaultValue={product ? product.price : 0}
+                     />
                   </Form.Item>
                </Col>
             </Row>
             <Form.Item
-               name="categories"
+               name="category_ids"
                label="Categories"
                rules={[{
                   required: true,

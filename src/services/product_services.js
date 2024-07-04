@@ -4,6 +4,7 @@ const API_PATH = "/products";
 
 export const fetchProduct = async (params) => {
    const { page, limit, textQuery, sortBy, sortOrder, category, isActive } = params;
+   console.log(params);
    try {
       let URL = `${API_PATH}/admin/?page=${page}&limit=${limit}`;
       if (textQuery) URL += `&textQuery=${textQuery}`;
@@ -11,6 +12,7 @@ export const fetchProduct = async (params) => {
       if (sortBy) URL += `&sortBy=${sortBy}`;
       if (sortOrder) URL += `&sortOrder=${sortOrder}`;
       if (isActive) URL += `&isActive=${isActive}`;
+      console.log(URL);
       const response = await axios_instance.get(URL);
       if (response && response.status === 200)
          return response.data;
