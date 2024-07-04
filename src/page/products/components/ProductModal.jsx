@@ -9,14 +9,26 @@ import {
    Button,
    Select,
    message,
+   Row,
+   Col,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { fetchCategory } from "../../../services/category_services";
 const { TextArea } = Input;
+import { PlusOutlined } from "@ant-design/icons";
+
+import { addProduct } from "../../../services/product_services";
+import { fetchCategory } from "../../../services/category_services";
+import { notify } from "../../../utils/notify_utils";
+
+const normFile = (e) => {
+   if (Array.isArray(e)) return e;
+   return e && e.fileList;
+};
 
 const ProductModal = ({ open, onCreate, onCancel }) => {
    const [listCategories, setListCategories] = useState([]);
+   const [fileList, setFileList] = useState([]);
    const [form] = Form.useForm();
+
    const listSelectedCategories = [];
 
    useEffect(() => {
@@ -36,34 +48,45 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
 
    const handleCategoriesChanged = (value) => {
       listSelectedCategories.push(value);
-      console.log("This is the selected category:", value);
+   };
+
+   const handleCancel = () => {
+      form.resetFields();
+      setFileList([]);
+      onCancel();
+   };
+
+   const handleOk = async () => {
+      form
+         .validateFields()
+         .then(async (values) => {
+            values.image = values.image[0].originFileObj;
+            const result = await addProduct(values);
+            if (result.success) {
+               notify("success", result.message);
+               form.resetFields();
+               onCancel();
+            }
+            else
+               notify("error", result.message);
+         })
+         .catch(info => { });
    };
 
    return (
       <Modal
          open={open}
          title="Add a new product"
-         okText="Create"
-         style={{
-            top: 100
-         }}
+         style={{ top: 100 }}
          cancelText="Cancel"
-         onCancel={onCancel}
-         onOk={() => {
-            form
-               .validateFields()
-               .then((values) => {
-                  form.resetFields();
-                  onCreate(values);
-               })
-               .catch(info => {
-                  console.log("Validate failed:", info);
-               });
-         }}
+         onCancel={handleCancel}
+         okText="Create"
+         onOk={handleOk}
       >
          <Form
-            labelCol={{ span: 4 }}
-            // wrapperCol={{ span: 14 }}
+            form={form}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
             layout="horizontal"
             style={{ maxWidth: 600 }}
          >
@@ -72,37 +95,53 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
                label="Name"
                rules={[{
                   required: true,
-                  message: "Please input the name for product!"
+                  message: "Please input the name!"
                }]}
             >
                <Input />
             </Form.Item>
-            <Form.Item
-               name="quantity"
-               label="Quantity"
-            >
-               <InputNumber min={0} />
-            </Form.Item>
-            <Form.Item
-               name="price"
-               label="Price"
-            >
-               <InputNumber min={0} />
-            </Form.Item>
+            <Row gutter={0}>
+               <Col span={12}>
+                  <Form.Item
+                     name="quantity"
+                     label="Quantity"
+                     labelCol={{ span: 12 }}
+                     wrapperCol={{ span: 12 }}
+                     rules={[{
+                        required: true,
+                        message: "Please input the quantity!",
+                     }]}
+                  >
+                     <InputNumber min={0} style={{ width: '100%' }} />
+                  </Form.Item>
+               </Col>
+               <Col span={12}>
+                  <Form.Item
+                     name="price"
+                     label="Price"
+                     labelCol={{ span: 8 }}
+                     wrapperCol={{ span: 16 }}
+                     rules={[{
+                        required: true,
+                        message: "Please input the price!",
+                     }]}
+                  >
+                     <InputNumber min={0} style={{ width: '100%' }} />
+                  </Form.Item>
+               </Col>
+            </Row>
             <Form.Item
                name="categories"
                label="Categories"
                rules={[{
-                  require: true,
+                  required: true,
                   message: "Please select at least one category!"
                }]}
             >
                <Select
                   mode="multiple"
                   allowClear
-                  style={{
-                     width: "100%"
-                  }}
+                  style={{ width: "100%" }}
                   placeholder="Select categories"
                   options={listCategories}
                   onChange={handleCategoriesChanged}
@@ -115,15 +154,19 @@ const ProductModal = ({ open, onCreate, onCancel }) => {
                <TextArea rows={2} />
             </Form.Item>
             <Form.Item
+               name="image"
                label="Image"
-               valuePropName="image"
+               valuePropName="fileList"
+               getValueFromEvent={normFile}
                rules={[{
                   required: true,
                   message: "Product image is required!"
                }]}
             >
                <Upload
+                  name="image"
                   action={null}
+                  fileList={fileList}
                   listType="picture-card"
                   beforeUpload={() => false}
                   maxCount={1}

@@ -5,7 +5,7 @@ import { getToken, clearToken } from '../utils/token_utils';
 import './index.css';
 import { Dropdown, Space } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { notify } from '../main';
+import { notify } from '../utils/notify_utils';
 
 
 

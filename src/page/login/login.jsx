@@ -3,7 +3,7 @@ import './login.css';
 import { loginStaff } from '../../services/account_services';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../../utils/token_utils';
-import { notify } from '../../main';
+import { notify } from '../../utils/notify_utils';
 
 const Login = () => {
   const [user, setUser] = useState({

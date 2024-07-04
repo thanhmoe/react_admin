@@ -1,11 +1,11 @@
 import { axios_instance } from "./axios_config";
 
-const API_PATH = "/products/admin";
+const API_PATH = "/products";
 
 export const fetchProduct = async (params) => {
    const { page, limit, textQuery, sortBy, sortOrder, category, isActive } = params;
    try {
-      let URL = `${API_PATH}/?page=${page}&limit=${limit}`;
+      let URL = `${API_PATH}/admin/?page=${page}&limit=${limit}`;
       if (textQuery) URL += `&textQuery=${textQuery}`;
       if (category) URL += `&category=${category}`;
       if (sortBy) URL += `&sortBy=${sortBy}`;
@@ -21,7 +21,15 @@ export const fetchProduct = async (params) => {
 
 export const addProduct = async (productData) => {
    try {
-      const response = await axios_instance.post(`${API_PATH}/add`, productData);
+      const response = await axios_instance.post(
+         `${API_PATH}/add`,
+         productData,
+         {
+            headers: {
+               "Content-Type": "multipart/form-data"
+            }
+         }
+      );
       return response.data;
    } catch (error) {
       return error.response.data;
