@@ -21,8 +21,8 @@ export default function Category() {
     const fetchData = async () => {
       try {
         const data = await fetchCategory();
-        if (data.success && data.data) {
-          setCategories(data.data);
+        if (data.success && data.categories) {
+          setCategories(data.categories);
         } else {
           setError(data.message || 'Failed to fetch categoies');
         }

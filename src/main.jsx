@@ -10,7 +10,6 @@ import App from "./App.jsx";
 
 import Login from "./page/login/login.jsx";
 
-import AddProduct from "./page/products/AddProduct.jsx";
 import FilterableProductTable from "./page/products/FilterableProductTable.jsx";
 
 import Categories from "./page/categories/Categories.jsx";
@@ -40,14 +39,6 @@ const router = createBrowserRouter([
       </MainLayout>
     ),
   },
-  // {
-  //   path: "/products/:id",
-  //   element: (
-  //     <MainLayout>
-  //       <AddProduct />
-  //     </MainLayout>
-  //   ),
-  // },
   {
     path: "/categories",
     element: (
@@ -83,8 +74,12 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
     <ToastContainer />
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </>
+  // <React.StrictMode>
+  //   <ToastContainer />
+  //   <RouterProvider router={router} />
+  // </React.StrictMode>
 );

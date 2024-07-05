@@ -43,7 +43,8 @@ const ProductModal = ({ open, onCancel, product }) => {
             }));
          }
       };
-      fetchData();
+      if (open)
+         fetchData();
    }, []);
 
    const handleCategoriesChanged = (value) => {
