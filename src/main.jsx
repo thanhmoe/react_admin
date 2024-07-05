@@ -11,6 +11,7 @@ import App from "./App.jsx";
 import Login from "./page/login/login.jsx";
 
 import FilterableProductTable from "./page/products/FilterableProductTable.jsx";
+import ProductDetailPage from "./page/products/product_detail/ProductDetailPage.jsx";
 
 import Categories from "./page/categories/Categories.jsx";
 import CategoryDetail from "./page/categories/CategoryDetail.jsx";
@@ -38,6 +39,14 @@ const router = createBrowserRouter([
         <FilterableProductTable />
       </MainLayout>
     ),
+  },
+  {
+    path: "/products/:id",
+    element: (
+      <MainLayout>
+        <ProductDetailPage />
+      </MainLayout>
+    )
   },
   {
     path: "/categories",

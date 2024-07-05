@@ -2,7 +2,17 @@ import { axios_instance } from "./axios_config";
 
 const API_PATH = "/products";
 
-export const fetchProduct = async (params) => {
+export const fetchProductDetail = async (id) => {
+   try {
+      const response = await axios_instance.get(`${API_PATH}/${id}/admin`);
+      if (response && response.status === 200)
+         return response.data;
+   } catch (error) {
+      return error.response.data;
+   }
+};
+
+export const fetchProducts = async (params) => {
    const { page, limit, textQuery, sortBy, sortOrder, category, isActive } = params;
    console.log(params);
    try {
@@ -11,8 +21,7 @@ export const fetchProduct = async (params) => {
       if (category) URL += `&category=${category}`;
       if (sortBy) URL += `&sortBy=${sortBy}`;
       if (sortOrder) URL += `&sortOrder=${sortOrder}`;
-      if (isActive) URL += `&isActive=${isActive}`;
-      console.log(URL);
+      if (isActive === 0 || isActive === 1) URL += `&isActive=${isActive}`;
       const response = await axios_instance.get(URL);
       if (response && response.status === 200)
          return response.data;

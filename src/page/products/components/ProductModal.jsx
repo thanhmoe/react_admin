@@ -34,8 +34,9 @@ const ProductModal = ({ open, onCancel, product }) => {
    useEffect(() => {
       const fetchData = async () => {
          const response = await fetchCategory();
-         if (response.success && response.data) {
-            setListCategories(response.data.map((each) => {
+         console.log(response);
+         if (response.success && response.categories) {
+            setListCategories(response.categories.map((each) => {
                return {
                   label: each.name,
                   value: each.id
@@ -45,7 +46,8 @@ const ProductModal = ({ open, onCancel, product }) => {
       };
       if (open)
          fetchData();
-   }, []);
+
+   }, [open]);
 
    const handleCategoriesChanged = (value) => {
       listSelectedCategories.push(value);
@@ -79,6 +81,7 @@ const ProductModal = ({ open, onCancel, product }) => {
          open={open}
          title={!product ? "Add a new product" : "Update product"}
          style={{ top: 100 }}
+         width={1000}
          cancelText="Cancel"
          onCancel={handleCancel}
          okText={!product ? "Create" : "Confirm"}
@@ -86,10 +89,10 @@ const ProductModal = ({ open, onCancel, product }) => {
       >
          <Form
             form={form}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 20 }}
             layout="horizontal"
-            style={{ maxWidth: 600 }}
+            style={{ width: "100%" }}
          >
             <Form.Item
                name="name"
@@ -101,13 +104,13 @@ const ProductModal = ({ open, onCancel, product }) => {
             >
                <Input defaultValue={product ? product.name : ""} />
             </Form.Item>
-            <Row gutter={0}>
+            <Row>
                <Col span={12}>
                   <Form.Item
                      name="quantity"
                      label="Quantity"
-                     labelCol={{ span: 12 }}
-                     wrapperCol={{ span: 12 }}
+                     labelCol={{ span: 8 }}
+                     wrapperCol={{ span: 16 }}
                      rules={[{
                         required: true,
                         message: "Please input the quantity!",
@@ -131,6 +134,8 @@ const ProductModal = ({ open, onCancel, product }) => {
                      rules={[{
                         required: true,
                         message: "Please input the price!",
+                        pattern: new RegExp(/^\d{1,8}(\.\d{1,2})?$/),
+                        message: "Please enter a valid price (up to 8 digits before decimal and 2 after)",
                      }]}
                   >
                      <InputNumber
@@ -157,6 +162,11 @@ const ProductModal = ({ open, onCancel, product }) => {
                <Select
                   mode="multiple"
                   allowClear
+                  defaultValue={
+                     product ? product.categories.map(each => {
+                        return parseInt(each.id, 10);
+                     }) : []
+                  }
                   style={{ width: "100%" }}
                   placeholder="Select categories"
                   options={listCategories}
@@ -167,7 +177,10 @@ const ProductModal = ({ open, onCancel, product }) => {
                name="description"
                label="Description"
             >
-               <TextArea rows={2} />
+               <TextArea
+                  rows={2}
+                  defaultValue={product ? product.description : ""}
+               />
             </Form.Item>
             <Form.Item
                name="image"
