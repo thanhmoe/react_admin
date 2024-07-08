@@ -23,14 +23,13 @@ const sortOptions = [
 const SORT_ORDERS = [{ value: "ASC", label: "ASC" }, { value: "DESC", label: "DESC" }];
 
 function ProductRow({ product }) {
-    const [openDisableModal, setOpenDisableModal] = useState(false);
+    const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
     const navigate = useNavigate();
 
-    const handleCancel = () => {
-        setOpenDisableModal(false);
-        setOpenUpdateModal(false);
-    };
+    const handleCancelProductModal = () => setOpenUpdateModal(false);
+
+    const handleCancelConfirmModal = () => setOpenConfirmModal(false);
 
     const handleViewDetail = () => navigate(`/products/${product.id}`);
 
@@ -69,18 +68,25 @@ function ProductRow({ product }) {
                     >
                         View
                     </Button>
-                    <Button
-                        className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white"
-                        onClick={() => setOpenDisableModal(true)}
-                    >
-                        Disable
-                    </Button>
+                    {Boolean(product.is_active)
+                        ? <Button
+                            className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white"
+                            onClick={() => setOpenConfirmModal(true)}
+                        >
+                            Disable
+                        </Button>
+                        : <Button
+                            className="bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white"
+                            onClick={() => setOpenConfirmModal(true)}
+                        >
+                            Enable
+                        </Button>}
                 </Space>
-                <ProductModal open={openUpdateModal} product={product} onCancel={handleCancel} />
+                <ProductModal open={openUpdateModal} product={product} onCancel={handleCancelProductModal} />
                 <ProductStatusConfirmModal
-                    open={openDisableModal}
+                    open={openConfirmModal}
                     product={product}
-                    onCancel={handleCancel}
+                    onCancel={handleCancelConfirmModal}
                 />
             </td>
         </tr>
@@ -120,12 +126,12 @@ export default function FilterableProductTable() {
     const [itemsPerPage, setItemPerPage] = useState(10); // Number of items per page
     const [totalProducts, setTotalProducts] = useState(null);
     const [openProductModal, setOpenProductModal] = useState(false);
-    const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [reloadPage, setReloadPage] = useState(false);
     const [sortOption, setSortOption] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [textQuery, setTextQuery] = useState(null);
     const [isActive, setIsActive] = useState(true);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -174,7 +180,6 @@ export default function FilterableProductTable() {
     };
 
     const handleIsActiveChange = (e) => {
-        console.log(e.target.checked);
         setIsActive(!isActive);
     };
 

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Card, Descriptions, Tabs, Image, Button, Space, Modal, message, Divider } from "antd";
-import { EditOutlined, ArrowLeftOutlined, StopTwoTone } from "@ant-design/icons";
+import { EditOutlined, ArrowLeftOutlined, StopTwoTone, CheckCircleTwoTone } from "@ant-design/icons";
 
-import { fetchProductDetail } from "../../../services/product_services";
+import { disableProduct, fetchProductDetail } from "../../../services/product_services";
 
 import ProductModal from "../components/ProductModal";
 
 import { formatISODate } from "../../../utils/date_utils";
+import ProductStatusConfirmModal from "../components/ProductStatusConfirmModal";
 
 const { TabPane } = Tabs;
 
@@ -18,12 +19,15 @@ const ProductDetailPage = ({ }) => {
    const [product, setProduct] = useState(null);
    const [loading, setLoading] = useState(true);
    const [open, setOpen] = useState(false);
+   const [reloadPage, setReloadPage] = useState(false);
+   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
    useEffect(() => {
       const fetchProduct = async () => {
          try {
             const response = await fetchProductDetail(id);
             if (response.success) {
+               response.data[0].is_active = Boolean(response.data[0].is_active);
                setProduct(response.data[0]);
             } else {
                message.error("Failed to fetch product details.");
@@ -32,33 +36,22 @@ const ProductDetailPage = ({ }) => {
             message.error("An error occurred while fetching product details.");
          } finally {
             setLoading(false);
+            setReloadPage(false);
          }
       };
       fetchProduct();
-   }, []);
+   }, [reloadPage]);
 
-   const handleDisable = async () => {
-      Modal.confirm({
-         title: "Are you sure you want to disable this product?",
-         onOk: async () => {
-            try {
-               const response = await deleteProduct(productId);
-               if (response.success) {
-                  message.success("Product deleted successfully.");
-                  onBack();
-               } else {
-                  message.error("Failed to delete product.");
-               }
-            } catch (error) {
-               message.error("An error occurred while deleting the product.");
-            }
-         },
-      });
-   };
+   const handleOpenConfirmModal = () => setOpenConfirmModal(true);
 
-   const handleCancel = () => setOpen(false);
+   const handleCancelUpdateModal = () => setOpen(false);
 
    const handleOpenUpdateModal = () => setOpen(true);
+
+   const handleCancelConfirmModal = (reloadingPage) => {
+      if (reloadingPage) setReloadPage(true);
+      setOpenConfirmModal(false);
+   };
 
    const handleBack = () => navigate(-1);
 
@@ -85,10 +78,14 @@ const ProductDetailPage = ({ }) => {
                   </Button>
                   <Button
                      type="danger"
-                     icon={<StopTwoTone />}
-                     onClick={handleDisable}
+                     icon={
+                        product.is_active
+                           ? <StopTwoTone />
+                           : <CheckCircleTwoTone />
+                     }
+                     onClick={handleOpenConfirmModal}
                   >
-                     Disable Product
+                     {product.is_active ? "Disable" : "Enable"}
                   </Button>
                </Space>
             </div>
@@ -116,7 +113,13 @@ const ProductDetailPage = ({ }) => {
                </TabPane>
             </Tabs>
          </div>
-         <ProductModal open={open} product={product} onCancel={handleCancel} />
+         <ProductModal open={open} product={product} onCancel={handleCancelUpdateModal} />
+         <ProductStatusConfirmModal
+            open={openConfirmModal}
+            product={product}
+            isDisabling={product.is_active}
+            onCancel={handleCancelConfirmModal}
+         />
       </>
    );
 };

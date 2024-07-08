@@ -75,7 +75,7 @@ export const disableProduct = async (id) => {
 
 export const enableProduct = async (id) => {
    try {
-      const response = await axios_instance.put(`${API_PATH}/disable/${id}`);
+      const response = await axios_instance.put(`${API_PATH}/enable/${id}`);
       return axios_response_handler(response);
    } catch (error) {
       return error.response.data;
