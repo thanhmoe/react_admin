@@ -107,11 +107,11 @@ const ProductDetailPage = ({ }) => {
                </div>
             </Card>
             <Divider />
-            <Tabs className="mt-4">
-               <TabPane tab="Sales Data" key="1">
-                  {/* Sales Data Content */}
-               </TabPane>
-            </Tabs>
+            <Tabs
+               className="mt-4"
+               centered
+               items={[{ key: 1, label: "Sale data" }]}
+            />
          </div>
          <ProductModal open={open} product={product} onCancel={handleCancelUpdateModal} />
          <ProductStatusConfirmModal

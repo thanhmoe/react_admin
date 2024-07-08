@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Pagination, Button, Space, Select, message, Input, Checkbox } from 'antd';
@@ -131,6 +131,7 @@ export default function FilterableProductTable() {
     const [sortOrder, setSortOrder] = useState(null);
     const [textQuery, setTextQuery] = useState(null);
     const [isActive, setIsActive] = useState(true);
+    const [error, setError] = useState(null); // Add error state
 
     useEffect(() => {
         const fetchData = async () => {
@@ -148,16 +149,22 @@ export default function FilterableProductTable() {
                     setTotalProducts(response.total_products);
                     setError(null);
                 } else {
-                    message.error('Failed to fetch products!');
+                    setError('Failed to fetch products!');
                 }
             } catch (error) {
-                message.error(error);
+                setError(error.message || 'An error occurred while fetching products!');
             } finally {
                 setReloadPage(false);
             }
         };
         fetchData(); // Fetch data on initial component load
-    }, [currentPage, itemsPerPage, reloadPage, sortOption, sortOrder, isActive]);
+    }, [currentPage, itemsPerPage, reloadPage, sortOption, sortOrder, isActive, textQuery]);
+
+    useEffect(() => {
+        if (error) {
+            message.error(error);
+        }
+    }, [error]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -169,19 +176,17 @@ export default function FilterableProductTable() {
     };
 
     const handleSortOptionChange = (value) => setSortOption(value);
-    const handleSortOrderChange = (value) => { setSortOrder(value); console.log("SOrt order:", value); };
+    const handleSortOrderChange = (value) => setSortOrder(value);
 
     const handleCancelProductModal = (reloadingPage) => {
-        if (reloadingPage) {
-            if (currentPage === 1) setReloadPage(true);
-            setCurrentPage(1);
-        }
+        if (reloadingPage)
+            window.location.reload(true);
         setOpenProductModal(false);
     };
 
-    const handleIsActiveChange = (e) => {
-        setIsActive(!isActive);
-    };
+    const handleIsActiveChange = (e) => setIsActive(!isActive);
+
+    const handleSearch = (value, event, info) => setTextQuery(value);
 
     return (
         <div className="products-container">
@@ -199,8 +204,8 @@ export default function FilterableProductTable() {
                     <Search
                         placeholder="input search text"
                         allowClear
-                        onSearch={() => null}
                         style={{ width: 400, }}
+                        onSearch={handleSearch}
                     />
                     <Select
                         defaultValue="modify_at"
