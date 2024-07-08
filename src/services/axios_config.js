@@ -6,6 +6,9 @@ export const axios_instance = axios.create({
    baseURL: baseURL
 });
 
+/**
+ * This function automatically attach authorized token into request header
+ */
 axios_instance.interceptors.request.use(
    async (config) => {
       const token = getToken();
@@ -18,3 +21,23 @@ axios_instance.interceptors.request.use(
       return Promise.reject(error);
    }
 );
+
+/**
+ * The function handle response result sent from server
+ * @param {AxiosResponse} response - The response result of request
+ * @returns The data sent back from server or error message if request failed
+ */
+export const axios_response_handler = (response) => {
+   if (response) {
+      switch (response.status) {
+         case 200:
+         case 201:
+         case 400:
+         case 404:
+         case 500:
+            return response.data;
+         default:
+            return response.data;
+      }
+   }
+};

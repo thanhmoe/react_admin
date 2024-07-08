@@ -1,12 +1,12 @@
-import { axios_instance } from "./axios_config";
+import axios from "axios";
+import { axios_instance, axios_response_handler } from "./axios_config";
 
 const API_PATH = "/products";
 
 export const fetchProductDetail = async (id) => {
    try {
       const response = await axios_instance.get(`${API_PATH}/${id}/admin`);
-      if (response && response.status === 200)
-         return response.data;
+      return axios_response_handler(response);
    } catch (error) {
       return error.response.data;
    }
@@ -14,7 +14,6 @@ export const fetchProductDetail = async (id) => {
 
 export const fetchProducts = async (params) => {
    const { page, limit, textQuery, sortBy, sortOrder, category, isActive } = params;
-   console.log(params);
    try {
       let URL = `${API_PATH}/admin/?page=${page}&limit=${limit}`;
       if (textQuery) URL += `&textQuery=${textQuery}`;
@@ -23,27 +22,62 @@ export const fetchProducts = async (params) => {
       if (sortOrder) URL += `&sortOrder=${sortOrder}`;
       if (isActive === 0 || isActive === 1) URL += `&isActive=${isActive}`;
       const response = await axios_instance.get(URL);
-      if (response && response.status === 200)
-         return response.data;
+      return axios_response_handler(response);
    } catch (error) {
       return error.response.data;
    }
 };
 
-export const addProduct = async (productData) => {
+export const addProduct = async (data) => {
    try {
       const response = await axios_instance.post(
          `${API_PATH}/add`,
-         productData,
+         data,
          {
             headers: {
                "Content-Type": "multipart/form-data"
             }
          }
       );
-      return response.data;
+      return axios_response_handler(response);
    } catch (error) {
       return error.response.data;
    }
 };
 
+export const updateProduct = async (id, data) => {
+   try {
+      data.quantity_in_stock = data.quantity;
+      delete data.quantity;
+      const response = await axios_instance.put(
+         `${API_PATH}/update/${id}`,
+         data,
+         {
+            headers: {
+               "Content-Type": "multipart/form-data"
+            }
+         }
+      );
+      return axios_response_handler(response);
+   } catch (error) {
+      return error.response.data;
+   }
+};
+
+export const disableProduct = async (id) => {
+   try {
+      const response = await axios_instance.put(`${API_PATH}/disable/${id}`);
+      return axios_response_handler(response);
+   } catch (error) {
+      return error.response.data;
+   }
+};
+
+export const enableProduct = async (id) => {
+   try {
+      const response = await axios_instance.put(`${API_PATH}/disable/${id}`);
+      return axios_response_handler(response);
+   } catch (error) {
+      return error.response.data;
+   }
+};

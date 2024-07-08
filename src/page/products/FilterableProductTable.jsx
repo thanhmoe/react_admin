@@ -9,7 +9,7 @@ import { formatISODate } from '../../utils/date_utils';
 
 import ProductModal from './components/ProductModal';
 import { fetchProducts } from '../../services/product_services';
-import DisableProductModal from './components/DisableProductModal';
+import ProductStatusConfirmModal from './components/ProductStatusConfirmModal';
 
 const sortOptions = [
     { value: 'name', label: 'Name', },
@@ -77,7 +77,11 @@ function ProductRow({ product }) {
                     </Button>
                 </Space>
                 <ProductModal open={openUpdateModal} product={product} onCancel={handleCancel} />
-                <DisableProductModal open={openDisableModal} product={product} onCancel={handleCancel} />
+                <ProductStatusConfirmModal
+                    open={openDisableModal}
+                    product={product}
+                    onCancel={handleCancel}
+                />
             </td>
         </tr>
     );
@@ -116,6 +120,7 @@ export default function FilterableProductTable() {
     const [itemsPerPage, setItemPerPage] = useState(10); // Number of items per page
     const [totalProducts, setTotalProducts] = useState(null);
     const [openProductModal, setOpenProductModal] = useState(false);
+    const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [reloadPage, setReloadPage] = useState(false);
     const [sortOption, setSortOption] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
@@ -147,10 +152,6 @@ export default function FilterableProductTable() {
         };
         fetchData(); // Fetch data on initial component load
     }, [currentPage, itemsPerPage, reloadPage, sortOption, sortOrder, isActive]);
-
-    /* const handleEdit = (customerId) => {
-        navigate(`/customer/${customerId}`);
-    }; */
 
     const handlePageChange = (page) => {
         setCurrentPage(page);

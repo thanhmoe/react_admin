@@ -15,9 +15,10 @@ import {
 const { TextArea } = Input;
 import { PlusOutlined } from "@ant-design/icons";
 
-import { addProduct } from "../../../services/product_services";
+import { addProduct, updateProduct } from "../../../services/product_services";
 import { fetchCategory } from "../../../services/category_services";
 import { notify } from "../../../utils/notify_utils";
+import { NOTIFY_STATUS } from "../../../utils/constants";
 
 const normFile = (e) => {
    if (Array.isArray(e)) return e;
@@ -63,15 +64,15 @@ const ProductModal = ({ open, onCancel, product }) => {
       form
          .validateFields()
          .then(async (values) => {
-            values.image = values.image[0].originFileObj;
-            const result = await addProduct(values);
+            values.image = values.image ? values.image[0].originFileObj : null;
+            const result = !product ? await addProduct(values) : await updateProduct(product.id, values);
             if (result.success) {
-               notify("success", result.message);
+               notify(NOTIFY_STATUS.success, result.message);
                form.resetFields();
                onCancel(true);
             }
             else
-               notify("error", result.message);
+               notify("error", result.error ? result.error : result.message);
          })
          .catch(info => { });
    };
@@ -93,6 +94,14 @@ const ProductModal = ({ open, onCancel, product }) => {
             wrapperCol={{ span: 20 }}
             layout="horizontal"
             style={{ width: "100%" }}
+            initialValues={product ? {
+               name: product.name,
+               quantity: product.quantity_in_stock,
+               price: product.price,
+               category_ids: product.categories.map(each => parseInt(each.id, 10)
+               ),
+               description: product.description,
+            } : {}}
          >
             <Form.Item
                name="name"
@@ -102,7 +111,7 @@ const ProductModal = ({ open, onCancel, product }) => {
                   message: "Please input the name!"
                }]}
             >
-               <Input defaultValue={product ? product.name : ""} />
+               <Input />
             </Form.Item>
             <Row>
                <Col span={12}>
@@ -121,7 +130,6 @@ const ProductModal = ({ open, onCancel, product }) => {
                         style={{ width: '100%' }}
                         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                        defaultValue={product ? product.quantity_in_stock : 0}
                      />
                   </Form.Item>
                </Col>
@@ -133,7 +141,6 @@ const ProductModal = ({ open, onCancel, product }) => {
                      wrapperCol={{ span: 16 }}
                      rules={[{
                         required: true,
-                        message: "Please input the price!",
                         pattern: new RegExp(/^\d{1,8}(\.\d{1,2})?$/),
                         message: "Please enter a valid price (up to 8 digits before decimal and 2 after)",
                      }]}
@@ -146,7 +153,6 @@ const ProductModal = ({ open, onCancel, product }) => {
                         formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
                         style={{ width: '100%' }}
-                        defaultValue={product ? product.price : 0}
                      />
                   </Form.Item>
                </Col>
@@ -162,11 +168,6 @@ const ProductModal = ({ open, onCancel, product }) => {
                <Select
                   mode="multiple"
                   allowClear
-                  defaultValue={
-                     product ? product.categories.map(each => {
-                        return parseInt(each.id, 10);
-                     }) : []
-                  }
                   style={{ width: "100%" }}
                   placeholder="Select categories"
                   options={listCategories}
@@ -177,10 +178,7 @@ const ProductModal = ({ open, onCancel, product }) => {
                name="description"
                label="Description"
             >
-               <TextArea
-                  rows={2}
-                  defaultValue={product ? product.description : ""}
-               />
+               <TextArea rows={4} />
             </Form.Item>
             <Form.Item
                name="image"
@@ -188,7 +186,7 @@ const ProductModal = ({ open, onCancel, product }) => {
                valuePropName="fileList"
                getValueFromEvent={normFile}
                rules={[{
-                  required: true,
+                  required: !product ? true : false,
                   message: "Product image is required!"
                }]}
             >
