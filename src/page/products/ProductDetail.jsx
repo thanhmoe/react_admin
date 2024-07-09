@@ -10,6 +10,7 @@ import {
 	Space,
 	message,
 	Divider,
+	Badge,
 } from "antd"
 import {
 	EditOutlined,
@@ -23,7 +24,7 @@ import { fetchProductDetail } from "../../services/product_services"
 import ProductModal from "./components/ProductModal"
 import ProductConfirmStatusChangeModal from "./components/ProductConfirmStatusChangeModal"
 
-import { formatISODate } from "../../utils/date_utils"
+import { formatISODate, getFormattedDate, getFormattedTime } from "../../utils/date_utils"
 
 const ProductDetailPage = () => {
 	const navigate = useNavigate()
@@ -104,36 +105,50 @@ const ProductDetailPage = () => {
 						</Button>
 					</Space>
 				</div>
+
 				<Card>
 					<div className="product-info flex">
-						<Image
-							width={500}
-							src={product.image_path}
-							alt={product.name}
-						/>
-						<Descriptions
-							title={product.name}
-							layout="horizontal"
-							bordered
-						>
-							<Descriptions.Item label="Price">
-								$ {product.price}
-							</Descriptions.Item>
-							<Descriptions.Item label="In Stock">
-								{product.quantity_in_stock}
-							</Descriptions.Item>
-							<Descriptions.Item label="Date Added">
-								{formatISODate(product.create_at)}
-							</Descriptions.Item>
-							<Descriptions.Item label="Categories">
-								{product.categories
-									.map((cat) => cat.name)
-									.join(", ")}
-							</Descriptions.Item>
-							<Descriptions.Item label="Description">
-								{product.description}
-							</Descriptions.Item>
-						</Descriptions>
+						<div className="mr-8">
+							<Image
+								width={300}
+								height={300}
+								src={product.image_path}
+								alt={product.name}
+								style={{ objectFit: "contain" }}
+							/>
+						</div>
+						<Badge.Ribbon text={Boolean(product.is_active) ? "Enable" : "Disable"} color={Boolean(product.is_active) ? "green" : "red"}>
+							<Descriptions
+								title={product.name}
+								layout="horizontal"
+								bordered
+							>
+								<Descriptions.Item label="ID">
+									{product.id}
+								</Descriptions.Item>
+								<Descriptions.Item label="Price">
+									$ {product.price}
+								</Descriptions.Item>
+								<Descriptions.Item label="In Stock">
+									{product.quantity_in_stock}
+								</Descriptions.Item>
+								<Descriptions.Item label="Date Added" >
+									{`${getFormattedDate(product.create_at)} ${getFormattedTime(product.create_at)}`}
+								</Descriptions.Item>
+								<Descriptions.Item label="Categories" span={3}>
+									{
+										product.categories.map(
+											(cat) => <div>
+												<Badge status="default" text={cat.name} />
+											</div>
+										)
+									}
+								</Descriptions.Item>
+								<Descriptions.Item label="Description" span={3}>
+									{product.description}
+								</Descriptions.Item>
+							</Descriptions>
+						</Badge.Ribbon>
 					</div>
 				</Card>
 				<Divider />
