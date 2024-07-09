@@ -2,10 +2,21 @@ import { Button, Space } from "antd"
 import { useState } from "react"
 import CategoryModal from "./CategoryModal"
 import { formatISODate } from "../../../utils/date_utils"
+import CategoryConfirmStatusChangeModal from "./CategoryConfirmStatusChangeModal"
 
 const CategoryTableRow = ({ category }) => {
    const [openConfirmModal, setOpenConfirmModal] = useState(false)
    const [openUpdateModal, setOpenUpdateModal] = useState(false)
+
+   const handleCategoryModelCancel = (reloadingPage) => {
+      if (reloadingPage) window.location.reload()
+      setOpenUpdateModal(false)
+   }
+
+   const handleConfirmModalCancel = (reloadingPage) => {
+      if (reloadingPage) window.location.reload()
+      setOpenConfirmModal(false)
+   }
 
    return (
       <>
@@ -41,9 +52,13 @@ const CategoryTableRow = ({ category }) => {
             </td>
          </tr>
          <CategoryModal
-            key={category.id}
             open={openUpdateModal}
-            onCancel={() => setOpenUpdateModal(false)}
+            onCancel={handleCategoryModelCancel}
+            category={category}
+         />
+         <CategoryConfirmStatusChangeModal
+            open={openConfirmModal}
+            onCancel={handleConfirmModalCancel}
             category={category}
          />
       </>

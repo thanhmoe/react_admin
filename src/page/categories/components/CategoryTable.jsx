@@ -10,7 +10,7 @@ const CategoryTable = ({ categories }) => {
          <table className="min-w-full divide-y divide-gray-500 border table-auto">
             <thead className="bg-green-200 divide-y">
                <tr>
-                  <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-2/5">
+                  <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-1/4">
                      Name
                   </th>
                   <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">

@@ -40,12 +40,11 @@ const FilterableCategoryTable = () => {
             sortOrder: sortOrder,
             isActive: isActive ? 1 : 0,
          })
-
          if (response.success && response.categories) {
             setCategories(response.categories)
             setTotalCategories(response.total_categories)
          } else {
-            setError("Failed to fetch categories!")
+            setError(response.message)
          }
       } catch (error) {
          setError(
@@ -86,7 +85,7 @@ const FilterableCategoryTable = () => {
    const handleSortOrderChange = (value) => setSortOrder(value)
 
    const handleCancelCategoryModal = (reloadingPage) => {
-      if (reloadingPage) window.location.reload(true)
+      if (reloadingPage) window.location.reload()
       setOpenCategoryModal(false)
    }
 
@@ -115,17 +114,17 @@ const FilterableCategoryTable = () => {
                <Search
                   placeholder="input search text"
                   allowClear
-                  style={{ width: 400 }}
+                  style={{ width: 300 }}
                   onSearch={handleSearch}
                />
                <Select
-                  defaultValue="name"
+                  defaultValue="create_at"
                   style={{ width: 150 }}
                   onChange={handleSortOptionChange}
                   options={SORT_OPTIONS}
                />
                <Select
-                  defaultValue="ASC"
+                  defaultValue="DESC"
                   style={{ width: 130 }}
                   options={SORT_ORDERS}
                   onChange={handleSortOrderChange}

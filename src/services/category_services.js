@@ -19,7 +19,7 @@ export const fetchCategories = async (params) => {
 
 export const addCategory = async (data) => {
    try {
-      const response = await axios_instance.post("/categories/add", data)
+      const response = await axios_instance.post(`${API_PATH}/add`, data)
       return axios_response_handler(response)
    } catch (error) {
       return error.response.data
@@ -29,8 +29,25 @@ export const addCategory = async (data) => {
 //updateCategory
 export const updateCategory = async (id, data) => {
    try {
-      const response = await axios_instance.put(`/categories/update/${id}`, data)
-      return response.data
+      const response = await axios_instance.put(`${API_PATH}/update/${id}`, data)
+      return axios_response_handler(response)
+   } catch (error) {
+      return error.response.data
+   }
+}
+
+export const disableCategory = async (id) => {
+   try {
+      const response = await axios_instance.put(`${API_PATH}/disable/${id}`)
+      return axios_response_handler(response)
+   } catch (error) {
+      return error.response.data
+   }
+}
+export const enableCategory = async (id) => {
+   try {
+      const response = await axios_instance.put(`${API_PATH}/enable/${id}`)
+      return axios_response_handler(response)
    } catch (error) {
       return error.response.data
    }
