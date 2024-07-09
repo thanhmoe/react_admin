@@ -12,13 +12,10 @@ import {
 } from "antd"
 const { Search } = Input
 
-import "./product.css"
-import { formatISODate } from "../../utils/date_utils"
+import { fetchProducts } from "../../services/product_services"
 
 import ProductModal from "./components/ProductModal"
-import ProductStatusConfirmModal from "./components/ProductStatusConfirmModal"
-
-import { fetchProducts } from "../../services/product_services"
+import ProductTable from "./components/ProductTable"
 
 const SORT_OPTIONS = [
     { value: "name", label: "Name" },
@@ -33,143 +30,6 @@ const SORT_ORDERS = [
     { value: "ASC", label: "ASC" },
     { value: "DESC", label: "DESC" },
 ]
-
-function ProductRow({ product }) {
-    const [openConfirmModal, setOpenConfirmModal] = useState(false)
-    const [openUpdateModal, setOpenUpdateModal] = useState(false)
-    const navigate = useNavigate()
-
-    const handleCancelProductModal = () => setOpenUpdateModal(false)
-
-    const handleCancelConfirmModal = (reloadingPage) => {
-        if (reloadingPage) window.location.reload(true)
-        setOpenConfirmModal(false)
-    }
-
-    const handleViewDetail = () => navigate(`/products/${product.id}`)
-
-    return (
-        <tr>
-            <td className="border border-slate-600 p-2 whitespace-nowrap">
-                <img
-                    className="w-32 h-32 object-contain"
-                    src={product.image_path}
-                    alt=""
-                />
-            </td>
-            <td className="border border-slate-600 p-2 text-left text-ellipsis">
-                {product.name}
-            </td>
-            <td className="border border-slate-600 p-2 flex-1 text-right">
-                {product.quantity_in_stock}
-            </td>
-            <td className="border border-slate-600 p-2 flex-1 text-right">
-                {product.price}
-            </td>
-            <td className="border border-slate-600 p-2 flex-1 text-right">
-                <div className="flex flex-col items-end space-y-1">
-                    <span className="text-green-500">{product.like_count}</span>
-                    <span className="text-red-500">
-                        {product.dislike_count}
-                    </span>
-                </div>
-            </td>
-            <td className="border border-slate-600 p-2 flex-1 text-right">
-                {0}
-            </td>
-            <td className="border border-slate-600 p-2 text-right whitespace-nowrap">
-                {formatISODate(product.create_at)}
-            </td>
-            <td className="border border-slate-600 p-2 text-right whitespace-nowrap">
-                {formatISODate(product.modify_at)}
-            </td>
-            <td className="border border-slate-600 p-2 text-left whitespace-nowrap">
-                <Space wrap direction="horizontal" size="small">
-                    <Button
-                        className="bg-transparent border !border-yellow-600 text-yellow-600 hover:!bg-yellow-600 hover:!text-white"
-                        onClick={() => setOpenUpdateModal(true)}
-                    >
-                        Edit
-                    </Button>
-                    <Button
-                        className="bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white"
-                        onClick={handleViewDetail}
-                    >
-                        View
-                    </Button>
-                    {product.is_active ? (
-                        <Button
-                            className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white"
-                            onClick={() => setOpenConfirmModal(true)}
-                        >
-                            Disable
-                        </Button>
-                    ) : (
-                        <Button
-                            className="bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white"
-                            onClick={() => setOpenConfirmModal(true)}
-                        >
-                            Enable
-                        </Button>
-                    )}
-                </Space>
-                <ProductModal
-                    open={openUpdateModal}
-                    product={product}
-                    onCancel={handleCancelProductModal}
-                />
-                <ProductStatusConfirmModal
-                    open={openConfirmModal}
-                    product={product}
-                    onCancel={handleCancelConfirmModal}
-                />
-            </td>
-        </tr>
-    )
-}
-
-function ProductTable({ products }) {
-    const rows = products.map((each) => {
-        return <ProductRow product={each} key={each.id} />
-    })
-
-    return (
-        <div className="overflow-x-auto my-2">
-            <table className="min-w-full divide-y divide-gray-500 border table-auto">
-                <thead className="bg-green-200 divide-y">
-                    <tr>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wide w-40 min-w-40 max-w-48"></th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-1/4 min-w-1/4 max-w-1/4 max-h-40">
-                            Name
-                        </th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-20 min-w-16 max-w-48">
-                            In Stock
-                        </th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-20 min-w-16 max-w-48">
-                            Price
-                        </th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-24">
-                            React
-                        </th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-24">
-                            Total sold
-                        </th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-48 max-w-48">
-                            Create at
-                        </th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-48 max-w-48">
-                            Modify at
-                        </th>
-                        <th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-36">
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>{rows}</tbody>
-            </table>
-        </div>
-    )
-}
 
 export default function FilterableProductTable() {
     const [products, setProducts] = useState([])

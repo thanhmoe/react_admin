@@ -16,7 +16,9 @@ const { TextArea } = Input
 import { PlusOutlined } from "@ant-design/icons"
 
 import { addProduct, updateProduct } from "../../../services/product_services"
+
 import { fetchCategories } from "../../../services/category_services"
+
 import { notify } from "../../../utils/notify_utils"
 import { NOTIFY_STATUS } from "../../../utils/constants"
 
