@@ -1,23 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React from "react"
+import ReactDOM from "react-dom/client"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
-import "./index.css";
-import MainLayout from "./layout/Index.jsx";
-import App from "./App.jsx";
+import "./index.css"
+import MainLayout from "./layout/Index.jsx"
+import App from "./App.jsx"
 
-import Login from "./page/login/login.jsx";
+import Login from "./page/login/login.jsx"
 
-import FilterableProductTable from "./page/products/FilterableProductTable.jsx";
-import ProductDetail from "./page/products/ProductDetail.jsx";
+import FilterableProductTable from "./page/products/FilterableProductTable.jsx"
+import ProductDetail from "./page/products/ProductDetail.jsx"
 
-import Categories from "./page/categories/Categories.jsx";
-import CategoryDetail from "./page/categories/CategoryDetail.jsx";
+import FilterableCategoryTable from "./page/categories/FilterableCategoryTable.jsx"
 
-import Customer from "./page/customers/Customer.jsx";
-import CustomerDetail from "./page/customers/CustomerDetail.jsx";
+import Customer from "./page/customers/Customer.jsx"
+import CustomerDetail from "./page/customers/CustomerDetail.jsx"
 
 const router = createBrowserRouter([
 	{
@@ -52,7 +51,7 @@ const router = createBrowserRouter([
 		path: "/categories",
 		element: (
 			<MainLayout>
-				<Categories />
+				<FilterableCategoryTable />
 			</MainLayout>
 		),
 	},
@@ -80,7 +79,7 @@ const router = createBrowserRouter([
 	//     </MainLayout>
 	//   ),
 	// },
-]);
+])
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<>
@@ -91,4 +90,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 	//   <ToastContainer />
 	//   <RouterProvider router={router} />
 	// </React.StrictMode>
-);
+)

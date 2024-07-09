@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import {
    Modal,
    Form,
@@ -11,71 +11,71 @@ import {
    message,
    Row,
    Col,
-} from "antd";
-const { TextArea } = Input;
-import { PlusOutlined } from "@ant-design/icons";
+} from "antd"
+const { TextArea } = Input
+import { PlusOutlined } from "@ant-design/icons"
 
-import { addProduct, updateProduct } from "../../../services/product_services";
-import { fetchCategory } from "../../../services/category_services";
-import { notify } from "../../../utils/notify_utils";
-import { NOTIFY_STATUS } from "../../../utils/constants";
+import { addProduct, updateProduct } from "../../../services/product_services"
+import { fetchCategories } from "../../../services/category_services"
+import { notify } from "../../../utils/notify_utils"
+import { NOTIFY_STATUS } from "../../../utils/constants"
 
 const normFile = (e) => {
-   if (Array.isArray(e)) return e;
-   return e && e.fileList;
-};
+   if (Array.isArray(e)) return e
+   return e && e.fileList
+}
 
 const ProductModal = ({ open, onCancel, product }) => {
-   const [listCategories, setListCategories] = useState([]);
-   const [fileList, setFileList] = useState([]);
-   const [form] = Form.useForm();
+   const [listCategories, setListCategories] = useState([])
+   const [fileList, setFileList] = useState([])
+   const [form] = Form.useForm()
 
-   const listSelectedCategories = [];
+   const listSelectedCategories = []
 
    useEffect(() => {
       const fetchData = async () => {
-         const response = await fetchCategory();
-         console.log(response);
+         const response = await fetchCategories()
+         console.log(response)
          if (response.success && response.categories) {
             setListCategories(response.categories.map((each) => {
                return {
                   label: each.name,
                   value: each.id
-               };
-            }));
+               }
+            }))
          }
-      };
+      }
       if (open)
-         fetchData();
+         fetchData()
 
-   }, [open]);
+   }, [open])
 
    const handleCategoriesChanged = (value) => {
-      listSelectedCategories.push(value);
-   };
+      listSelectedCategories.push(value)
+   }
 
    const handleCancel = () => {
-      form.resetFields();
-      setFileList([]);
-      onCancel(false);
-   };
+      form.resetFields()
+      setFileList([])
+      onCancel(false)
+   }
 
    const handleOk = async () => {
       form
          .validateFields()
          .then(async (values) => {
-            values.image = values.image ? values.image[0].originFileObj : null;
-            const result = !product ? await addProduct(values) : await updateProduct(product.id, values);
+            values.image = values.image ? values.image[0].originFileObj : null
+            const result = !product ? await addProduct(values) : await updateProduct(product.id, values)
             if (result.success) {
-               notify(NOTIFY_STATUS.success, result.message);
-               form.resetFields();
-               onCancel(true);
+               notify(NOTIFY_STATUS.success, result.message)
+               form.resetFields()
+               onCancel(true)
             }
             else
-               notify("error", result.error ? result.error : result.message);
+               notify("error", result.error ? result.error : result.message)
          })
-         .catch(info => { });
-   };
+         .catch(info => { })
+   }
 
    return (
       <Modal
@@ -218,7 +218,7 @@ const ProductModal = ({ open, onCancel, product }) => {
             </Form.Item>
          </Form>
       </Modal>
-   );
-};
+   )
+}
 
-export default ProductModal;
+export default ProductModal

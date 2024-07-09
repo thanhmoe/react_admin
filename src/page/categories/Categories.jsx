@@ -1,64 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { fetchCategory, addCategory } from '../../services/category_services';
-import { useNavigate } from 'react-router-dom';
-import { EditOutlined } from '@ant-design/icons';
-import { Pagination } from 'antd';
-import './category.css';
+import React, { useEffect, useState } from 'react'
+import { fetchCategories, addCategory } from '../../services/category_services'
+import { useNavigate } from 'react-router-dom'
+import { EditOutlined } from '@ant-design/icons'
+import { Pagination } from 'antd'
+import './category.css'
 
 export default function Category() {
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [categories, setCategories] = useState([])
+  const [error, setError] = useState(null)
+  const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     description: ''
-  });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Number of items per page
-  const navigate = useNavigate();
+  })
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage] = useState(10) // Number of items per page
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchCategory();
+        const data = await fetchCategories()
         if (data.success && data.categories) {
-          setCategories(data.categories);
+          setCategories(data.categories)
         } else {
-          setError(data.message || 'Failed to fetch categoies');
+          setError(data.message || 'Failed to fetch categoies')
         }
       } catch (error) {
-        console.error('Error fetching categoies:', error);
+        console.error('Error fetching categoies:', error)
       }
-    };
-    fetchData(); // Fetch data on initial component load
-  }, []);
+    }
+    fetchData() // Fetch data on initial component load
+  }, [])
 
   // Calculate current items to display based on pagination
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = categories.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = categories.slice(indexOfFirstItem, indexOfLastItem)
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+    setCurrentPage(page)
+  }
 
   const handleEdit = (categoryId) => {
-    navigate(`/category/${categoryId}`);
-  };
+    navigate(`/category/${categoryId}`)
+  }
 
   const handleAddCategory = async () => {
     try {
-      const result = await addCategory(formData);
+      const result = await addCategory(formData)
       if (result.success) {
-        setShowForm(false); // Đóng form sau khi thêm thành công
-        setFormData({ name: '', description: '' }); // Đặt lại dữ liệu trong form
+        setShowForm(false) // Đóng form sau khi thêm thành công
+        setFormData({ name: '', description: '' }) // Đặt lại dữ liệu trong form
       } else {
-        console.error(result.message);
+        console.error(result.message)
       }
     } catch (error) {
-      console.error('Add category error:', error);
+      console.error('Add category error:', error)
     }
-  };
+  }
 
 
   return (
@@ -120,7 +120,7 @@ export default function Category() {
         className="pagination"
       />
     </div>
-  );
+  )
 }
 
 
