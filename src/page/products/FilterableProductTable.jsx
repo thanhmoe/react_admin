@@ -60,7 +60,7 @@ export default function FilterableProductTable() {
                     setTotalProducts(response.total_products)
                     setError(null)
                 } else {
-                    setError("Failed to fetch products!")
+                    setError(response.message)
                 }
             } catch (error) {
                 setError(
