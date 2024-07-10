@@ -184,6 +184,7 @@ export default function FilterableProductTable() {
             <ProductModal
                 open={openProductModal}
                 onCancel={handleCancelProductModal}
+                categories={categories}
             />
         </div>
     )

@@ -46,8 +46,11 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
             }))
          }
       }
-      if (open && !categories)
+      if (open) {
+         if (categories)
+            setListCategories(categories)
          fetchData()
+      }
    }, [open])
 
    const handleCategoriesChanged = (value) => {
