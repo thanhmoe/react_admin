@@ -1,7 +1,7 @@
 import { Button, Space } from "antd"
 import { useState } from "react"
 import CategoryModal from "./CategoryModal"
-import { formatISODate } from "../../../utils/date_utils"
+import { formatISODate, getFormattedDate, getFormattedTime } from "../../../utils/date_utils"
 import CategoryConfirmStatusChangeModal from "./CategoryConfirmStatusChangeModal"
 
 const CategoryTableRow = ({ category }) => {
@@ -21,10 +21,21 @@ const CategoryTableRow = ({ category }) => {
    return (
       <>
          <tr>
+            <td className="border border-slate-600 p-2">{category.id}</td>
             <td className="border border-slate-600 p-2 text-left text-ellipsis">{category.name}</td>
             <td className="border border-slate-600 p-2 text-left text-ellipsis">{category.description}</td>
-            <td className="border border-slate-600 p-2 text-left text-ellipsis">{formatISODate(category.create_at)}</td>
-            <td className="border border-slate-600 p-2 text-left text-ellipsis">{formatISODate(category.modify_at)}</td>
+            <td className="border border-slate-600 p-2 text-right whitespace-nowrap">
+               <div className="flex flex-col items-end">
+                  <span>{getFormattedDate(category.create_at)}</span>
+                  <span>{getFormattedTime(category.create_at)}</span>
+               </div>
+            </td>
+            <td className="border border-slate-600 p-2 text-right whitespace-nowrap">
+               <div className="flex flex-col items-end">
+                  <span>{getFormattedDate(category.create_at)}</span>
+                  <span>{getFormattedTime(category.create_at)}</span>
+               </div>
+            </td>
             <td className="border border-slate-600 p-2 flex-1 text-right">
                <Space>
                   <Button
