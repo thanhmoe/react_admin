@@ -17,6 +17,15 @@ export const fetchCategories = async (params) => {
    }
 }
 
+export const fetchAllCategories = async () => {
+   try {
+      const response = await axios_instance.get(`${API_PATH}/`)
+      return axios_response_handler(response)
+   } catch (error) {
+      return error.response.data
+   }
+}
+
 export const addCategory = async (data) => {
    try {
       const response = await axios_instance.post(`${API_PATH}/add`, data)

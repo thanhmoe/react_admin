@@ -13,9 +13,11 @@ import {
 const { Search } = Input
 
 import { fetchProducts } from "../../services/product_services"
+import { fetchAllCategories } from "../../services/category_services"
 
 import ProductModal from "./components/ProductModal"
 import ProductTable from "./components/ProductTable"
+import { info } from "autoprefixer"
 
 const SORT_OPTIONS = [
     { value: "name", label: "Name" },
@@ -33,6 +35,8 @@ const SORT_ORDERS = [
 
 export default function FilterableProductTable() {
     const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
+    const [category, setCategory] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage, setItemPerPage] = useState(10) // Number of items per page
     const [totalProducts, setTotalProducts] = useState(null)
@@ -45,7 +49,7 @@ export default function FilterableProductTable() {
     const [error, setError] = useState(null) // Add error state
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchProductList = async () => {
             try {
                 const response = await fetchProducts({
                     page: currentPage,
@@ -54,24 +58,38 @@ export default function FilterableProductTable() {
                     sortBy: sortOption,
                     sortOrder: sortOrder,
                     isActive: isActive ? 1 : 0,
+                    category: category
                 })
                 if (response.success && response.products) {
                     setProducts(response.products) // Update customer list from API
                     setTotalProducts(response.total_products)
-                    setError(null)
                 } else {
                     setError(response.message)
                 }
             } catch (error) {
-                setError(
-                    error.message ||
-                    "An error occurred while fetching products!"
-                )
+                setError(error.message)
             } finally {
                 setReloadPage(false)
             }
         }
-        fetchData() // Fetch data on initial component load
+        const fetchCategoryList = async () => {
+            try {
+                const response = await fetchAllCategories()
+                if (response.success && response.categories) {
+                    const data = response.categories.map((cat) => {
+                        return { value: cat.id, label: cat.name }
+                    })
+                    setCategories(data)
+                }
+                else setError(response.message)
+            } catch (error) {
+                setError(error.message)
+            } finally {
+                setReloadPage(false)
+            }
+        }
+        fetchProductList() // Fetch data on initial component load
+        fetchCategoryList()
     }, [
         currentPage,
         itemsPerPage,
@@ -80,6 +98,7 @@ export default function FilterableProductTable() {
         sortOrder,
         isActive,
         textQuery,
+        category,
     ])
 
     useEffect(() => {
@@ -109,6 +128,8 @@ export default function FilterableProductTable() {
 
     const handleSearch = (value, event, info) => setTextQuery(value)
 
+    const handleFilterOptionChange = (value, event, info) => setCategory(value)
+
     return (
         <div className="products-container">
             <h1>Products</h1>
@@ -132,6 +153,11 @@ export default function FilterableProductTable() {
                         allowClear
                         style={{ width: 400 }}
                         onSearch={handleSearch}
+                    />
+                    <Select
+                        style={{ width: 250 }}
+                        onChange={handleFilterOptionChange}
+                        options={categories}
                     />
                     <Select
                         defaultValue="modify_at"

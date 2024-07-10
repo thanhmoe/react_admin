@@ -17,7 +17,7 @@ import { PlusOutlined } from "@ant-design/icons"
 
 import { addProduct, updateProduct } from "../../../services/product_services"
 
-import { fetchCategories } from "../../../services/category_services"
+import { fetchAllCategories } from "../../../services/category_services"
 
 import { notify } from "../../../utils/notify_utils"
 import { NOTIFY_STATUS } from "../../../utils/constants"
@@ -27,7 +27,7 @@ const normFile = (e) => {
    return e && e.fileList
 }
 
-const ProductModal = ({ open, onCancel, product }) => {
+const ProductModal = ({ open, onCancel, product, categories }) => {
    const [listCategories, setListCategories] = useState([])
    const [fileList, setFileList] = useState([])
    const [form] = Form.useForm()
@@ -36,8 +36,7 @@ const ProductModal = ({ open, onCancel, product }) => {
 
    useEffect(() => {
       const fetchData = async () => {
-         const response = await fetchCategories()
-         console.log(response)
+         const response = await fetchAllCategories()
          if (response.success && response.categories) {
             setListCategories(response.categories.map((each) => {
                return {
@@ -47,9 +46,8 @@ const ProductModal = ({ open, onCancel, product }) => {
             }))
          }
       }
-      if (open)
+      if (open && !categories)
          fetchData()
-
    }, [open])
 
    const handleCategoriesChanged = (value) => {
