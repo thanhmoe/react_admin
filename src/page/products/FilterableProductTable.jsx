@@ -156,8 +156,13 @@ export default function FilterableProductTable() {
                     />
                     <Select
                         style={{ width: 250 }}
+                        showSearch
                         onChange={handleFilterOptionChange}
                         options={categories}
+                        optionFilterProp="label"
+                        filterSort={(optionA, optionB) =>
+                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
                     />
                     <Select
                         defaultValue="modify_at"
