@@ -21,7 +21,7 @@
 .customer-table td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 .customer-table th {
@@ -35,11 +35,15 @@
   text-align: center;
 }
 
-.customer-detail-container{
+.customer-detail-container {
   width: 500px;
 }
-.btn-edit-customer{
+
+.btn-edit-customer {
   width: fit-content;
   justify-content: center;
 }
 
+.pagination {
+  margin-top: 1rem;
+}

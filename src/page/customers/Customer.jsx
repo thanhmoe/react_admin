@@ -1,17 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { fetchCustomers } from '../../services/customer_services';
 import { useNavigate } from 'react-router-dom';
+
+import { fetchCustomers } from '../../services/customer_services';
+
 import './customer.css';
-import { Pagination } from 'antd';
+import { Button, Pagination } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
+
+import CustomerModal from './component/CustomerModal';
 
 export default function Customer() {
   const [customers, setCustomers] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10); // Number of items per page
   const navigate = useNavigate();
 
+  // Calculate current items to display based on pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = customers.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handleView = (customerId) => {
+    const customer = customers.find(customer => customer.id === customerId);
+    setSelectedCustomer(customer);
+    setModalOpen(true);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,25 +48,12 @@ export default function Customer() {
         console.error('Error fetching customers:', error);
         setError('An error occurred while fetching customer data. Please try again later.');
         // setError(data.message);
-
       }
     };
 
     fetchData(); // Fetch data on initial component load
   }, []);
 
-  // Calculate current items to display based on pagination
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = customers.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handleEdit = (customerId) => {
-    navigate(`/customer/${customerId}`);
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
 
   return (
     <div className="customer-container">
@@ -76,7 +86,7 @@ export default function Customer() {
                 <td>{new Date(customer.create_at).toLocaleDateString()}</td>
                 <td>{new Date(customer.modify_at).toLocaleDateString()}</td>
                 <td>
-                  <button className='btn-edit' onClick={() => handleEdit(customer.id)}>{<EditOutlined />}</button>
+                  <Button type='primary' ghost onClick={() => handleView(customer.id)}>View</Button>
                 </td>
               </tr>
             ))
@@ -93,6 +103,11 @@ export default function Customer() {
         pageSize={itemsPerPage}
         onChange={handlePageChange}
         className="pagination"
+      />
+      <CustomerModal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        customer={selectedCustomer}
       />
     </div>
   );
