@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -119,7 +119,7 @@ export default function FilterableProductTable() {
 	const handleSortOrderChange = (value) => setSortOrder(value);
 
 	const handleCancelProductModal = (reloadingPage) => {
-		if (reloadingPage) window.location.reload(true);
+		if (reloadingPage) setReloadPage(true);
 		setOpenProductModal(false);
 	};
 
@@ -128,6 +128,11 @@ export default function FilterableProductTable() {
 	const handleSearch = (value, event, info) => setTextQuery(value);
 
 	const handleFilterOptionChange = (value, event, info) => setCategory(value);
+
+	// Callback to trigger reload
+	const handleAction = useCallback(() => {
+		setReloadPage(true);
+	}, []);
 
 	return (
 		<div className="m-4">
@@ -182,7 +187,7 @@ export default function FilterableProductTable() {
 					/>
 				</Space>
 			</div>
-			<ProductTable products={products} />
+			<ProductTable products={products} onAction={handleAction} />
 			<Pagination
 				showSizeChanger
 				onShowSizeChange={onShowSizeChange}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
 	Button,
@@ -36,6 +36,7 @@ const FilterableCategoryTable = () => {
 	const [isActive, setIsActive] = useState(true);
 	const [error, setError] = useState(null); // Add error state
 	const [openCategoryModal, setOpenCategoryModal] = useState(false);
+	const [reloadPage, setReloadPage] = useState(false);
 
 	const fetchData = async () => {
 		try {
@@ -57,11 +58,21 @@ const FilterableCategoryTable = () => {
 			setError(
 				error.message || "An error occurred while fetching products"
 			);
+		} finally {
+			setReloadPage(false);
 		}
 	};
 	useEffect(() => {
 		fetchData();
-	}, [currentPage, itemsPerPage, sortOption, sortOrder, isActive, textQuery]);
+	}, [
+		currentPage,
+		itemsPerPage,
+		sortOption,
+		sortOrder,
+		isActive,
+		textQuery,
+		reloadPage,
+	]);
 
 	useEffect(() => {
 		if (error) message.error(error);
@@ -79,13 +90,18 @@ const FilterableCategoryTable = () => {
 	const handleSortOrderChange = (value) => setSortOrder(value);
 
 	const handleCancelCategoryModal = (reloadingPage) => {
-		if (reloadingPage) window.location.reload();
+		if (reloadingPage) setReloadPage(true);
 		setOpenCategoryModal(false);
 	};
 
 	const handleIsActiveChange = (e) => setIsActive(!isActive);
 
 	const handleSearch = (value, event, info) => setTextQuery(value);
+
+	// Callback to trigger reload
+	const handleAction = useCallback(() => {
+		setReloadPage(true);
+	}, []);
 
 	return (
 		<div className="m-4">
@@ -125,7 +141,7 @@ const FilterableCategoryTable = () => {
 					/>
 				</Space>
 			</div>
-			<CategoryTable categories={categories} />
+			<CategoryTable categories={categories} onAction={handleAction} />
 			<Pagination
 				showSizeChanger
 				onShowSizeChange={handleShowSizeChange}
