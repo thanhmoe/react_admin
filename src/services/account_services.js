@@ -7,7 +7,6 @@ export const loginStaff = async (user) => {
 		const response = await axios_instance.post(`${API_PATH}/login`, user);
 		return response.data;
 	} catch (error) {
-		console.log(error);
 		return error.response.data;
 	}
 };

@@ -25,7 +25,6 @@ const Login = () => {
 				notify(NOTIFY_STATUS.error, response.data.message);
 			}
 		} catch (error) {
-			console.log(error);
 			notify(NOTIFY_STATUS.error, "Error!, login failed!");
 		}
 	};

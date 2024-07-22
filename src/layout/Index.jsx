@@ -1,23 +1,26 @@
-import React from 'react';
-import Header from './Header';
-import Sidebar from './sidebar';
-import Footer from './Footer';
-import './index.css'
+import React, { useState } from "react";
+import Header from "./Header";
+import Footer from "./Footer";
+import "./index.css";
 
+import { Layout } from "antd";
+import Sidebar from "./SideBar";
 
 const MainLayout = ({ children }) => {
-  return (
-    <div className="main-layout">
-      <Header />
-      <div className="main-content">
-        <Sidebar />
-        <div className="page-content">
-          {children}
-        </div>
-      </div>
-      <Footer />
-    </div>
-  );
+	return (
+		<Layout
+			style={{
+				minHeight: "100vh",
+			}}
+		>
+			<Sidebar />
+			<Layout>
+				<Header />
+				{children}
+				<Footer />
+			</Layout>
+		</Layout>
+	);
 };
 
 export default MainLayout;

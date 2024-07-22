@@ -26,6 +26,7 @@ const Header = () => {
 
 	useEffect(() => {
 		if (!userData.auth_token) {
+			console.log("fuck");
 			navigate("/login");
 		}
 	});

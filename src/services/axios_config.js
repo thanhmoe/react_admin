@@ -13,7 +13,7 @@ axios_instance.interceptors.request.use(
 	async (config) => {
 		const user = getUserData();
 		if (user && user.auth_token) {
-			config.headers["auth_token"] = user.token; // Không cần 'Bearer '
+			config.headers["auth_token"] = user.auth_token; // Không cần 'Bearer '
 		}
 		return config;
 	},
