@@ -1,26 +1,26 @@
-import axios from "axios";
-import { getToken, setToken } from "../utils/token_utils";
+import axios from "axios"
+import { getUserData } from "../utils/user_data_utils"
 
-const baseURL = import.meta.env.VITE_SERVER_BASE_URL;
+const baseURL = import.meta.env.VITE_SERVER_BASE_URL
 export const axios_instance = axios.create({
    baseURL: baseURL
-});
+})
 
 /**
  * This function automatically attach authorized token into request header
  */
 axios_instance.interceptors.request.use(
    async (config) => {
-      const token = getToken();
-      if (token) {
-         config.headers['auth_token'] = token; // Không cần 'Bearer '
+      const user = getUserData()
+      if (user.token) {
+         config.headers['auth_token'] = user.token // Không cần 'Bearer '
       }
-      return config;
+      return config
    },
    (error) => {
-      return Promise.reject(error);
+      return Promise.reject(error)
    }
-);
+)
 
 /**
  * The function handle response result sent from server
@@ -35,9 +35,9 @@ export const axios_response_handler = (response) => {
          case 400:
          case 404:
          case 500:
-            return response.data;
+            return response.data
          default:
-            return response.data;
+            return response.data
       }
    }
-};
+}

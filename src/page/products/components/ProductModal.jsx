@@ -75,7 +75,7 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
                onCancel(true)
             }
             else
-               notify("error", result.error ? result.error : result.message)
+               notify(NOTIFY_STATUS.error, result.message)
          })
          .catch(info => { })
    }

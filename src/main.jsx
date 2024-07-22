@@ -8,6 +8,11 @@ import "./index.css"
 import MainLayout from "./layout/Index.jsx"
 import App from "./App.jsx"
 
+import { AuthProvider } from "./context/AuthContext.jsx"
+import ProtectedRoute from "./components/ProtectedRoute.jsx"
+
+import { USER_ROLES } from "./utils/constants.js"
+
 import Login from "./page/login/login.jsx"
 
 import FilterableProductTable from "./page/products/FilterableProductTable.jsx"
@@ -16,7 +21,6 @@ import ProductDetail from "./page/products/ProductDetail.jsx"
 import FilterableCategoryTable from "./page/categories/FilterableCategoryTable.jsx"
 
 import Customer from "./page/customers/Customer.jsx"
-import CustomerDetail from "./page/customers/CustomerDetail.jsx"
 
 const router = createBrowserRouter([
 	{
@@ -34,60 +38,52 @@ const router = createBrowserRouter([
 	{
 		path: "/products",
 		element: (
-			<MainLayout>
-				<FilterableProductTable />
-			</MainLayout>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+				<MainLayout>
+					<FilterableProductTable />
+				</MainLayout>
+			</ProtectedRoute>
 		),
 	},
 	{
 		path: "/products/:id",
 		element: (
-			<MainLayout>
-				<ProductDetail />
-			</MainLayout>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+				<MainLayout>
+					<ProductDetail />
+				</MainLayout>
+			</ProtectedRoute>
 		),
 	},
 	{
 		path: "/categories",
 		element: (
-			<MainLayout>
-				<FilterableCategoryTable />
-			</MainLayout>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+				<MainLayout>
+					<FilterableCategoryTable />
+				</MainLayout>
+			</ProtectedRoute>
 		),
 	},
-	// {
-	//   path: "/categories/:id",
-	//   element: (
-	//     <MainLayout>
-	//       <CategoryDetail />
-	//     </MainLayout>
-	//   ),
-	// },
 	{
 		path: "/customers",
 		element: (
-			<MainLayout>
-				<Customer />
-			</MainLayout>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+				<MainLayout>
+					<Customer />
+				</MainLayout>
+			</ProtectedRoute>
 		),
 	},
-	// {
-	//   path: "/customers/:id",
-	//   element: (
-	//     <MainLayout>
-	//       <CustomerDetail />
-	//     </MainLayout>
-	//   ),
-	// },
+	{
+		path: '/unauthorized',
+		element: <h1>403 - Unauthorized</h1>, // Simple Unauthorized page
+	},
 ])
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<>
+	<AuthProvider>
 		<ToastContainer />
 		<RouterProvider router={router} />
-	</>
-	// <React.StrictMode>
-	//   <ToastContainer />
-	//   <RouterProvider router={router} />
-	// </React.StrictMode>
+	</AuthProvider>
 )
