@@ -67,16 +67,16 @@ const router = createBrowserRouter([
 			</ProtectedRoute>
 		),
 	},
-	{
-		path: "/customers",
-		element: (
-			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
-				<MainLayout>
-					<Customer />
-				</MainLayout>
-			</ProtectedRoute>
-		),
-	},
+	// {
+	// 	path: "/customers",
+	// 	element: (
+	// 		<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+	// 			<MainLayout>
+	// 				<Customer />
+	// 			</MainLayout>
+	// 		</ProtectedRoute>
+	// 	),
+	// },
 	{
 		path: "/unauthorized",
 		element: <h1>403 - Unauthorized</h1>, // Simple Unauthorized page

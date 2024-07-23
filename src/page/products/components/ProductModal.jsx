@@ -105,9 +105,9 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 								name: product.name,
 								quantity: product.quantity_in_stock,
 								price: product.price,
-								category_ids: product.categories.map((each) => {
-									parseInt(each.id, 10);
-								}),
+								category_ids: product.categories.map((each) =>
+									parseInt(each.id, 10)
+								),
 								description: product.description,
 						  }
 						: {}

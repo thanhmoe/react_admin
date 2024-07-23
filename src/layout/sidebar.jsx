@@ -33,13 +33,13 @@ export const MENU_ITEMS = [
 		path: "/categories",
 		roles: [USER_ROLES.admin],
 	},
-	{
-		key: "customers",
-		icon: <UserOutlined />,
-		label: "Customers",
-		path: "/customers",
-		roles: [USER_ROLES.admin],
-	},
+	// {
+	// 	key: "customers",
+	// 	icon: <UserOutlined />,
+	// 	label: "Customers",
+	// 	path: "/customers",
+	// 	roles: [USER_ROLES.admin],
+	// },
 ];
 
 const filterMenuItemsByRole = (menuItems, role) => {
