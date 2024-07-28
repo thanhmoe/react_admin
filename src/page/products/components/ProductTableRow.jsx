@@ -17,7 +17,13 @@ const ProductTableRow = ({ product, onAction }) => {
 	const [openUpdateModal, setOpenUpdateModal] = useState(false);
 	const navigate = useNavigate();
 
-	const handleCancelProductModal = () => setOpenUpdateModal(false);
+	const handleCancelProductModal = useCallback(
+		(reloadingPage) => {
+			if (reloadingPage) onAction();
+			setOpenUpdateModal(false);
+		},
+		[onAction]
+	);
 
 	const handleCancelConfirmModal = useCallback(
 		(reloadingPage) => {
@@ -28,7 +34,6 @@ const ProductTableRow = ({ product, onAction }) => {
 	);
 
 	const handleViewDetail = () => navigate(`/products/${product.id}`);
-
 	return (
 		<tr>
 			<td className="border border-slate-600 p-2">{product.id}</td>

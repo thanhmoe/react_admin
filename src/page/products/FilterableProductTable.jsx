@@ -83,8 +83,6 @@ export default function FilterableProductTable() {
 				} else setError(response.message);
 			} catch (error) {
 				setError(error.message);
-			} finally {
-				setReloadPage(false);
 			}
 		};
 		fetchProductList(); // Fetch data on initial component load

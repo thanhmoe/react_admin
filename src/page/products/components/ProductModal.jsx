@@ -51,11 +51,25 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 		if (open) {
 			if (categories) setListCategories(categories);
 			else fetchData();
+
+			if (product) {
+				product.categories.forEach((each) =>
+					listSelectedCategories.push(parseInt(each.id, 10))
+				);
+				form.setFieldsValue({
+					name: product.name,
+					quantity: product.quantity_in_stock,
+					price: product.price,
+					category_ids: listSelectedCategories,
+					description: product.description,
+				});
+			}
 		}
 	}, [open]);
 
 	const handleCategoriesChanged = (value) => {
 		listSelectedCategories.push(value);
+		console.log(listSelectedCategories);
 	};
 
 	const handleCancel = () => {
@@ -81,7 +95,6 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 			})
 			.catch((info) => {});
 	};
-
 	return (
 		<Modal
 			open={open}
@@ -99,19 +112,19 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 				wrapperCol={{ span: 20 }}
 				layout="horizontal"
 				style={{ width: "100%" }}
-				initialValues={
-					product
-						? {
-								name: product.name,
-								quantity: product.quantity_in_stock,
-								price: product.price,
-								category_ids: product.categories.map((each) =>
-									parseInt(each.id, 10)
-								),
-								description: product.description,
-						  }
-						: {}
-				}
+				// initialValues={
+				// 	product
+				// 		? {
+				// 				name: product.name,
+				// 				quantity: product.quantity_in_stock,
+				// 				price: product.price,
+				// 				// category_ids: product.categories.map((each) =>
+				// 				// 	parseInt(each.id, 10)
+				// 				// ),
+				// 				description: product.description,
+				// 		  }
+				// 		: {}
+				// }
 			>
 				<Form.Item
 					name="name"
