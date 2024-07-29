@@ -8,14 +8,14 @@ import {
 } from "../../../utils/date_utils";
 import CategoryConfirmStatusChangeModal from "./CategoryConfirmStatusChangeModal";
 
-const CategoryTableRow = ({ category, onAction }) => {
+const CategoryTableRow = ({ category, onAction, indexNumber }) => {
 	const [openConfirmModal, setOpenConfirmModal] = useState(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
 	const handleCategoryModelCancel = useCallback(
 		(reloadingPage) => {
 			if (reloadingPage) onAction();
-			setOpenConfirmModal(false);
+			setOpenUpdateModal(false);
 		},
 		[onAction]
 	);
@@ -31,6 +31,7 @@ const CategoryTableRow = ({ category, onAction }) => {
 	return (
 		<>
 			<tr>
+				<td className="border border-slate-600 p-2">{indexNumber}</td>
 				<td className="border border-slate-600 p-2">{category.id}</td>
 				<td className="border border-slate-600 p-2 text-left text-ellipsis">
 					{category.name}

@@ -8,6 +8,8 @@ import {
 	message,
 	Select,
 	Input,
+	Switch,
+	Cascader,
 } from "antd";
 const { Search } = Input;
 
@@ -25,18 +27,44 @@ const SORT_ORDERS = [
 	{ value: "DESC", label: "DESC" },
 ];
 
+
+const SORT_OPTIONS_ORDERS = [
+	{
+		value: "modify_at", label: "Date modified",
+		children: [
+			{ value: "ASC", label: "Old to New" },
+			{ value: "DESC", label: "New to Old" },
+		]
+	},
+	{
+		value: "create_at", label: "Date added",
+		children: [
+			{ value: "ASC", label: "Old to New" },
+			{ value: "DESC", label: "New to Old" },
+		]
+	},
+	{
+		value: "name", label: "Name",
+		children: [
+			{ value: "ASC", label: "A-Z" },
+			{ value: "DESC", label: "Z-A" },
+		]
+	},
+]
+
 const FilterableCategoryTable = () => {
 	const [categories, setCategories] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [itemsPerPage, setItemPerPage] = useState(10);
 	const [totalCategories, setTotalCategories] = useState(null);
-	const [sortOption, setSortOption] = useState(null);
-	const [sortOrder, setSortOrder] = useState(null);
+	const [sortOption, setSortOption] = useState("create_at");
+	const [sortOrder, setSortOrder] = useState("DESC");
 	const [textQuery, setTextQuery] = useState(null);
 	const [isActive, setIsActive] = useState(true);
 	const [error, setError] = useState(null); // Add error state
 	const [openCategoryModal, setOpenCategoryModal] = useState(false);
 	const [reloadPage, setReloadPage] = useState(false);
+	let initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
 
 	const fetchData = async () => {
 		try {
@@ -78,16 +106,16 @@ const FilterableCategoryTable = () => {
 		if (error) message.error(error);
 	}, [error]);
 
-	const handlePageChange = (page) => setCurrentPage(page);
+	const handlePageChange = (page) => {
+		initialProductNumberIndex = (page - 1) * itemsPerPage + 1
+		setCurrentPage(page);
+	};
 
 	const handleShowSizeChange = (current, pageSize) => {
+		initialProductNumberIndex = (current - 1) * pageSize + 1
 		setCurrentPage(current);
 		setItemPerPage(pageSize);
 	};
-
-	const handleSortOptionChange = (value) => setSortOption(value);
-
-	const handleSortOrderChange = (value) => setSortOrder(value);
 
 	const handleCancelCategoryModal = (reloadingPage) => {
 		if (reloadingPage) setReloadPage(true);
@@ -103,6 +131,16 @@ const FilterableCategoryTable = () => {
 		setReloadPage(true);
 	}, []);
 
+	const handleSortOptionAndOrderChange = (values) => {
+		setSortOption(values[0])
+		setSortOrder(values[1])
+	}
+
+	const handleClearSortOptionAndOrder = () => {
+		setSortOption(null)
+		setSortOrder(null)
+	}
+
 	return (
 		<div className="m-4">
 			<h1>Categories</h1>
@@ -115,33 +153,33 @@ const FilterableCategoryTable = () => {
 					Add new
 				</Button>
 				<Space wrap>
-					<Checkbox
-						onChange={handleIsActiveChange}
+					<Switch
+						size="default"
+						checkedChildren="Active"
+						unCheckedChildren="Inactive"
 						checked={isActive}
-					>
-						Active
-					</Checkbox>
+						onChange={handleIsActiveChange}
+					/>
 					<Search
 						placeholder="input search text"
 						allowClear
 						style={{ width: 300 }}
 						onSearch={handleSearch}
 					/>
-					<Select
-						defaultValue="create_at"
-						style={{ width: 150 }}
-						onChange={handleSortOptionChange}
-						options={SORT_OPTIONS}
-					/>
-					<Select
-						defaultValue="DESC"
-						style={{ width: 130 }}
-						options={SORT_ORDERS}
-						onChange={handleSortOrderChange}
+					<Cascader
+						expandTrigger="hover"
+						allowClear
+						style={{
+							width: 250
+						}}
+						value={[sortOption, sortOrder]}
+						options={SORT_OPTIONS_ORDERS}
+						onChange={handleSortOptionAndOrderChange}
+						onClear={handleClearSortOptionAndOrder}
 					/>
 				</Space>
 			</div>
-			<CategoryTable categories={categories} onAction={handleAction} />
+			<CategoryTable categories={categories} onAction={handleAction} initialIndex={initialProductNumberIndex} />
 			<Pagination
 				showSizeChanger
 				onShowSizeChange={handleShowSizeChange}
