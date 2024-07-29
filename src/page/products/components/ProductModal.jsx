@@ -99,6 +99,25 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 			})
 			.catch((info) => { });
 	};
+
+	const validKeysForInputNumbers = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight']
+
+	const handleKeyDownForQuantity = (e) => {
+		if (!validKeysForInputNumbers.includes(e.key) && (!/^\d$/.test(e.key))) {
+			e.preventDefault();
+		}
+	};
+
+	const handleKeyDownForPrice = (e) => {
+		if (!validKeysForInputNumbers.includes(e.key) && (!/[\d.]/.test(e.key))) {
+			e.preventDefault();
+		}
+		// Ensure only one decimal point is allowed
+		if (e.key === '.' && e.target.value.includes('.')) {
+			e.preventDefault();
+		}
+	};
+
 	return (
 		<Modal
 			open={open}
@@ -155,6 +174,7 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 								parser={(value) =>
 									value?.replace(/\$\s?|(,*)/g, "")
 								}
+								onKeyDown={handleKeyDownForQuantity}
 							/>
 						</Form.Item>
 					</Col>
@@ -189,6 +209,7 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 								parser={(value) =>
 									value?.replace(/\$\s?|(,*)/g, "")
 								}
+								onKeyDown={handleKeyDownForPrice}
 								style={{ width: "100%" }}
 							/>
 						</Form.Item>
