@@ -2,10 +2,10 @@ import React from "react";
 
 import ProductTableRow from "./ProductTableRow";
 
-const ProductTable = ({ products, onAction }) => {
+const ProductTable = ({ products, onAction, initialIndex }) => {
 	const rows = products.map((each) => {
 		return (
-			<ProductTableRow product={each} key={each.id} onAction={onAction} />
+			<ProductTableRow product={each} key={each.id} onAction={onAction} indexNumber={initialIndex++} />
 		);
 	});
 
@@ -14,6 +14,9 @@ const ProductTable = ({ products, onAction }) => {
 			<table className="min-w-full divide-y divide-gray-500 border table-auto">
 				<thead className="bg-green-200 divide-y">
 					<tr>
+						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wide whitespace-nowrap max-w-min">
+							No
+						</th>
 						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wide whitespace-nowrap max-w-min">
 							ID
 						</th>
@@ -27,7 +30,7 @@ const ProductTable = ({ products, onAction }) => {
 							In Stock
 						</th>
 						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-							Price
+							Price ($)
 						</th>
 						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
 							React

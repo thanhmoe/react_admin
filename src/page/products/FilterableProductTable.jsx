@@ -47,7 +47,7 @@ export default function FilterableProductTable() {
 	const [textQuery, setTextQuery] = useState(null);
 	const [isActive, setIsActive] = useState(true);
 	const [error, setError] = useState(null); // Add error state
-
+	let initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
 	useEffect(() => {
 		const fetchProductList = async () => {
 			try {
@@ -63,6 +63,7 @@ export default function FilterableProductTable() {
 				if (response.success && response.products) {
 					setProducts(response.products); // Update customer list from API
 					setTotalProducts(response.total_products);
+					initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
 				} else {
 					setError(response.message);
 				}
@@ -105,10 +106,12 @@ export default function FilterableProductTable() {
 	}, [error]);
 
 	const handlePageChange = (page) => {
+		initialProductNumberIndex = (page - 1) * itemsPerPage + 1
 		setCurrentPage(page);
 	};
 
 	const onShowSizeChange = (current, pageSize) => {
+		initialProductNumberIndex = (current - 1) * pageSize + 1
 		setCurrentPage(current);
 		setItemPerPage(pageSize);
 	};
@@ -185,7 +188,7 @@ export default function FilterableProductTable() {
 					/>
 				</Space>
 			</div>
-			<ProductTable products={products} onAction={handleAction} />
+			<ProductTable products={products} onAction={handleAction} initialIndex={initialProductNumberIndex} />
 			<Pagination
 				showSizeChanger
 				onShowSizeChange={onShowSizeChange}
