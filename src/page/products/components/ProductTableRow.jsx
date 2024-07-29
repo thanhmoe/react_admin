@@ -12,12 +12,18 @@ import {
 import ProductModal from "./ProductModal";
 import ProductConfirmStatusChangeModal from "./ProductConfirmStatusChangeModal";
 
-const ProductTableRow = ({ product, onAction }) => {
+const ProductTableRow = ({ product, onAction, indexNumber }) => {
 	const [openConfirmModal, setOpenConfirmModal] = useState(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState(false);
 	const navigate = useNavigate();
 
-	const handleCancelProductModal = () => setOpenUpdateModal(false);
+	const handleCancelProductModal = useCallback(
+		(reloadingPage) => {
+			if (reloadingPage) onAction();
+			setOpenUpdateModal(false);
+		},
+		[onAction]
+	);
 
 	const handleCancelConfirmModal = useCallback(
 		(reloadingPage) => {
@@ -28,9 +34,9 @@ const ProductTableRow = ({ product, onAction }) => {
 	);
 
 	const handleViewDetail = () => navigate(`/products/${product.id}`);
-
 	return (
 		<tr>
+			<td className="border border-slate-600 p-2">{indexNumber}</td>
 			<td className="border border-slate-600 p-2">{product.id}</td>
 			<td className="border border-slate-600 p-2 whitespace-nowrap">
 				<img

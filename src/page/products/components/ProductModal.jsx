@@ -51,6 +51,24 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 		if (open) {
 			if (categories) setListCategories(categories);
 			else fetchData();
+
+			if (product) {
+				product.categories.forEach((each) =>
+					listSelectedCategories.push(parseInt(each.id, 10))
+				);
+				form.setFieldsValue({
+					name: product.name,
+					quantity: product.quantity_in_stock,
+					price: product.price,
+					category_ids: listSelectedCategories,
+					description: product.description,
+				});
+			} else {
+				form.setFieldsValue({
+					quantity: 0,
+					price: 0,
+				})
+			}
 		}
 	}, [open]);
 
@@ -79,7 +97,25 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 					onCancel(true);
 				} else notify(NOTIFY_STATUS.error, result.message);
 			})
-			.catch((info) => {});
+			.catch((info) => { });
+	};
+
+	const validKeysForInputNumbers = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight']
+
+	const handleKeyDownForQuantity = (e) => {
+		if (!validKeysForInputNumbers.includes(e.key) && (!/^\d$/.test(e.key))) {
+			e.preventDefault();
+		}
+	};
+
+	const handleKeyDownForPrice = (e) => {
+		if (!validKeysForInputNumbers.includes(e.key) && (!/[\d.]/.test(e.key))) {
+			e.preventDefault();
+		}
+		// Ensure only one decimal point is allowed
+		if (e.key === '.' && e.target.value.includes('.')) {
+			e.preventDefault();
+		}
 	};
 
 	return (
@@ -99,19 +135,6 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 				wrapperCol={{ span: 20 }}
 				layout="horizontal"
 				style={{ width: "100%" }}
-				initialValues={
-					product
-						? {
-								name: product.name,
-								quantity: product.quantity_in_stock,
-								price: product.price,
-								category_ids: product.categories.map((each) =>
-									parseInt(each.id, 10)
-								),
-								description: product.description,
-						  }
-						: {}
-				}
 			>
 				<Form.Item
 					name="name"
@@ -142,15 +165,7 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 							<InputNumber
 								min={0}
 								style={{ width: "100%" }}
-								formatter={(value) =>
-									`${value}`.replace(
-										/\B(?=(\d{3})+(?!\d))/g,
-										","
-									)
-								}
-								parser={(value) =>
-									value?.replace(/\$\s?|(,*)/g, "")
-								}
+								onKeyDown={handleKeyDownForQuantity}
 							/>
 						</Form.Item>
 					</Col>
@@ -185,6 +200,7 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 								parser={(value) =>
 									value?.replace(/\$\s?|(,*)/g, "")
 								}
+								onKeyDown={handleKeyDownForPrice}
 								style={{ width: "100%" }}
 							/>
 						</Form.Item>
@@ -212,44 +228,67 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 				<Form.Item name="description" label="Description">
 					<TextArea rows={4} />
 				</Form.Item>
-				<Form.Item
-					name="image"
-					label="Image"
-					valuePropName="fileList"
-					getValueFromEvent={normFile}
-					rules={[
-						{
-							required: !product ? true : false,
-							message: "Product image is required!",
-						},
-					]}
-				>
-					<Upload
-						name="image"
-						action={null}
-						fileList={fileList}
-						listType="picture-card"
-						beforeUpload={() => false}
-						maxCount={1}
-					>
-						<button
-							style={{
-								border: 0,
-								background: "none",
-							}}
-							type="button"
+				<Row>
+					<Col span={12}>
+						<Form.Item
+							name="image"
+							label="Image"
+							labelCol={{ span: 8 }}
+							wrapperCol={{ span: 16 }}
+							valuePropName="fileList"
+							getValueFromEvent={normFile}
+							rules={[
+								{
+									required: !product ? true : false,
+									message: "Product image is required!",
+								},
+							]}
 						>
-							<PlusOutlined />
-							<div
-								style={{
-									marginTop: 8,
-								}}
+							<Upload
+								name="image"
+								action={null}
+								fileList={fileList}
+								listType="picture-card"
+								beforeUpload={() => false}
+								maxCount={1}
 							>
-								Upload
+								<button
+									style={{
+										border: 0,
+										background: "none",
+									}}
+									type="button"
+								>
+									<PlusOutlined />
+									<div
+										style={{
+											marginTop: 8,
+										}}
+									>
+										Upload
+									</div>
+								</button>
+							</Upload>
+						</Form.Item>
+					</Col>
+					<Col span={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+						{product && product.image_path && (
+							<div>
+								<img
+									src={product.image_path}
+									alt="Old Image"
+									style={{
+										width: 150,
+										height: 150,
+										border: "1px solid #d9d9d9",
+										borderRadius: "4px",
+										padding: "4px",
+									}}
+								/>
 							</div>
-						</button>
-					</Upload>
-				</Form.Item>
+						)}
+					</Col>
+				</Row>
 			</Form>
 		</Modal>
 	);
