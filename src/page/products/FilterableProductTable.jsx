@@ -206,6 +206,7 @@ export default function FilterableProductTable() {
 					<Select
 						style={{ width: 250 }}
 						showSearch
+						allowClear
 						placeholder="Select a category"
 						onChange={handleFilterOptionChange}
 						options={categories}
