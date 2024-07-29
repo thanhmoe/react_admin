@@ -33,6 +33,13 @@ export const MENU_ITEMS = [
 		path: "/categories",
 		roles: [USER_ROLES.admin],
 	},
+	{
+		key: "orders",
+		icon: <AppstoreOutlined />,
+		label: "Orders",
+		path: "/orders",
+		roles: [USER_ROLES.staff],
+	},
 	// {
 	// 	key: "customers",
 	// 	icon: <UserOutlined />,
