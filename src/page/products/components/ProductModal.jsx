@@ -228,44 +228,67 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 				<Form.Item name="description" label="Description">
 					<TextArea rows={4} />
 				</Form.Item>
-				<Form.Item
-					name="image"
-					label="Image"
-					valuePropName="fileList"
-					getValueFromEvent={normFile}
-					rules={[
-						{
-							required: !product ? true : false,
-							message: "Product image is required!",
-						},
-					]}
-				>
-					<Upload
-						name="image"
-						action={null}
-						fileList={fileList}
-						listType="picture-card"
-						beforeUpload={() => false}
-						maxCount={1}
-					>
-						<button
-							style={{
-								border: 0,
-								background: "none",
-							}}
-							type="button"
+				<Row>
+					<Col span={12}>
+						<Form.Item
+							name="image"
+							label="Image"
+							labelCol={{ span: 8 }}
+							wrapperCol={{ span: 16 }}
+							valuePropName="fileList"
+							getValueFromEvent={normFile}
+							rules={[
+								{
+									required: !product ? true : false,
+									message: "Product image is required!",
+								},
+							]}
 						>
-							<PlusOutlined />
-							<div
-								style={{
-									marginTop: 8,
-								}}
+							<Upload
+								name="image"
+								action={null}
+								fileList={fileList}
+								listType="picture-card"
+								beforeUpload={() => false}
+								maxCount={1}
 							>
-								Upload
+								<button
+									style={{
+										border: 0,
+										background: "none",
+									}}
+									type="button"
+								>
+									<PlusOutlined />
+									<div
+										style={{
+											marginTop: 8,
+										}}
+									>
+										Upload
+									</div>
+								</button>
+							</Upload>
+						</Form.Item>
+					</Col>
+					<Col span={12} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+						{product && product.image_path && (
+							<div>
+								<img
+									src={product.image_path}
+									alt="Old Image"
+									style={{
+										width: 150,
+										height: 150,
+										border: "1px solid #d9d9d9",
+										borderRadius: "4px",
+										padding: "4px",
+									}}
+								/>
 							</div>
-						</button>
-					</Upload>
-				</Form.Item>
+						)}
+					</Col>
+				</Row>
 			</Form>
 		</Modal>
 	);
