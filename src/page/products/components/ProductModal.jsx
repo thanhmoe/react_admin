@@ -63,13 +63,17 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 					category_ids: listSelectedCategories,
 					description: product.description,
 				});
+			} else {
+				form.setFieldsValue({
+					quantity: 0,
+					price: 0,
+				})
 			}
 		}
 	}, [open]);
 
 	const handleCategoriesChanged = (value) => {
 		listSelectedCategories.push(value);
-		console.log(listSelectedCategories);
 	};
 
 	const handleCancel = () => {
@@ -93,7 +97,7 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 					onCancel(true);
 				} else notify(NOTIFY_STATUS.error, result.message);
 			})
-			.catch((info) => {});
+			.catch((info) => { });
 	};
 	return (
 		<Modal
@@ -112,19 +116,6 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 				wrapperCol={{ span: 20 }}
 				layout="horizontal"
 				style={{ width: "100%" }}
-				// initialValues={
-				// 	product
-				// 		? {
-				// 				name: product.name,
-				// 				quantity: product.quantity_in_stock,
-				// 				price: product.price,
-				// 				// category_ids: product.categories.map((each) =>
-				// 				// 	parseInt(each.id, 10)
-				// 				// ),
-				// 				description: product.description,
-				// 		  }
-				// 		: {}
-				// }
 			>
 				<Form.Item
 					name="name"
