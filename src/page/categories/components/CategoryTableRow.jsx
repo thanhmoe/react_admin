@@ -15,7 +15,7 @@ const CategoryTableRow = ({ category, onAction, indexNumber }) => {
 	const handleCategoryModelCancel = useCallback(
 		(reloadingPage) => {
 			if (reloadingPage) onAction();
-			setOpenConfirmModal(false);
+			setOpenUpdateModal(false);
 		},
 		[onAction]
 	);
