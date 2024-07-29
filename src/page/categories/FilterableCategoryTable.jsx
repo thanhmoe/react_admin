@@ -37,6 +37,7 @@ const FilterableCategoryTable = () => {
 	const [error, setError] = useState(null); // Add error state
 	const [openCategoryModal, setOpenCategoryModal] = useState(false);
 	const [reloadPage, setReloadPage] = useState(false);
+	let initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
 
 	const fetchData = async () => {
 		try {
@@ -78,9 +79,13 @@ const FilterableCategoryTable = () => {
 		if (error) message.error(error);
 	}, [error]);
 
-	const handlePageChange = (page) => setCurrentPage(page);
+	const handlePageChange = (page) => {
+		initialProductNumberIndex = (page - 1) * itemsPerPage + 1
+		setCurrentPage(page);
+	};
 
 	const handleShowSizeChange = (current, pageSize) => {
+		initialProductNumberIndex = (current - 1) * pageSize + 1
 		setCurrentPage(current);
 		setItemPerPage(pageSize);
 	};
@@ -141,7 +146,7 @@ const FilterableCategoryTable = () => {
 					/>
 				</Space>
 			</div>
-			<CategoryTable categories={categories} onAction={handleAction} />
+			<CategoryTable categories={categories} onAction={handleAction} initialIndex={initialProductNumberIndex} />
 			<Pagination
 				showSizeChanger
 				onShowSizeChange={handleShowSizeChange}
