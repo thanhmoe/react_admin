@@ -64,7 +64,7 @@ const Sidebar = () => {
 			<Menu
 				theme="dark"
 				mode="inline"
-				items={MENU_ITEMS}
+				items={filteredMenuItems}
 				onClick={handleMenuClick}
 			/>
 		</Sider>
