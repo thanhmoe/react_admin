@@ -52,6 +52,7 @@ const OrderTableRow = ({ order, indexNumber, onAction }) => {
 			</tr>
 			<OrderDetailDrawer
 				key={order.order_id}
+				orderId={order.order_id}
 				open={openDetailDrawer}
 				onCancel={handleCancelDetailDrawer}
 			/>
