@@ -70,7 +70,7 @@ const router = createBrowserRouter([
 		),
 	},
 	{
-		path: "/orders",
+		path: "/orders/:status",
 		element: (
 			<ProtectedRoute allowedRoles={[USER_ROLES.staff]}>
 				<MainLayout>

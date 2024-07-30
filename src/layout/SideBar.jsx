@@ -37,8 +37,35 @@ export const MENU_ITEMS = [
 		key: "orders",
 		icon: <AppstoreOutlined />,
 		label: "Orders",
-		path: "/orders",
+		path: "/orders/:status",
 		roles: [USER_ROLES.staff],
+		children: [
+			{
+				key: "pending",
+				label: "Pending",
+				path: "/orders/pending",
+			},
+			{
+				key: "processing",
+				label: "Processing",
+				path: "/orders/processing",
+			},
+			{
+				key: "shipping",
+				label: "Shipping",
+				path: "/orders/shipping",
+			},
+			{
+				key: "delivered",
+				label: "Delivered",
+				path: "/orders/delivered",
+			},
+			{
+				key: "cancelled",
+				label: "Cancelled",
+				path: "/orders/cancelled",
+			},
+		],
 	},
 	// {
 	// 	key: "customers",
@@ -53,12 +80,27 @@ const filterMenuItemsByRole = (menuItems, role) => {
 	return menuItems.filter((item) => item.roles.includes(role));
 };
 
+const findMenuItemByKey = (menuItems, key) => {
+	for (const item of menuItems) {
+		if (item.key === key) {
+			return item;
+		}
+		if (item.children) {
+			const found = findMenuItemByKey(item.children, key);
+			if (found) {
+				return found;
+			}
+		}
+	}
+	return null;
+};
+
 const Sidebar = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
 
 	const handleMenuClick = (e) => {
-		const clickedItem = MENU_ITEMS.find((item) => item.key === e.key);
+		const clickedItem = findMenuItemByKey(MENU_ITEMS, e.key);
 		if (clickedItem && clickedItem.path) {
 			navigate(clickedItem.path);
 		}
@@ -71,6 +113,8 @@ const Sidebar = () => {
 			<Menu
 				theme="dark"
 				mode="inline"
+				defaultSelectedKeys={["home"]}
+				defaultOpenKeys={["orders"]}
 				items={filteredMenuItems}
 				onClick={handleMenuClick}
 			/>

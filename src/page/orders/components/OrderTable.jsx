@@ -4,9 +4,10 @@ const OrderTable = ({ orders, initialIndex }) => {
 	const rows = orders.map((each) => {
 		return (
 			<OrderTableRow
-				key={orders.id}
+				key={orders.order_id}
 				order={each}
 				indexNumber={initialIndex++}
+				onAction={() => { }}
 			/>
 		);
 	});
@@ -20,18 +21,21 @@ const OrderTable = ({ orders, initialIndex }) => {
 							No
 						</th>
 						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wide whitespace-nowrap max-w-min">
-							ID
+							Order ID
 						</th>
-						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wide w-40">
+						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wide w-1/5">
 							Customer
 						</th>
-						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-1/4">
-							Total Amount
-						</th>
 						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+							Total Amount ($)
+						</th>
+						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-2/5">
 							Note
 						</th>
 						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+							Ordered at
+						</th>
+						<th className="border border-slate-500 p-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider max-w-min">
 							Actions
 						</th>
 					</tr>
