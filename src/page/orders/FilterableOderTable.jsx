@@ -1,5 +1,5 @@
 import { message, Pagination, Select, Space } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import OrderTable from "./components/OrderTable";
 import Search from "antd/es/input/Search";
@@ -14,7 +14,7 @@ export default function FilterableOrderTable() {
 	const [reloadPage, setReloadPage] = useState(false);
 	const [error, setError] = useState(null); // Add error state
 
-	const { status } = useParams()
+	const { status } = useParams();
 	let initialOrderNumberIndex = (currentPage - 1) * itemsPerPage + 1;
 
 	const fetchOrderList = async () => {
@@ -23,36 +23,31 @@ export default function FilterableOrderTable() {
 				page: currentPage,
 				limit: itemsPerPage,
 				sortStatus: status,
-			})
+			});
 
 			if (response.success && response.orders) {
-				setOrders(response.orders)
-				setTotalOrders(response.total_orders)
-				initialOrderNumberIndex = (currentPage - 1) * itemsPerPage + 1
+				setOrders(response.orders);
+				setTotalOrders(response.total_orders);
+				initialOrderNumberIndex = (currentPage - 1) * itemsPerPage + 1;
 			} else {
 				setError(response.message);
 			}
 		} catch (error) {
 			setError(error.message);
 		} finally {
-			setReloadPage(false)
+			setReloadPage(false);
 		}
-	}
+	};
 
 	useEffect(() => {
-		fetchOrderList()
-	}, [
-		currentPage,
-		itemsPerPage,
-		reloadPage,
-		status
-	]);
+		fetchOrderList();
+	}, [currentPage, itemsPerPage, reloadPage, status]);
 
 	useEffect(() => {
 		if (error) {
-			message.error(error)
+			message.error(error);
 		}
-	}, [error])
+	}, [error]);
 
 	const handlePageChange = (page) => {
 		initialOrderNumberIndex = (page - 1) * itemsPerPage + 1;
@@ -65,6 +60,10 @@ export default function FilterableOrderTable() {
 		setItemPerPage(pageSize);
 	};
 
+	const handleReloadPage = useCallback(() => {
+		setReloadPage(true);
+	}, []);
+
 	return (
 		<div className="m-4">
 			<h1>Orders</h1>
@@ -74,13 +73,14 @@ export default function FilterableOrderTable() {
 						placeholder="input search customer email"
 						allowClear
 						style={{ width: 400 }}
-						onSearch={() => { }}
+						onSearch={() => {}}
 					/>
 				</Space>
 			</div>
 			<OrderTable
 				orders={orders}
 				initialIndex={initialOrderNumberIndex}
+				onAction={handleReloadPage}
 			/>
 			<Pagination
 				showSizeChanger

@@ -1,13 +1,13 @@
 import OrderTableRow from "./OrderTableRow";
 
-const OrderTable = ({ orders, initialIndex }) => {
+const OrderTable = ({ orders, initialIndex, onAction }) => {
 	const rows = orders.map((each) => {
 		return (
 			<OrderTableRow
 				key={orders.order_id}
 				order={each}
 				indexNumber={initialIndex++}
-				onAction={() => { }}
+				onAction={onAction}
 			/>
 		);
 	});
