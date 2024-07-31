@@ -65,23 +65,25 @@ export default function FilterableOrderTable() {
 	}, []);
 
 	return (
-		<div className="m-4">
-			<h1>Orders</h1>
-			<div className="flex items-center justify-end">
-				<Space wrap>
-					<Search
-						placeholder="input search customer email"
-						allowClear
-						style={{ width: 400 }}
-						onSearch={() => {}}
-					/>
-				</Space>
+		<div className="m-4" style={{ display: "flex", flexDirection: "column", minHeight: "90vh" }}>
+			<div style={{ flex: 1, overflow: "auto" }}>
+				<h1>Orders</h1>
+				<div className="flex items-center justify-end">
+					<Space wrap>
+						<Search
+							placeholder="input search customer email"
+							allowClear
+							style={{ width: 400 }}
+							onSearch={() => { }}
+						/>
+					</Space>
+				</div>
+				<OrderTable
+					orders={orders}
+					initialIndex={initialOrderNumberIndex}
+					onAction={handleReloadPage}
+				/>
 			</div>
-			<OrderTable
-				orders={orders}
-				initialIndex={initialOrderNumberIndex}
-				onAction={handleReloadPage}
-			/>
 			<Pagination
 				showSizeChanger
 				onShowSizeChange={onShowSizeChange}

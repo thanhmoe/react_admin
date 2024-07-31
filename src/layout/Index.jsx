@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import Sidebar from "./SideBar";
+
 import "./index.css";
 
 import { Layout } from "antd";
-import Sidebar from "./SideBar";
+const { Content } = Layout
 
 const MainLayout = ({ children }) => {
 	return (
@@ -14,9 +16,11 @@ const MainLayout = ({ children }) => {
 			}}
 		>
 			<Sidebar />
-			<Layout>
+			<Layout style={{ display: "flex", flexDirection: "column" }}>
 				<Header />
-				{children}
+				<Content style={{ flex: 1 }}>
+					{children}
+				</Content>
 				<Footer />
 			</Layout>
 		</Layout>

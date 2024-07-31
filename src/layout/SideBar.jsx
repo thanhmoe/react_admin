@@ -41,6 +41,11 @@ export const MENU_ITEMS = [
 		roles: [USER_ROLES.staff],
 		children: [
 			{
+				key: "all",
+				label: "All",
+				path: "/orders/all",
+			},
+			{
 				key: "pending",
 				label: "Pending",
 				path: "/orders/pending",
