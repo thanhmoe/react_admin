@@ -12,7 +12,7 @@ export const fetchOrders = async (params) => {
 		sortStatus = (sortStatus === "all") ? null : sortStatus
 		let URL = `${API_PATH}/${API_SUFFIX}/?page=${page}&limit=${limit}`;
 		if (sortStatus !== "all" && ALLOWED_SORT_STATUSES.includes(sortStatus))
-			URL += `& sortStatus=${sortStatus}`
+			URL += `&sortStatus=${sortStatus}`
 		const response = await axios_instance.get(URL);
 		return axios_response_handler(response);
 	} catch (error) {

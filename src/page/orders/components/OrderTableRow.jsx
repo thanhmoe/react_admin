@@ -1,4 +1,4 @@
-import { Button, Space } from "antd";
+import { Button, Space, Tag } from "antd";
 
 import {
 	formatISODate,
@@ -6,10 +6,44 @@ import {
 	getFormattedDate,
 } from "../../../utils/date_utils";
 import OrderDetailDrawer from "./OrderDetailDrawer";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {
+	CheckCircleOutlined,
+	ClockCircleOutlined,
+	CloseCircleOutlined,
+	DropboxOutlined,
+	SyncOutlined
+} from "@ant-design/icons"
 
 const OrderTableRow = ({ order, indexNumber, onAction }) => {
 	const [openDetailDrawer, setOpenDetailDrawer] = useState(false)
+	const [statusColor, setStatusColor] = useState(null);
+	const [statusIcon, setStatusIcon] = useState(null);
+
+	useEffect(() => {
+		switch (order.status) {
+			case "pending":
+				setStatusColor("default");
+				setStatusIcon(<ClockCircleOutlined />);
+				break;
+			case "processing":
+				setStatusColor("processing");
+				setStatusIcon(<DropboxOutlined />);
+				break;
+			case "shipping":
+				setStatusColor("cyan");
+				setStatusIcon(<SyncOutlined spin />);
+				break;
+			case "delivered":
+				setStatusColor("green");
+				setStatusIcon(<CheckCircleOutlined />);
+				break;
+			case "cancelled":
+				setStatusColor("error");
+				setStatusIcon(<CloseCircleOutlined />);
+				break;
+		}
+	}, [order])
 
 	const handleCancelDetailDrawer = useCallback(
 		(reloadingPage) => {
@@ -40,6 +74,9 @@ const OrderTableRow = ({ order, indexNumber, onAction }) => {
 					</div>
 				</td>
 				<td className="border border-slate-600 p-2 text-left whitespace-nowrap">
+					<Tag color={statusColor} icon={statusIcon}>{order.status}</Tag>
+				</td>
+				<td className="border border-slate-600 p-2 text-left whitespace-nowrap">
 					<Space wrap direction="horizontal" size="small">
 						<Button
 							className="bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white"
@@ -55,6 +92,8 @@ const OrderTableRow = ({ order, indexNumber, onAction }) => {
 				orderId={order.order_id}
 				open={openDetailDrawer}
 				onCancel={handleCancelDetailDrawer}
+				statusColor={statusColor}
+				statusIcon={statusIcon}
 			/>
 		</>
 	);

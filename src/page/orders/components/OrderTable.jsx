@@ -36,6 +36,9 @@ const OrderTable = ({ orders, initialIndex, onAction }) => {
 							Ordered at
 						</th>
 						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wider max-w-min">
+							Status
+						</th>
+						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wider max-w-min">
 							Actions
 						</th>
 					</tr>

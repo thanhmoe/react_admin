@@ -84,13 +84,11 @@ const TableRow = ({ orderItem, indexNumber }) => {
 	);
 };
 
-const OrderDetailDrawer = ({ open, onCancel, orderId }) => {
+const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon }) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [orderDetail, setOrderDetail] = useState({});
 	const [listOrderItemRows, setListOrderItemRows] = useState([]);
-	const [statusColor, setStatusColor] = useState(null);
-	const [statusIcon, setStatusIcon] = useState(null);
 
 	useEffect(() => {
 		if (open) fetchOrderDetail(orderId);
@@ -116,31 +114,6 @@ const OrderDetailDrawer = ({ open, onCancel, orderId }) => {
 			setError(response.error);
 		}
 	};
-
-	useEffect(() => {
-		switch (orderDetail.status) {
-			case "pending":
-				setStatusColor("default");
-				setStatusIcon(<ClockCircleOutlined />);
-				break;
-			case "processing":
-				setStatusColor("processing");
-				setStatusIcon(<DropboxOutlined />);
-				break;
-			case "shipping":
-				setStatusColor("cyan");
-				setStatusIcon(<SyncOutlined spin />);
-				break;
-			case "delivered":
-				setStatusColor("success");
-				setStatusIcon(<CheckCircleOutlined />);
-				break;
-			case "cancelled":
-				setStatusColor("error");
-				setStatusIcon(<CloseCircleOutlined />);
-				break;
-		}
-	}, [orderDetail]);
 
 	const handleCancel = () => {
 		onCancel(false);
@@ -209,14 +182,11 @@ const OrderDetailDrawer = ({ open, onCancel, orderId }) => {
 						)}
 						{orderDetail.status === ORDER_STATUS.shipping && (
 							<StatusUpdatePopConfirm
-								title="Are you sure to mark this order as delivered?"
-								onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.delivered)}
-								icon={<CarryOutOutlined />}
-								buttonType={{
-									type: "default",
-									className: "bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white",
-								}}
-								buttonText="Delivered"
+								title="Are you sure to cancel this order?"
+								onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.cancelled)}
+								icon={<WarningOutlined />}
+								buttonType={{ type: "primary", danger: true }}
+								buttonText="Cancel"
 							/>
 						)}
 					</Space>
