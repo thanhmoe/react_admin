@@ -4,7 +4,7 @@ const OrderTable = ({ orders, initialIndex, onAction }) => {
 	const rows = orders.map((each) => {
 		return (
 			<OrderTableRow
-				key={orders.order_id}
+				key={each.order_id}
 				order={each}
 				indexNumber={initialIndex++}
 				onAction={onAction}

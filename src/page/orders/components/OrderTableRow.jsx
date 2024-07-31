@@ -57,7 +57,7 @@ const OrderTableRow = ({ order, indexNumber, onAction }) => {
 		<>
 			<tr>
 				<td className="border border-slate-600 p-2">{indexNumber}</td>
-				<td className="border border-slate-600 p-2">{order.order_id}</td>
+				<td className="border border-slate-600 p-2 text-blue-500 font-semibold">{order.order_id}</td>
 				<td className="border border-slate-600 p-2 text-left text-ellipsis">
 					{order.customer_email}
 				</td>

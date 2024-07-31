@@ -1,4 +1,4 @@
-import React, { Children, useCallback, useEffect, useState } from "react";
+import React, { Children, lazy, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -56,6 +56,13 @@ const SORT_OPTIONS_ORDERS = [
 			{ value: "DESC", label: "High to Low" },
 		]
 	},
+	// {
+	// 	value: "total_sold", label: "Sold Quantity",
+	// 	children: [
+	// 		{ value: "ASC", label: "Low to High" },
+	// 		{ value: "DESC", label: "High to Low" },
+	// 	]
+	// },
 	// {
 	// 	value: "like_count", label: "Like Count",
 	// 	children: [

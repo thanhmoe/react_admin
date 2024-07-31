@@ -32,7 +32,7 @@ const CategoryTableRow = ({ category, onAction, indexNumber }) => {
 		<>
 			<tr>
 				<td className="border border-slate-600 p-2">{indexNumber}</td>
-				<td className="border border-slate-600 p-2">{category.id}</td>
+				<td className="border border-slate-600 p-2 text-blue-500 font-semibold">{category.id}</td>
 				<td className="border border-slate-600 p-2 text-left text-ellipsis">
 					{category.name}
 				</td>
