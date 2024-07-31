@@ -13,6 +13,7 @@ export default function FilterableOrderTable() {
 	const [totalOrders, setTotalOrders] = useState(null);
 	const [reloadPage, setReloadPage] = useState(false);
 	const [error, setError] = useState(null); // Add error state
+	const [textQuery, setTextQuery] = useState(null)
 
 	const { status } = useParams();
 	let initialOrderNumberIndex = (currentPage - 1) * itemsPerPage + 1;
@@ -23,6 +24,7 @@ export default function FilterableOrderTable() {
 				page: currentPage,
 				limit: itemsPerPage,
 				sortStatus: status,
+				textQuery: textQuery
 			});
 
 			if (response.success && response.orders) {
@@ -42,7 +44,7 @@ export default function FilterableOrderTable() {
 	// Fetch/refresh orders when page/items per page changed or reload
 	useEffect(() => {
 		fetchOrderList();
-	}, [currentPage, itemsPerPage, reloadPage]);
+	}, [currentPage, itemsPerPage, reloadPage, textQuery]);
 
 	// Reset page number and item per page when the view status changed
 	useEffect(() => {
@@ -73,6 +75,8 @@ export default function FilterableOrderTable() {
 		setReloadPage(true);
 	}, []);
 
+	const handleSearch = (value, event, info) => setTextQuery(value);
+
 	return (
 		<div className="m-4" style={{ display: "flex", flexDirection: "column", minHeight: "90vh" }}>
 			<div style={{ flex: 1, overflow: "auto" }}>
@@ -80,10 +84,10 @@ export default function FilterableOrderTable() {
 				<div className="flex items-center justify-end">
 					<Space wrap>
 						<Search
-							placeholder="input search customer email"
+							placeholder="Input customer email to search"
 							allowClear
 							style={{ width: 400 }}
-							onSearch={() => { }}
+							onSearch={handleSearch}
 						/>
 					</Space>
 				</div>
