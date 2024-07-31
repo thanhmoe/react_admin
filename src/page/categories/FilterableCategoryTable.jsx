@@ -142,44 +142,46 @@ const FilterableCategoryTable = () => {
 	}
 
 	return (
-		<div className="m-4">
-			<h1>Categories</h1>
-			<div className="flex items-center justify-between">
-				<Button
-					className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
-					size="large"
-					onClick={() => setOpenCategoryModal(true)}
-				>
-					Add new
-				</Button>
-				<Space wrap>
-					<Switch
-						size="default"
-						checkedChildren="Active"
-						unCheckedChildren="Inactive"
-						checked={isActive}
-						onChange={handleIsActiveChange}
-					/>
-					<Search
-						placeholder="input search text"
-						allowClear
-						style={{ width: 300 }}
-						onSearch={handleSearch}
-					/>
-					<Cascader
-						expandTrigger="hover"
-						allowClear
-						style={{
-							width: 250
-						}}
-						value={[sortOption, sortOrder]}
-						options={SORT_OPTIONS_ORDERS}
-						onChange={handleSortOptionAndOrderChange}
-						onClear={handleClearSortOptionAndOrder}
-					/>
-				</Space>
+		<div className="m-4" style={{ display: "flex", flexDirection: "column", minHeight: "90vh" }}>
+			<div style={{ flex: 1, overflow: "auto" }}>
+				<h1>Categories</h1>
+				<div className="flex items-center justify-between">
+					<Button
+						className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
+						size="large"
+						onClick={() => setOpenCategoryModal(true)}
+					>
+						Add new
+					</Button>
+					<Space wrap>
+						<Switch
+							size="default"
+							checkedChildren="Active"
+							unCheckedChildren="Inactive"
+							checked={isActive}
+							onChange={handleIsActiveChange}
+						/>
+						<Search
+							placeholder="Input search text"
+							allowClear
+							style={{ width: 400 }}
+							onSearch={handleSearch}
+						/>
+						<Cascader
+							expandTrigger="hover"
+							allowClear
+							style={{
+								width: 250
+							}}
+							value={[sortOption, sortOrder]}
+							options={SORT_OPTIONS_ORDERS}
+							onChange={handleSortOptionAndOrderChange}
+							onClear={handleClearSortOptionAndOrder}
+						/>
+					</Space>
+				</div>
+				<CategoryTable categories={categories} onAction={handleAction} initialIndex={initialProductNumberIndex} />
 			</div>
-			<CategoryTable categories={categories} onAction={handleAction} initialIndex={initialProductNumberIndex} />
 			<Pagination
 				showSizeChanger
 				onShowSizeChange={handleShowSizeChange}
