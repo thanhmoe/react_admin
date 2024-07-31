@@ -37,7 +37,7 @@ const ProductTableRow = ({ product, onAction, indexNumber }) => {
 	return (
 		<tr>
 			<td className="border border-slate-600 p-2">{indexNumber}</td>
-			<td className="border border-slate-600 p-2">{product.id}</td>
+			<td className="border border-slate-600 p-2 text-blue-500 font-semibold">{product.id}</td>
 			<td className="border border-slate-600 p-2 whitespace-nowrap">
 				<img
 					className="w-32 h-32 object-contain"
@@ -63,7 +63,7 @@ const ProductTableRow = ({ product, onAction, indexNumber }) => {
 				</div>
 			</td>
 			<td className="border border-slate-600 p-2 flex-1 text-right">
-				{0}
+				{product.sold_quantity}
 			</td>
 			<td className="border border-slate-600 p-2 text-right whitespace-nowrap">
 				<div className="flex flex-col items-end">
