@@ -9,20 +9,29 @@ import {
 	Tag,
 } from "antd";
 import { useEffect, useState } from "react";
-import { fetchOrderDetails } from "../../../services/order_services";
+
+import { fetchOrderDetails, updateOrderStatus } from "../../../services/order_services";
 
 import {
 	getFormattedDate,
 	getFormattedTime,
 	formatISODate,
 } from "../../../utils/date_utils";
+
+import { notify } from "../../../utils/notify_utils"
+
 import {
+	CarryOutOutlined,
 	CheckCircleOutlined,
 	ClockCircleOutlined,
 	CloseCircleOutlined,
 	DropboxOutlined,
+	ScheduleOutlined,
+	SendOutlined,
 	SyncOutlined,
+	WarningOutlined,
 } from "@ant-design/icons";
+import { NOTIFY_STATUS, ORDER_STATUS } from "../../../utils/constants";
 
 const DescriptionItem = ({ title, content }) => (
 	<Space>
@@ -30,6 +39,19 @@ const DescriptionItem = ({ title, content }) => (
 			{title}: {content}
 		</p>
 	</Space>
+);
+
+const StatusUpdatePopConfirm = ({ title, onConfirm, buttonType, buttonText, icon }) => (
+	<Popconfirm
+		title={title}
+		okText="Yes"
+		cancelText="No"
+		onConfirm={onConfirm}
+		icon={icon}
+		placement="bottomRight"
+	>
+		<Button {...buttonType}>{buttonText}</Button>
+	</Popconfirm>
 );
 
 const TableRow = ({ orderItem, indexNumber }) => {
@@ -124,10 +146,12 @@ const OrderDetailDrawer = ({ open, onCancel, orderId }) => {
 		onCancel(false);
 	};
 
-	const handleOrderCancel = () => {};
-	const handleOrderConfirm = () => {};
-	const handleShipConfirm = () => {};
-
+	const handleUpdateOrderStatus = async (newStatus) => {
+		const result = await updateOrderStatus(orderId, newStatus)
+		onCancel(result.success)
+		if (result.success) notify(NOTIFY_STATUS.success, result.message)
+		else notify(NOTIFY_STATUS.error, result.message)
+	}
 	return (
 		<>
 			<Drawer
@@ -141,43 +165,60 @@ const OrderDetailDrawer = ({ open, onCancel, orderId }) => {
 				open={open}
 				extra={
 					<Space>
-						{orderDetail.status === "pending" ? (
+						{orderDetail.status === ORDER_STATUS.pending && (
 							<>
-								<Popconfirm>
-									<Button
-										type="primary"
-										danger
-										onClick={handleOrderCancel}
-									>
-										Cancel
-									</Button>
-								</Popconfirm>
-								<Popconfirm>
-									<Button
-										className="bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white"
-										onClick={handleOrderConfirm}
-									>
-										Confirm
-									</Button>
-								</Popconfirm>
+								<StatusUpdatePopConfirm
+									title="Are you sure to cancel this order?"
+									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.cancelled)}
+									icon={<WarningOutlined />}
+									buttonType={{ type: "primary", danger: true }}
+									buttonText="Cancel"
+								/>
+								<StatusUpdatePopConfirm
+									title="Are you sure to confirm this order?"
+									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.processing)}
+									icon={<ScheduleOutlined />}
+									buttonType={{
+										type: "default",
+										className: "bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white",
+									}}
+									buttonText="Confirm"
+								/>
 							</>
-						) : orderDetail.status === "processing" ? (
+						)}
+						{orderDetail.status === ORDER_STATUS.processing && (
 							<>
-								<Button
-									type="primary"
-									danger
-									onClick={handleOrderCancel}
-								>
-									Cancel
-								</Button>
-								<Button
-									className="bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white"
-									onClick={handleShipConfirm}
-								>
-									Ship
-								</Button>
+								<StatusUpdatePopConfirm
+									title="Are you sure to cancel this order?"
+									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.cancelled)}
+									icon={<WarningOutlined />}
+									buttonType={{ type: "primary", danger: true }}
+									buttonText="Cancel"
+								/>
+								<StatusUpdatePopConfirm
+									title="Are you sure to ship this order?"
+									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.shipping)}
+									icon={<SendOutlined />}
+									buttonType={{
+										type: "default",
+										className: "bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white",
+									}}
+									buttonText="Ship"
+								/>
 							</>
-						) : null}
+						)}
+						{orderDetail.status === ORDER_STATUS.shipping && (
+							<StatusUpdatePopConfirm
+								title="Are you sure to mark this order as delivered?"
+								onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.delivered)}
+								icon={<CarryOutOutlined />}
+								buttonType={{
+									type: "default",
+									className: "bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white",
+								}}
+								buttonText="Delivered"
+							/>
+						)}
 					</Space>
 				}
 			>
