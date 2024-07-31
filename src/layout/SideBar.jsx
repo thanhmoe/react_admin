@@ -8,7 +8,7 @@ import {
 	AppstoreOutlined,
 } from "@ant-design/icons";
 import { USER_ROLES } from "../utils/constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Sider from "antd/es/layout/Sider";
 
 export const MENU_ITEMS = [
@@ -100,9 +100,25 @@ const findMenuItemByKey = (menuItems, key) => {
 	return null;
 };
 
+const findMenuItemByPath = (menuItems, path) => {
+	for (const item of menuItems) {
+		if (item.path === path) {
+			return item;
+		}
+		if (item.children) {
+			const found = findMenuItemByPath(item.children, path);
+			if (found) {
+				return found;
+			}
+		}
+	}
+	return null;
+};
+
 const Sidebar = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
+	const location = useLocation()
 
 	const handleMenuClick = (e) => {
 		const clickedItem = findMenuItemByKey(MENU_ITEMS, e.key);
@@ -113,13 +129,34 @@ const Sidebar = () => {
 
 	const filteredMenuItems = filterMenuItemsByRole(MENU_ITEMS, user?.role);
 
+	const getDefaultSelectedKey = () => {
+		const currentPath = location.pathname;
+		const matchedItem = findMenuItemByPath(MENU_ITEMS, currentPath);
+		return matchedItem ? matchedItem.key : "home";
+	};
+
+	const getOpenKeys = () => {
+		const currentPath = location.pathname;
+		const openKeys = [];
+		for (const item of MENU_ITEMS) {
+			if (item.children) {
+				for (const child of item.children) {
+					if (child.path === currentPath) {
+						openKeys.push(item.key);
+					}
+				}
+			}
+		}
+		return openKeys;
+	};
+
 	return (
 		<Sider>
 			<Menu
 				theme="dark"
 				mode="inline"
-				defaultSelectedKeys={["home"]}
-				defaultOpenKeys={["orders"]}
+				defaultSelectedKeys={[getDefaultSelectedKey()]}
+				defaultOpenKeys={getOpenKeys()}
 				items={filteredMenuItems}
 				onClick={handleMenuClick}
 			/>
