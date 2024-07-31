@@ -34,11 +34,9 @@ import {
 import { NOTIFY_STATUS, ORDER_STATUS } from "../../../utils/constants";
 
 const DescriptionItem = ({ title, content }) => (
-	<Space>
-		<p className="text-sm">
-			{title}: {content}
-		</p>
-	</Space>
+	<p className="text-sm">
+		<span className="font-semibold">{title}:</span> {content}
+	</p>
 );
 
 const StatusUpdatePopConfirm = ({ title, onConfirm, buttonType, buttonText, icon }) => (
@@ -58,12 +56,12 @@ const TableRow = ({ orderItem, indexNumber }) => {
 	return (
 		<tr>
 			<td className="border border-slate-600 p-2">{indexNumber}</td>
-			<td className="border border-slate-600 p-2">
+			<td className="border border-slate-600 p-2 text-blue-500 font-semibold">
 				{orderItem.product_id}
 			</td>
 			<td className="border border-slate-600 p-2 whitespace-nowrap">
 				<img
-					className="w-32 h-32 object-contain"
+					className="w-20 h-20 object-contain"
 					src={orderItem.product_image}
 					alt=""
 				/>
@@ -244,34 +242,36 @@ const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon })
 						/>
 					</Col>
 				</Row>
-				<table className="min-w-full divide-y divide-gray-500 border table-auto">
-					<thead className="bg-green-300 divide-y">
-						<tr>
-							<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-								No
-							</th>
-							<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-								ID
-							</th>
-							<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-								Image
-							</th>
-							<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-								Name
-							</th>
-							<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-								Quantity
-							</th>
-							<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-								Unit Price ($)
-							</th>
-							<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-								Total ($)
-							</th>
-						</tr>
-					</thead>
-					<tbody>{listOrderItemRows}</tbody>
-				</table>
+				<div className="max-h-fit overflow-y-auto">
+					<table className="min-w-full divide-y divide-gray-500 border table-auto">
+						<thead className="bg-green-300 divide-y">
+							<tr>
+								<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+									No
+								</th>
+								<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+									ID
+								</th>
+								<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+									Image
+								</th>
+								<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+									Name
+								</th>
+								<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+									Quantity
+								</th>
+								<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+									Unit Price ($)
+								</th>
+								<th className="border border-slate-600 px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+									Total ($)
+								</th>
+							</tr>
+						</thead>
+						<tbody>{listOrderItemRows}</tbody>
+					</table>
+				</div>
 			</Drawer>
 		</>
 	);
