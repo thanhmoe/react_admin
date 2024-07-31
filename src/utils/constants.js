@@ -9,3 +9,11 @@ export const USER_ROLES = {
 	admin: "admin",
 	staff: "staff",
 };
+
+export const ORDER_STATUS = {
+	pending: "pending",
+	processing: "processing",
+	shipping: "shipping",
+	delivered: "delivered",
+	cancelled: "cancelled",
+}

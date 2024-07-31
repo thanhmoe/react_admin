@@ -20,6 +20,8 @@ import ProductDetail from "./page/products/ProductDetail.jsx";
 
 import FilterableCategoryTable from "./page/categories/FilterableCategoryTable.jsx";
 
+import FilterableOrderTable from "./page/orders/FilterableOderTable.jsx";
+
 import Customer from "./page/customers/Customer.jsx";
 
 const router = createBrowserRouter([
@@ -63,6 +65,16 @@ const router = createBrowserRouter([
 			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
 				<MainLayout>
 					<FilterableCategoryTable />
+				</MainLayout>
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: "/orders/:status",
+		element: (
+			<ProtectedRoute allowedRoles={[USER_ROLES.staff]}>
+				<MainLayout>
+					<FilterableOrderTable />
 				</MainLayout>
 			</ProtectedRoute>
 		),
