@@ -39,10 +39,19 @@ export default function FilterableOrderTable() {
 		}
 	};
 
+	// Fetch/refresh orders when page/items per page changed or reload
 	useEffect(() => {
 		fetchOrderList();
-	}, [currentPage, itemsPerPage, reloadPage, status]);
+	}, [currentPage, itemsPerPage, reloadPage]);
 
+	// Reset page number and item per page when the view status changed
+	useEffect(() => {
+		setCurrentPage(1)
+		setItemPerPage(10)
+		fetchOrderList()
+	}, [status])
+
+	// Show error when occurs
 	useEffect(() => {
 		if (error) {
 			message.error(error);
