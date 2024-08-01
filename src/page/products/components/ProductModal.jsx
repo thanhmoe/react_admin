@@ -93,7 +93,7 @@ const ProductModal = ({ open, onCancel, product, categories }) => {
 					: await updateProduct(product.id, values);
 				if (result.success) {
 					notify(NOTIFY_STATUS.success, result.message);
-					form.resetFields();
+					// form.resetFields();
 					onCancel(true);
 				} else notify(NOTIFY_STATUS.error, result.message);
 			})
