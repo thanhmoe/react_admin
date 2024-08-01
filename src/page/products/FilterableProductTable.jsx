@@ -56,13 +56,13 @@ const SORT_OPTIONS_ORDERS = [
 			{ value: "DESC", label: "High to Low" },
 		]
 	},
-	// {
-	// 	value: "total_sold", label: "Sold Quantity",
-	// 	children: [
-	// 		{ value: "ASC", label: "Low to High" },
-	// 		{ value: "DESC", label: "High to Low" },
-	// 	]
-	// },
+	{
+		value: "sold_quantity", label: "Sold Quantity",
+		children: [
+			{ value: "ASC", label: "Low to High" },
+			{ value: "DESC", label: "High to Low" },
+		]
+	},
 	// {
 	// 	value: "like_count", label: "Like Count",
 	// 	children: [
@@ -232,6 +232,7 @@ export default function FilterableProductTable() {
 							style={{
 								width: 250
 							}}
+							placement="bottomLeft"
 							value={[sortOption, sortOrder]}
 							options={SORT_OPTIONS_ORDERS}
 							onChange={handleSortOptionAndOrderChange}
