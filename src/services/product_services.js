@@ -25,7 +25,6 @@ export const fetchProducts = async (params) => {
 		const response = await axios_instance.get(URL);
 		return axios_response_handler(response);
 	} catch (error) {
-		console.log(error);
 		return error.response.data;
 	}
 };
