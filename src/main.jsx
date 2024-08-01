@@ -23,6 +23,7 @@ import FilterableCategoryTable from "./page/categories/FilterableCategoryTable.j
 import FilterableOrderTable from "./page/orders/FilterableOderTable.jsx";
 
 import Customer from "./page/customers/Customer.jsx";
+import UnauthorizedPage from "./page/auth/UnauthoziedPage.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -91,7 +92,9 @@ const router = createBrowserRouter([
 	// },
 	{
 		path: "/unauthorized",
-		element: <h1>403 - Unauthorized</h1>, // Simple Unauthorized page
+		element: (
+			<UnauthorizedPage />
+		)
 	},
 ]);
 
