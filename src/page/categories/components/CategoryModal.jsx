@@ -18,7 +18,7 @@ const CategoryModal = ({ open, onCancel, category }) => {
                : await updateCategory(category.id, values)
             if (result.success) {
                notify(NOTIFY_STATUS.success, result.message)
-               form.resetFields()
+               // form.resetFields([])
                onCancel(true)
             } else {
                notify(NOTIFY_STATUS.error, result.error ? result.error : result.message)
