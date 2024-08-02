@@ -76,7 +76,10 @@ const BannerList = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={showAddModal}>
+            <h1>Banners</h1>
+            <Button className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
+                size="large"
+                onClick={showAddModal}>
                 Add Banner
             </Button>
             <BannerTable banners={banners} onDelete={handleDelete} />
