@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react"
 
 import {
 	Button,
@@ -10,60 +10,54 @@ import {
 	Input,
 	Switch,
 	Cascader,
-} from "antd";
-const { Search } = Input;
+} from "antd"
+const { Search } = Input
 
-import { fetchCategories } from "../../services/category_services";
-import CategoryTable from "./components/CategoryTable";
-import CategoryModal from "./components/CategoryModal";
-
-const SORT_OPTIONS = [
-	{ value: "name", label: "Name" },
-	{ value: "create_at", label: "Create at" },
-];
-
-const SORT_ORDERS = [
-	{ value: "ASC", label: "ASC" },
-	{ value: "DESC", label: "DESC" },
-];
-
+import { fetchCategories } from "../../services/category_services"
+import CategoryTable from "./components/CategoryTable"
+import CategoryModal from "./components/CategoryModal"
 
 const SORT_OPTIONS_ORDERS = [
 	{
-		value: "modify_at", label: "Date modified",
+		value: "modify_at",
+		label: "Date modified",
 		children: [
 			{ value: "ASC", label: "Old to New" },
 			{ value: "DESC", label: "New to Old" },
-		]
+		],
 	},
 	{
-		value: "create_at", label: "Date added",
+		value: "create_at",
+		label: "Date added",
 		children: [
 			{ value: "ASC", label: "Old to New" },
 			{ value: "DESC", label: "New to Old" },
-		]
+		],
 	},
 	{
-		value: "name", label: "Name",
+		value: "name",
+		label: "Name",
 		children: [
 			{ value: "ASC", label: "A-Z" },
 			{ value: "DESC", label: "Z-A" },
-		]
+		],
 	},
 ]
 
+const DEFAULT_ITEM_PER_PAGE = 10
+
 const FilterableCategoryTable = () => {
-	const [categories, setCategories] = useState([]);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [itemsPerPage, setItemPerPage] = useState(10);
-	const [totalCategories, setTotalCategories] = useState(null);
-	const [sortOption, setSortOption] = useState("create_at");
-	const [sortOrder, setSortOrder] = useState("DESC");
-	const [textQuery, setTextQuery] = useState(null);
-	const [isActive, setIsActive] = useState(true);
-	const [error, setError] = useState(null); // Add error state
-	const [openCategoryModal, setOpenCategoryModal] = useState(false);
-	const [reloadPage, setReloadPage] = useState(false);
+	const [categories, setCategories] = useState([])
+	const [currentPage, setCurrentPage] = useState(1)
+	const [itemsPerPage, setItemPerPage] = useState(DEFAULT_ITEM_PER_PAGE)
+	const [totalCategories, setTotalCategories] = useState(null)
+	const [sortOption, setSortOption] = useState("create_at")
+	const [sortOrder, setSortOrder] = useState("DESC")
+	const [textQuery, setTextQuery] = useState(null)
+	const [isActive, setIsActive] = useState(true)
+	const [error, setError] = useState(null) // Add error state
+	const [openCategoryModal, setOpenCategoryModal] = useState(false)
+	const [reloadPage, setReloadPage] = useState(false)
 	let initialCategoryNumberIndex = (currentPage - 1) * itemsPerPage + 1
 
 	const fetchData = async () => {
@@ -75,24 +69,25 @@ const FilterableCategoryTable = () => {
 				sortBy: sortOption,
 				sortOrder: sortOrder,
 				isActive: isActive ? 1 : 0,
-			});
+			})
 			if (response.success && response.categories) {
-				setCategories(response.categories);
-				setTotalCategories(response.total_categories);
-				initialCategoryNumberIndex = (currentPage - 1) * itemsPerPage + 1
+				setCategories(response.categories)
+				setTotalCategories(response.total_categories)
+				initialCategoryNumberIndex =
+					(currentPage - 1) * itemsPerPage + 1
 			} else {
-				setError(response.message);
+				setError(response.message)
 			}
 		} catch (error) {
 			setError(
 				error.message || "An error occurred while fetching products"
-			);
+			)
 		} finally {
-			setReloadPage(false);
+			setReloadPage(false)
 		}
-	};
+	}
 	useEffect(() => {
-		fetchData();
+		fetchData()
 	}, [
 		currentPage,
 		itemsPerPage,
@@ -101,38 +96,45 @@ const FilterableCategoryTable = () => {
 		isActive,
 		textQuery,
 		reloadPage,
-	]);
+	])
 
 	useEffect(() => {
-		if (error) message.error(error);
-	}, [error]);
+		if (error) message.error(error)
+	}, [error])
 
 	const handlePageChange = (page) => {
 		initialCategoryNumberIndex = (page - 1) * itemsPerPage + 1
-		setCurrentPage(page);
-	};
+		setCurrentPage(page)
+	}
 
 	const handleShowSizeChange = (current, pageSize) => {
 		initialCategoryNumberIndex = (current - 1) * pageSize + 1
-		setCurrentPage(current);
-		setItemPerPage(pageSize);
-	};
+		setCurrentPage(current)
+		setItemPerPage(pageSize)
+	}
 
 	const handleCancelCategoryModal = (reloadingPage) => {
-		if (reloadingPage) setReloadPage(true);
-		setOpenCategoryModal(false);
-	};
+		if (reloadingPage) setReloadPage(true)
+		setOpenCategoryModal(false)
+	}
 
-	const handleIsActiveChange = (e) => setIsActive(!isActive);
+	const handleIsActiveChange = (e) => {
+		setIsActive(!isActive)
+		resetPageAndItemPerPage()
+	}
 
-	const handleSearch = (value, event, info) => setTextQuery(value);
+	const handleSearch = (value, event, info) => {
+		setTextQuery(value)
+		resetPageAndItemPerPage()
+	}
 
 	// Callback to trigger reload
 	const handleAction = useCallback(() => {
-		setReloadPage(true);
-	}, []);
+		setReloadPage(true)
+	}, [])
 
 	const handleSortOptionAndOrderChange = (values) => {
+		resetPageAndItemPerPage()
 		setSortOption(values[0])
 		setSortOrder(values[1])
 	}
@@ -140,10 +142,23 @@ const FilterableCategoryTable = () => {
 	const handleClearSortOptionAndOrder = () => {
 		setSortOption(null)
 		setSortOrder(null)
+		resetPageAndItemPerPage()
+	}
+
+	const resetPageAndItemPerPage = () => {
+		setCurrentPage(1)
+		setItemPerPage(DEFAULT_ITEM_PER_PAGE)
 	}
 
 	return (
-		<div className="m-4" style={{ display: "flex", flexDirection: "column", minHeight: "90vh" }}>
+		<div
+			className="m-4"
+			style={{
+				display: "flex",
+				flexDirection: "column",
+				minHeight: "90vh",
+			}}
+		>
 			<div style={{ flex: 1, overflow: "auto" }}>
 				<h1>Categories</h1>
 				<div className="flex items-center justify-between">
@@ -172,7 +187,7 @@ const FilterableCategoryTable = () => {
 							expandTrigger="hover"
 							allowClear
 							style={{
-								width: 250
+								width: 250,
 							}}
 							placement="bottomLeft"
 							value={[sortOption, sortOrder]}
@@ -182,7 +197,11 @@ const FilterableCategoryTable = () => {
 						/>
 					</Space>
 				</div>
-				<CategoryTable categories={categories} onAction={handleAction} initialIndex={initialCategoryNumberIndex} />
+				<CategoryTable
+					categories={categories}
+					onAction={handleAction}
+					initialIndex={initialCategoryNumberIndex}
+				/>
 			</div>
 			<Pagination
 				showSizeChanger
@@ -196,7 +215,7 @@ const FilterableCategoryTable = () => {
 				onCancel={handleCancelCategoryModal}
 			/>
 		</div>
-	);
-};
+	)
+}
 
-export default FilterableCategoryTable;
+export default FilterableCategoryTable
