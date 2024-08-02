@@ -1,5 +1,5 @@
-import React, { Children, lazy, useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { Children, lazy, useCallback, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import {
 	Pagination,
@@ -11,57 +11,63 @@ import {
 	Checkbox,
 	Cascader,
 	Switch,
-} from "antd";
-const { Search } = Input;
+} from "antd"
+const { Search } = Input
 
-import { fetchProducts } from "../../services/product_services";
-import { fetchAllCategories } from "../../services/category_services";
+import { fetchProducts } from "../../services/product_services"
+import { fetchAllCategories } from "../../services/category_services"
 
-import ProductModal from "./components/ProductModal";
-import ProductTable from "./components/ProductTable";
+import ProductModal from "./components/ProductModal"
+import ProductTable from "./components/ProductTable"
 
 const SORT_OPTIONS_ORDERS = [
 	{
-		value: "modify_at", label: "Date modified",
+		value: "modify_at",
+		label: "Date modified",
 		children: [
 			{ value: "ASC", label: "Old to New" },
 			{ value: "DESC", label: "New to Old" },
-		]
+		],
 	},
 	{
-		value: "create_at", label: "Date added",
+		value: "create_at",
+		label: "Date added",
 		children: [
 			{ value: "ASC", label: "Old to New" },
 			{ value: "DESC", label: "New to Old" },
-		]
+		],
 	},
 	{
-		value: "name", label: "Name",
+		value: "name",
+		label: "Name",
 		children: [
 			{ value: "ASC", label: "A-Z" },
 			{ value: "DESC", label: "Z-A" },
-		]
+		],
 	},
 	{
-		value: "quantity_in_stock", label: "Quantity",
+		value: "quantity_in_stock",
+		label: "Quantity",
 		children: [
 			{ value: "ASC", label: "Low to High" },
 			{ value: "DESC", label: "High to Low" },
-		]
+		],
 	},
 	{
-		value: "price", label: "Price",
+		value: "price",
+		label: "Price",
 		children: [
 			{ value: "ASC", label: "Low to High" },
 			{ value: "DESC", label: "High to Low" },
-		]
+		],
 	},
 	{
-		value: "sold_quantity", label: "Sold Quantity",
+		value: "sold_quantity",
+		label: "Sold Quantity",
 		children: [
 			{ value: "ASC", label: "Low to High" },
 			{ value: "DESC", label: "High to Low" },
-		]
+		],
 	},
 	// {
 	// 	value: "like_count", label: "Like Count",
@@ -72,20 +78,22 @@ const SORT_OPTIONS_ORDERS = [
 	// },
 ]
 
+const DEFAULT_ITEM_PER_PAGE = 10
+
 export default function FilterableProductTable() {
-	const [products, setProducts] = useState([]);
-	const [categories, setCategories] = useState([]);
-	const [category, setCategory] = useState(null);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [itemsPerPage, setItemPerPage] = useState(10); // Number of items per page
-	const [totalProducts, setTotalProducts] = useState(null);
-	const [openProductModal, setOpenProductModal] = useState(false);
-	const [reloadPage, setReloadPage] = useState(false);
-	const [sortOption, setSortOption] = useState("modify_at");
-	const [sortOrder, setSortOrder] = useState("DESC");
-	const [textQuery, setTextQuery] = useState(null);
-	const [isActive, setIsActive] = useState(true);
-	const [error, setError] = useState(null); // Add error state
+	const [products, setProducts] = useState([])
+	const [categories, setCategories] = useState([])
+	const [category, setCategory] = useState(null)
+	const [currentPage, setCurrentPage] = useState(1)
+	const [itemsPerPage, setItemPerPage] = useState(DEFAULT_ITEM_PER_PAGE) // Number of items per page
+	const [totalProducts, setTotalProducts] = useState(null)
+	const [openProductModal, setOpenProductModal] = useState(false)
+	const [reloadPage, setReloadPage] = useState(false)
+	const [sortOption, setSortOption] = useState("modify_at")
+	const [sortOrder, setSortOrder] = useState("DESC")
+	const [textQuery, setTextQuery] = useState(null)
+	const [isActive, setIsActive] = useState(true)
+	const [error, setError] = useState(null) // Add error state
 	let initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
 
 	useEffect(() => {
@@ -99,35 +107,36 @@ export default function FilterableProductTable() {
 					sortOrder: sortOrder,
 					isActive: isActive ? 1 : 0,
 					category: category,
-				});
+				})
 				if (response.success && response.products) {
-					setProducts(response.products); // Update customer list from API
-					setTotalProducts(response.total_products);
-					initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
+					setProducts(response.products) // Update customer list from API
+					setTotalProducts(response.total_products)
+					initialProductNumberIndex =
+						(currentPage - 1) * itemsPerPage + 1
 				} else {
-					setError(response.message);
+					setError(response.message)
 				}
 			} catch (error) {
-				setError(error.message);
+				setError(error.message)
 			} finally {
-				setReloadPage(false);
+				setReloadPage(false)
 			}
-		};
+		}
 		const fetchCategoryList = async () => {
 			try {
-				const response = await fetchAllCategories();
+				const response = await fetchAllCategories()
 				if (response.success && response.categories) {
 					const data = response.categories.map((cat) => {
-						return { value: cat.id, label: cat.name };
-					});
-					setCategories(data);
-				} else setError(response.message);
+						return { value: cat.id, label: cat.name }
+					})
+					setCategories(data)
+				} else setError(response.message)
 			} catch (error) {
-				setError(error.message);
+				setError(error.message)
 			}
-		};
-		fetchProductList(); // Fetch data on initial component load
-		fetchCategoryList();
+		}
+		fetchProductList() // Fetch data on initial component load
+		fetchCategoryList()
 	}, [
 		currentPage,
 		itemsPerPage,
@@ -137,43 +146,46 @@ export default function FilterableProductTable() {
 		isActive,
 		textQuery,
 		category,
-	]);
+	])
 
 	useEffect(() => {
 		if (error) {
-			message.error(error);
+			message.error(error)
 		}
-	}, [error]);
+	}, [error])
 
 	const handlePageChange = (page) => {
 		initialProductNumberIndex = (page - 1) * itemsPerPage + 1
-		setCurrentPage(page);
-	};
+		setCurrentPage(page)
+	}
 
 	const onShowSizeChange = (current, pageSize) => {
 		initialProductNumberIndex = (current - 1) * pageSize + 1
-		setCurrentPage(current);
-		setItemPerPage(pageSize);
-	};
-
-	const handleSortOptionChange = (value) => setSortOption(value);
-	const handleSortOrderChange = (value) => setSortOrder(value);
+		setCurrentPage(current)
+		setItemPerPage(pageSize)
+	}
 
 	const handleCancelProductModal = (reloadingPage) => {
-		if (reloadingPage) setReloadPage(true);
-		setOpenProductModal(false);
-	};
+		if (reloadingPage) setReloadPage(true)
+		setOpenProductModal(false)
+	}
 
-	const handleIsActiveChange = (e) => setIsActive(!isActive);
+	const handleIsActiveChange = (e) => setIsActive(!isActive)
 
-	const handleSearch = (value, event, info) => setTextQuery(value);
+	const handleSearch = (value, event, info) => {
+		setTextQuery(value)
+		resetPageAndItemPerPage()
+	}
 
-	const handleFilterOptionChange = (value, event, info) => setCategory(value);
+	const handleFilterOptionChange = (value, event, info) => {
+		setCategory(value)
+		resetPageAndItemPerPage()
+	}
 
 	// Callback to trigger reload
 	const handleAction = useCallback(() => {
-		setReloadPage(true);
-	}, []);
+		setReloadPage(true)
+	}, [])
 
 	const handleSortOptionAndOrderChange = (values) => {
 		setSortOption(values[0])
@@ -181,12 +193,25 @@ export default function FilterableProductTable() {
 	}
 
 	const handleClearSortOptionAndOrder = () => {
+		resetPageAndItemPerPage()
 		setSortOption(null)
 		setSortOrder(null)
 	}
 
+	const resetPageAndItemPerPage = () => {
+		setCurrentPage(1)
+		setItemPerPage(DEFAULT_ITEM_PER_PAGE)
+	}
+
 	return (
-		<div className="m-4" style={{ display: "flex", flexDirection: "column", minHeight: "90vh" }}>
+		<div
+			className="m-4"
+			style={{
+				display: "flex",
+				flexDirection: "column",
+				minHeight: "90vh",
+			}}
+		>
 			<div style={{ flex: 1, overflow: "auto" }}>
 				<h1>Products</h1>
 				<div className="flex items-center justify-between">
@@ -230,7 +255,7 @@ export default function FilterableProductTable() {
 						<Cascader
 							expandTrigger="hover"
 							style={{
-								width: 250
+								width: 250,
 							}}
 							placement="bottomLeft"
 							value={[sortOption, sortOrder]}
@@ -240,7 +265,11 @@ export default function FilterableProductTable() {
 						/>
 					</Space>
 				</div>
-				<ProductTable products={products} onAction={handleAction} initialIndex={initialProductNumberIndex} />
+				<ProductTable
+					products={products}
+					onAction={handleAction}
+					initialIndex={initialProductNumberIndex}
+				/>
 			</div>
 			<Pagination
 				showSizeChanger
@@ -255,5 +284,5 @@ export default function FilterableProductTable() {
 				categories={categories}
 			/>
 		</div>
-	);
+	)
 }
