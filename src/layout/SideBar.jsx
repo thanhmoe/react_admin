@@ -72,6 +72,13 @@ export const MENU_ITEMS = [
 			},
 		],
 	},
+	{
+		key: "banners",
+		icon: <AppstoreOutlined />,
+		label: "Banners",
+		path: "/banners",
+		roles: [USER_ROLES.admin],
+	},
 	// {
 	// 	key: "customers",
 	// 	icon: <UserOutlined />,
