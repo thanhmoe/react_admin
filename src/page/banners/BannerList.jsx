@@ -75,7 +75,7 @@ const BannerList = () => {
     };
 
     return (
-        <div>
+        <div style={{ margin: '1rem' }}>
             <h1>Banners</h1>
             <Button className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
                 size="large"
