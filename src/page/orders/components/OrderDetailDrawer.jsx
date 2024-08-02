@@ -1,22 +1,16 @@
-import {
-	Button,
-	Col,
-	Divider,
-	Drawer,
-	Popconfirm,
-	Row,
-	Space,
-	Tag,
-} from "antd";
-import { useEffect, useState } from "react";
+import { Button, Col, Divider, Drawer, Popconfirm, Row, Space, Tag } from "antd"
+import { useEffect, useState } from "react"
 
-import { fetchOrderDetails, updateOrderStatus } from "../../../services/order_services";
+import {
+	fetchOrderDetails,
+	updateOrderStatus,
+} from "../../../services/order_services"
 
 import {
 	getFormattedDate,
 	getFormattedTime,
 	formatISODate,
-} from "../../../utils/date_utils";
+} from "../../../utils/date_utils"
 
 import { notify } from "../../../utils/notify_utils"
 
@@ -30,16 +24,22 @@ import {
 	SendOutlined,
 	SyncOutlined,
 	WarningOutlined,
-} from "@ant-design/icons";
-import { NOTIFY_STATUS, ORDER_STATUS } from "../../../utils/constants";
+} from "@ant-design/icons"
+import { NOTIFY_STATUS, ORDER_STATUS } from "../../../utils/constants"
 
 const DescriptionItem = ({ title, content }) => (
 	<p className="text-sm">
 		<span className="font-semibold">{title}:</span> {content}
 	</p>
-);
+)
 
-const StatusUpdatePopConfirm = ({ title, onConfirm, buttonType, buttonText, icon }) => (
+const StatusUpdatePopConfirm = ({
+	title,
+	onConfirm,
+	buttonType,
+	buttonText,
+	icon,
+}) => (
 	<Popconfirm
 		title={title}
 		okText="Yes"
@@ -50,7 +50,7 @@ const StatusUpdatePopConfirm = ({ title, onConfirm, buttonType, buttonText, icon
 	>
 		<Button {...buttonType}>{buttonText}</Button>
 	</Popconfirm>
-);
+)
 
 const TableRow = ({ orderItem, indexNumber }) => {
 	return (
@@ -79,26 +79,32 @@ const TableRow = ({ orderItem, indexNumber }) => {
 				{orderItem.quantity * orderItem.price}
 			</td>
 		</tr>
-	);
-};
+	)
+}
 
-const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon }) => {
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const [orderDetail, setOrderDetail] = useState({});
-	const [listOrderItemRows, setListOrderItemRows] = useState([]);
+const OrderDetailDrawer = ({
+	open,
+	onCancel,
+	orderId,
+	statusColor,
+	statusIcon,
+}) => {
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(null)
+	const [orderDetail, setOrderDetail] = useState({})
+	const [listOrderItemRows, setListOrderItemRows] = useState([])
 
 	useEffect(() => {
-		if (open) fetchOrderDetail(orderId);
-	}, [open]);
+		if (open) fetchOrderDetail(orderId)
+	}, [open])
 
 	const fetchOrderDetail = async (id) => {
-		setLoading(true);
+		setLoading(true)
 
-		const response = await fetchOrderDetails(id);
+		const response = await fetchOrderDetails(id)
 		if (response.success && response.order) {
-			setOrderDetail(response.order);
-			setLoading(false);
+			setOrderDetail(response.order)
+			setLoading(false)
 
 			const rows = response.order.products.map((each, index) => (
 				<TableRow
@@ -106,16 +112,16 @@ const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon })
 					indexNumber={index + 1}
 					orderItem={each}
 				/>
-			));
-			setListOrderItemRows(rows);
+			))
+			setListOrderItemRows(rows)
 		} else {
-			setError(response.error);
+			setError(response.error)
 		}
-	};
+	}
 
 	const handleCancel = () => {
-		onCancel(false);
-	};
+		onCancel(false)
+	}
 
 	const handleUpdateOrderStatus = async (newStatus) => {
 		const result = await updateOrderStatus(orderId, newStatus)
@@ -140,18 +146,30 @@ const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon })
 							<>
 								<StatusUpdatePopConfirm
 									title="Are you sure to cancel this order?"
-									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.cancelled)}
+									onConfirm={() =>
+										handleUpdateOrderStatus(
+											ORDER_STATUS.cancelled
+										)
+									}
 									icon={<WarningOutlined />}
-									buttonType={{ type: "primary", danger: true }}
+									buttonType={{
+										type: "primary",
+										danger: true,
+									}}
 									buttonText="Cancel"
 								/>
 								<StatusUpdatePopConfirm
 									title="Are you sure to confirm this order?"
-									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.processing)}
+									onConfirm={() =>
+										handleUpdateOrderStatus(
+											ORDER_STATUS.processing
+										)
+									}
 									icon={<ScheduleOutlined />}
 									buttonType={{
 										type: "default",
-										className: "bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white",
+										className:
+											"bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white",
 									}}
 									buttonText="Confirm"
 								/>
@@ -161,18 +179,30 @@ const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon })
 							<>
 								<StatusUpdatePopConfirm
 									title="Are you sure to cancel this order?"
-									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.cancelled)}
+									onConfirm={() =>
+										handleUpdateOrderStatus(
+											ORDER_STATUS.cancelled
+										)
+									}
 									icon={<WarningOutlined />}
-									buttonType={{ type: "primary", danger: true }}
+									buttonType={{
+										type: "primary",
+										danger: true,
+									}}
 									buttonText="Cancel"
 								/>
 								<StatusUpdatePopConfirm
 									title="Are you sure to ship this order?"
-									onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.shipping)}
+									onConfirm={() =>
+										handleUpdateOrderStatus(
+											ORDER_STATUS.shipping
+										)
+									}
 									icon={<SendOutlined />}
 									buttonType={{
 										type: "default",
-										className: "bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white",
+										className:
+											"bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white",
 									}}
 									buttonText="Ship"
 								/>
@@ -181,7 +211,11 @@ const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon })
 						{orderDetail.status === ORDER_STATUS.shipping && (
 							<StatusUpdatePopConfirm
 								title="Are you sure to cancel this order?"
-								onConfirm={() => handleUpdateOrderStatus(ORDER_STATUS.cancelled)}
+								onConfirm={() =>
+									handleUpdateOrderStatus(
+										ORDER_STATUS.cancelled
+									)
+								}
 								icon={<WarningOutlined />}
 								buttonType={{ type: "primary", danger: true }}
 								buttonText="Cancel"
@@ -192,7 +226,11 @@ const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon })
 			>
 				<Space>
 					<p className="text-lg">Order Detail</p>
-					<Tag color={statusColor} icon={statusIcon}>
+					<Tag
+						className="uppercase"
+						color={statusColor}
+						icon={statusIcon}
+					>
 						{orderDetail.status}
 					</Tag>
 				</Space>
@@ -274,7 +312,7 @@ const OrderDetailDrawer = ({ open, onCancel, orderId, statusColor, statusIcon })
 				</div>
 			</Drawer>
 		</>
-	);
-};
+	)
+}
 
-export default OrderDetailDrawer;
+export default OrderDetailDrawer
