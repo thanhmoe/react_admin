@@ -192,7 +192,7 @@ const OrderDetailDrawer = ({
 									buttonText="Cancel"
 								/>
 								<StatusUpdatePopConfirm
-									title="Are you sure to ship this order?"
+									title="Are you sure this order about to be delivered?"
 									onConfirm={() =>
 										handleUpdateOrderStatus(
 											ORDER_STATUS.shipping
@@ -209,17 +209,37 @@ const OrderDetailDrawer = ({
 							</>
 						)}
 						{orderDetail.status === ORDER_STATUS.shipping && (
-							<StatusUpdatePopConfirm
-								title="Are you sure to cancel this order?"
-								onConfirm={() =>
-									handleUpdateOrderStatus(
-										ORDER_STATUS.cancelled
-									)
-								}
-								icon={<WarningOutlined />}
-								buttonType={{ type: "primary", danger: true }}
-								buttonText="Cancel"
-							/>
+							<>
+								<StatusUpdatePopConfirm
+									title="Are you sure to cancel this order?"
+									onConfirm={() =>
+										handleUpdateOrderStatus(
+											ORDER_STATUS.cancelled
+										)
+									}
+									icon={<WarningOutlined />}
+									buttonType={{
+										type: "primary",
+										danger: true,
+									}}
+									buttonText="Cancel"
+								/>
+								<StatusUpdatePopConfirm
+									title="Are you sure this order delivered?"
+									onConfirm={() =>
+										handleUpdateOrderStatus(
+											ORDER_STATUS.delivered
+										)
+									}
+									icon={<WarningOutlined />}
+									buttonType={{
+										type: "primary",
+										className:
+											"bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white",
+									}}
+									buttonText="Finish"
+								/>
+							</>
 						)}
 					</Space>
 				}
