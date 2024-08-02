@@ -1,47 +1,47 @@
-import { Button, Space, Tag } from "antd";
+import { Button, Space, Tag } from "antd"
 
 import {
 	formatISODate,
 	getFormattedTime,
 	getFormattedDate,
-} from "../../../utils/date_utils";
-import OrderDetailDrawer from "./OrderDetailDrawer";
-import { useCallback, useEffect, useState } from "react";
+} from "../../../utils/date_utils"
+import OrderDetailDrawer from "./OrderDetailDrawer"
+import { useCallback, useEffect, useState } from "react"
 import {
 	CheckCircleOutlined,
 	ClockCircleOutlined,
 	CloseCircleOutlined,
 	DropboxOutlined,
-	SyncOutlined
+	SyncOutlined,
 } from "@ant-design/icons"
 
 const OrderTableRow = ({ order, indexNumber, onAction }) => {
 	const [openDetailDrawer, setOpenDetailDrawer] = useState(false)
-	const [statusColor, setStatusColor] = useState(null);
-	const [statusIcon, setStatusIcon] = useState(null);
+	const [statusColor, setStatusColor] = useState(null)
+	const [statusIcon, setStatusIcon] = useState(null)
 
 	useEffect(() => {
 		switch (order.status) {
 			case "pending":
-				setStatusColor("default");
-				setStatusIcon(<ClockCircleOutlined />);
-				break;
+				setStatusColor("default")
+				setStatusIcon(<ClockCircleOutlined />)
+				break
 			case "processing":
-				setStatusColor("processing");
-				setStatusIcon(<DropboxOutlined />);
-				break;
+				setStatusColor("processing")
+				setStatusIcon(<DropboxOutlined />)
+				break
 			case "shipping":
-				setStatusColor("cyan");
-				setStatusIcon(<SyncOutlined spin />);
-				break;
+				setStatusColor("cyan")
+				setStatusIcon(<SyncOutlined spin />)
+				break
 			case "delivered":
-				setStatusColor("green");
-				setStatusIcon(<CheckCircleOutlined />);
-				break;
+				setStatusColor("green")
+				setStatusIcon(<CheckCircleOutlined />)
+				break
 			case "cancelled":
-				setStatusColor("error");
-				setStatusIcon(<CloseCircleOutlined />);
-				break;
+				setStatusColor("error")
+				setStatusIcon(<CloseCircleOutlined />)
+				break
 		}
 	}, [order])
 
@@ -57,7 +57,9 @@ const OrderTableRow = ({ order, indexNumber, onAction }) => {
 		<>
 			<tr>
 				<td className="border border-slate-600 p-2">{indexNumber}</td>
-				<td className="border border-slate-600 p-2 text-blue-500 font-semibold">{order.order_id}</td>
+				<td className="border border-slate-600 p-2 text-blue-500 font-semibold">
+					{order.order_id}
+				</td>
 				<td className="border border-slate-600 p-2 text-left text-ellipsis">
 					{order.customer_email}
 				</td>
@@ -74,7 +76,13 @@ const OrderTableRow = ({ order, indexNumber, onAction }) => {
 					</div>
 				</td>
 				<td className="border border-slate-600 p-2 text-left whitespace-nowrap">
-					<Tag color={statusColor} icon={statusIcon}>{order.status}</Tag>
+					<Tag
+						className="uppercase"
+						color={statusColor}
+						icon={statusIcon}
+					>
+						{order.status}
+					</Tag>
 				</td>
 				<td className="border border-slate-600 p-2 text-left whitespace-nowrap">
 					<Space wrap direction="horizontal" size="small">
@@ -96,7 +104,7 @@ const OrderTableRow = ({ order, indexNumber, onAction }) => {
 				statusIcon={statusIcon}
 			/>
 		</>
-	);
-};
+	)
+}
 
-export default OrderTableRow;
+export default OrderTableRow
