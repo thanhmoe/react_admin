@@ -1,31 +1,23 @@
-import { Button, Modal, Space } from "antd";
-import { useCallback, useState } from "react";
-import Icon, { DeleteOutlined } from '@ant-design/icons'
+import { Button, Modal } from "antd";
+import { useState } from "react";
+import { DeleteOutlined } from '@ant-design/icons';
 import {
     getFormattedTime,
     getFormattedDate,
 } from "../../../utils/date_utils";
 
-import { deleteBanner } from "../../../services/bannerServices";
-
-const BannerTableRow = ({ banner, fetchData }) => {
-    const [isModalVisible, setIsModalVisible] = useState(false)
+const BannerTableRow = ({ banner, onDelete }) => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showDeleteModal = () => {
         setIsModalVisible(true);
     };
+
     const handleOk = async () => {
-        try {
-            const res = await deleteBanner(banner.id);
-            if (res.success) {
-                fetchData(); // Refresh banner list
-                setIsModalVisible(false);
-                console.log(123123);
-            }
-        } catch (error) {
-            console.error("Failed to delete banner:", error.message);
-        }
+        await onDelete(banner.id);
+        setIsModalVisible(false);
     };
+
     const handleCancel = () => {
         setIsModalVisible(false);
     };

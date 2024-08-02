@@ -1,8 +1,8 @@
 import BannerTableRow from "./BannerTableRow";
 
-const BannerTable = ({ banners }) => {
+const BannerTable = ({ banners, onDelete }) => {
     const rows = banners.map((each) => (
-        <BannerTableRow key={each.id} banner={each} />
+        <BannerTableRow key={each.id} banner={each} onDelete={onDelete} />
     ));
 
     return (

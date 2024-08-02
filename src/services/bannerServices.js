@@ -26,3 +26,17 @@ export const deleteBanner = async (id) => {
         
     }
 };
+
+export const addBanner = async (data) => {
+    try {
+        const response = await axios_instance.post(`${API_PATH}/add`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return axios_response_handler(response);
+
+    } catch (error) {
+        return error.response.data   
+    }
+};
