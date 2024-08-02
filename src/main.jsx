@@ -25,6 +25,8 @@ import FilterableOrderTable from "./page/orders/FilterableOderTable.jsx";
 import Customer from "./page/customers/Customer.jsx";
 import UnauthorizedPage from "./page/auth/UnauthoziedPage.jsx";
 
+import BannerList from "./page/banners/BannerList.jsx";
+
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -76,6 +78,16 @@ const router = createBrowserRouter([
 			<ProtectedRoute allowedRoles={[USER_ROLES.staff]}>
 				<MainLayout>
 					<FilterableOrderTable />
+				</MainLayout>
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: "/banners",
+		element: (
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+				<MainLayout>
+					<BannerList />
 				</MainLayout>
 			</ProtectedRoute>
 		),
