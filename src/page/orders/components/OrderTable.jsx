@@ -1,4 +1,4 @@
-import OrderTableRow from "./OrderTableRow";
+import OrderTableRow from "./OrderTableRow"
 
 const OrderTable = ({ orders, initialIndex, onAction }) => {
 	const rows = orders.map((each) => {
@@ -9,8 +9,8 @@ const OrderTable = ({ orders, initialIndex, onAction }) => {
 				indexNumber={initialIndex++}
 				onAction={onAction}
 			/>
-		);
-	});
+		)
+	})
 
 	return (
 		<div className="overflow-x-auto my-2">
@@ -26,10 +26,13 @@ const OrderTable = ({ orders, initialIndex, onAction }) => {
 						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wide w-1/5">
 							Customer
 						</th>
-						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
-							Total Amount ($)
+						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wide">
+							Phone Number
 						</th>
-						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wider w-2/5">
+						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
+							Total ($)
+						</th>
+						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wider w-1/5">
 							Note
 						</th>
 						<th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
@@ -46,7 +49,7 @@ const OrderTable = ({ orders, initialIndex, onAction }) => {
 				<tbody>{rows}</tbody>
 			</table>
 		</div>
-	);
-};
+	)
+}
 
-export default OrderTable;
+export default OrderTable
