@@ -37,7 +37,8 @@ const BannerList = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [currentPage,
+        itemsPerPage,]);
 
     const showAddModal = () => {
         setIsModalVisible(true);
@@ -75,37 +76,42 @@ const BannerList = () => {
             notify(NOTIFY_STATUS.error, "Failed to delete banner");
         }
     };
+
     const handlePageChange = (page) => {
         initialProductNumberIndex = (page - 1) * itemsPerPage + 1
         setCurrentPage(page);
     };
+
     const onShowSizeChange = (current, pageSize) => {
         initialProductNumberIndex = (current - 1) * pageSize + 1
         setCurrentPage(current);
         setItemPerPage(pageSize);
     };
+
     return (
-        <div style={{ margin: '1rem' }}>
-            <h1>Banners</h1>
-            <Button className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
-                size="large"
-                onClick={showAddModal}>
-                Add Banner
-            </Button>
-            <BannerTable banners={banners} onDelete={handleDelete} initialIndex={initialProductNumberIndex} />
-            <BannerModal
-                open={isModalVisible}
-                onCancel={handleCancel}
-                onSubmit={handleAdd}
-            />
-            <Pagination
+        <>
+            <div style={{ margin: '1rem', minHeight: '90vh' }}>
+                <h1>Banners</h1>
+                <Button className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
+                    size="large"
+                    onClick={showAddModal}>
+                    Add Banner
+                </Button>
+                <BannerTable banners={banners} onDelete={handleDelete} initialIndex={initialProductNumberIndex} />
+                <BannerModal
+                    open={isModalVisible}
+                    onCancel={handleCancel}
+                    onSubmit={handleAdd}
+                />
+            </div>
+            <Pagination style={{ marginBottom: '2rem' }}
                 showSizeChanger
                 onShowSizeChange={onShowSizeChange}
                 current={currentPage}
                 total={totalBanner}
                 onChange={handlePageChange}
             />
-        </div>
+        </>
     );
 };
 
