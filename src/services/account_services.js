@@ -49,3 +49,12 @@ export const resetPassword = async (data) => {
 		return error.response.data;
 	}
 };
+
+export const updatePassword = async (data) => {
+	try {
+		const response = await axios_instance.patch(`${API_PATH}/update-password`, data);
+		return axios_response_handler(response)
+	} catch (error) {
+		return error.response.data;
+	}
+}
