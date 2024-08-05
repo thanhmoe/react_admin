@@ -26,6 +26,7 @@ import Customer from "./page/customers/Customer.jsx";
 import UnauthorizedPage from "./page/auth/UnauthoziedPage.jsx";
 
 import BannerList from "./page/banners/BannerList.jsx";
+import { RecoverPassword } from "./page/auth/RecoverPassword.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -91,6 +92,12 @@ const router = createBrowserRouter([
 				</MainLayout>
 			</ProtectedRoute>
 		),
+	},
+	{
+		path: "/recover-password",
+		element: (
+			<RecoverPassword />
+		)
 	},
 	// {
 	// 	path: "/customers",
