@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import { Button, Image, Modal } from "antd";
 import { useState } from "react";
 import { DeleteOutlined } from '@ant-design/icons';
 import {
@@ -28,7 +28,7 @@ const BannerTableRow = ({ banner, onDelete, indexNumber }) => {
                 <td className="border border-slate-600 p-2">{indexNumber}</td>
                 <td className="border border-slate-600 p-2 text-blue-500 font-semibold">{banner.id}</td>
                 <td className="border border-slate-600 p-2 whitespace-nowrap">
-                    <img
+                    <Image
                         className="w-32 h-32 object-contain"
                         src={banner.image}
                         alt=""
@@ -39,6 +39,9 @@ const BannerTableRow = ({ banner, onDelete, indexNumber }) => {
                 </td>
                 <td className="border border-slate-600 p-2 text-left text-ellipsis">
                     {banner.descriptions}
+                </td>
+                <td className="border border-slate-600 p-2 text-left text-ellipsis">
+                    {banner.product_id}
                 </td>
                 <td className="border border-slate-600 p-2 text-right whitespace-nowrap">
                     <div className="flex flex-col items-end">
