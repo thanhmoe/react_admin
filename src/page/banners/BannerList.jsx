@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Pagination } from "antd";
 import BannerTable from "./components/BannerTable";
 import BannerModal from "./components/BannerModal";
 import { fetchBanners, deleteBanner, addBanner } from "../../services/bannerServices";
@@ -10,11 +10,13 @@ const BannerList = () => {
     const [banners, setBanners] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemPerPage] = useState(10);
+    const [totalBanner, setTotalBanner] = useState(null);
     const [sortOption, setSortOption] = useState("create_at");
     const [sortOrder, setSortOrder] = useState("DESC");
     const [error, setError] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedBanner, setSelectedBanner] = useState(null);
+    let initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
+
 
     const fetchData = async () => {
         try {
@@ -26,6 +28,7 @@ const BannerList = () => {
             });
             if (res.success) {
                 setBanners(res.banners);
+                setTotalBanner(res.total)
             }
         } catch (error) {
             setError(error.message);
@@ -37,7 +40,6 @@ const BannerList = () => {
     }, []);
 
     const showAddModal = () => {
-        setSelectedBanner(null);
         setIsModalVisible(true);
     };
 
@@ -73,7 +75,15 @@ const BannerList = () => {
             notify(NOTIFY_STATUS.error, "Failed to delete banner");
         }
     };
-
+    const handlePageChange = (page) => {
+        initialProductNumberIndex = (page - 1) * itemsPerPage + 1
+        setCurrentPage(page);
+    };
+    const onShowSizeChange = (current, pageSize) => {
+        initialProductNumberIndex = (current - 1) * pageSize + 1
+        setCurrentPage(current);
+        setItemPerPage(pageSize);
+    };
     return (
         <div style={{ margin: '1rem' }}>
             <h1>Banners</h1>
@@ -82,11 +92,18 @@ const BannerList = () => {
                 onClick={showAddModal}>
                 Add Banner
             </Button>
-            <BannerTable banners={banners} onDelete={handleDelete} />
+            <BannerTable banners={banners} onDelete={handleDelete} initialIndex={initialProductNumberIndex} />
             <BannerModal
                 open={isModalVisible}
                 onCancel={handleCancel}
                 onSubmit={handleAdd}
+            />
+            <Pagination
+                showSizeChanger
+                onShowSizeChange={onShowSizeChange}
+                current={currentPage}
+                total={totalBanner}
+                onChange={handlePageChange}
             />
         </div>
     );

@@ -110,7 +110,7 @@ const BannerModal = ({ open, onCancel, onSubmit, banner }) => {
                 </Form.Item>
                 <Form.Item
                     name="product_id"
-                    label="Product ID"
+                    label="Product"
                 >
                     <Select
                         options={products}
