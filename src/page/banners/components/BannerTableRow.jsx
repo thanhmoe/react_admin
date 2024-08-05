@@ -6,7 +6,7 @@ import {
     getFormattedDate,
 } from "../../../utils/date_utils";
 
-const BannerTableRow = ({ banner, onDelete }) => {
+const BannerTableRow = ({ banner, onDelete, indexNumber }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showDeleteModal = () => {
@@ -25,6 +25,7 @@ const BannerTableRow = ({ banner, onDelete }) => {
     return (
         <>
             <tr>
+                <td className="border border-slate-600 p-2">{indexNumber}</td>
                 <td className="border border-slate-600 p-2 text-blue-500 font-semibold">{banner.id}</td>
                 <td className="border border-slate-600 p-2 whitespace-nowrap">
                     <img

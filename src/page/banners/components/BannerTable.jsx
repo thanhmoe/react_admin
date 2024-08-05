@@ -1,8 +1,8 @@
 import BannerTableRow from "./BannerTableRow";
 
-const BannerTable = ({ banners, onDelete }) => {
+const BannerTable = ({ banners, onDelete, initialIndex }) => {
     const rows = banners.map((each) => (
-        <BannerTableRow key={each.id} banner={each} onDelete={onDelete} />
+        <BannerTableRow key={each.id} banner={each} onDelete={onDelete} indexNumber={initialIndex++} />
     ));
 
     return (
@@ -10,6 +10,9 @@ const BannerTable = ({ banners, onDelete }) => {
             <table className="min-w-full divide-y divide-gray-700 border table-auto">
                 <thead className="bg-green-200 divide-y">
                     <tr>
+                        <th className="border border-slate-600 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wide whitespace-nowrap max-w-min">
+                            No
+                        </th>
                         <th className="border border-slate-700 p-2 text-left text-xs font-medium text-gray-800 uppercase tracking-wide whitespace-nowrap max-w-min">
                             ID
                         </th>
