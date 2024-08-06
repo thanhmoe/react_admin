@@ -170,7 +170,7 @@ const ProductDetailPage = () => {
 								<Descriptions.Item label="Price">
 									$ {product.price}
 								</Descriptions.Item>
-								<Descriptions.Item label="Reaction">
+								{/* <Descriptions.Item label="Reaction">
 									<Space direction="vertical" size={"small"}>
 										<Tag
 											icon={<LikeOutlined />}
@@ -185,7 +185,7 @@ const ProductDetailPage = () => {
 											{product.dislike_count}
 										</Tag>
 									</Space>
-								</Descriptions.Item>
+								</Descriptions.Item> */}
 								<Descriptions.Item label="In Stock">
 									{product.quantity_in_stock}
 								</Descriptions.Item>
@@ -212,7 +212,7 @@ const ProductDetailPage = () => {
 					</div>
 				</Card>
 				<Divider />
-				<div style={{ width: "100%" }}>
+				{/* <div style={{ width: "100%" }}>
 					<Row gutter={16}>
 						<Col span={16}>
 							<Card title="Monthly revenue & sale units">
@@ -273,7 +273,7 @@ const ProductDetailPage = () => {
 							</Space>
 						</Col>
 					</Row>
-				</div>
+				</div> */}
 			</div>
 			<ProductModal
 				open={open}
