@@ -11,6 +11,7 @@ import {
 
 import ProductModal from "./ProductModal";
 import ProductConfirmStatusChangeModal from "./ProductConfirmStatusChangeModal";
+import { CheckOutlined, CloseOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 
 const ProductTableRow = ({ product, onAction, indexNumber }) => {
 	const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -55,14 +56,6 @@ const ProductTableRow = ({ product, onAction, indexNumber }) => {
 				{product.price}
 			</td>
 			<td className="border border-slate-600 p-2 flex-1 text-right">
-				<div className="flex flex-col items-end space-y-1">
-					<span className="text-green-500">{product.like_count}</span>
-					<span className="text-red-500">
-						{product.dislike_count}
-					</span>
-				</div>
-			</td>
-			<td className="border border-slate-600 p-2 flex-1 text-right">
 				{product.sold_quantity}
 			</td>
 			<td className="border border-slate-600 p-2 text-right whitespace-nowrap">
@@ -78,32 +71,32 @@ const ProductTableRow = ({ product, onAction, indexNumber }) => {
 				</div>
 			</td>
 			<td className="border border-slate-600 p-2 text-left whitespace-nowrap">
-				<Space wrap direction="horizontal" size="small">
+				<Space wrap direction="horizontal">
 					<Button
 						className="bg-transparent border !border-yellow-600 text-yellow-600 hover:!bg-yellow-600 hover:!text-white"
 						onClick={() => setOpenUpdateModal(true)}
+						icon={<EditOutlined />}
 					>
-						Edit
 					</Button>
 					<Button
 						className="bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white"
 						onClick={handleViewDetail}
+						icon={<SearchOutlined />}
 					>
-						View
 					</Button>
 					{product.is_active ? (
 						<Button
 							className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white"
 							onClick={() => setOpenConfirmModal(true)}
+							icon={<CloseOutlined />}
 						>
-							Disable
 						</Button>
 					) : (
 						<Button
 							className="bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white"
 							onClick={() => setOpenConfirmModal(true)}
+							icon={<CheckOutlined />}
 						>
-							Enable
 						</Button>
 					)}
 				</Space>
