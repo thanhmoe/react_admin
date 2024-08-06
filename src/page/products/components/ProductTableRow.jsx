@@ -11,7 +11,7 @@ import {
 
 import ProductModal from "./ProductModal";
 import ProductConfirmStatusChangeModal from "./ProductConfirmStatusChangeModal";
-import { CheckOutlined, CloseOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined, EditOutlined, EyeOutlined, SearchOutlined } from "@ant-design/icons";
 
 const ProductTableRow = ({ product, onAction, indexNumber }) => {
 	const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -81,7 +81,7 @@ const ProductTableRow = ({ product, onAction, indexNumber }) => {
 					<Button
 						className="bg-transparent border !border-blue-600 text-blue-600 hover:!bg-blue-600 hover:!text-white"
 						onClick={handleViewDetail}
-						icon={<SearchOutlined />}
+						icon={<EyeOutlined />}
 					>
 					</Button>
 					{product.is_active ? (

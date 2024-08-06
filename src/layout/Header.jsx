@@ -62,7 +62,7 @@ const Header = () => {
 		<header>
 			<div>
 				<h1 className="label-header" onClick={() => navigate("/")}>
-					Mortendo: {userData.role}
+					Bartendo: {userData.role}
 				</h1>
 			</div>
 			<Modal
