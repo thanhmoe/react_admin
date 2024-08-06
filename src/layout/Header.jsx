@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logOutStaff, updatePassword } from "../services/account_services";
 import "./index.css";
-import { Dropdown, Form, Input, Modal, Space } from "antd";
+import { Dropdown, Form, Input, Modal, Space, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { notify } from "../utils/notify_utils";
 import { clearUserData, getUserData } from "../utils/user_data_utils";
 import { NOTIFY_STATUS } from "../utils/constants";
+const { Text, Link } = Typography;
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -22,7 +23,11 @@ const Header = () => {
 		},
 		{
 			key: "2	",
-			label: <a onClick={() => handleSignOut()}>Sign Out</a>,
+			label: <a onClick={() => handleSignOut()}>
+				<Text type="danger">
+					Sign Out
+				</Text>
+			</a>,
 		},
 	];
 
