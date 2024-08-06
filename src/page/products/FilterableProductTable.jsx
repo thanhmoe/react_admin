@@ -170,7 +170,10 @@ export default function FilterableProductTable() {
 		setOpenProductModal(false)
 	}
 
-	const handleIsActiveChange = (e) => setIsActive(!isActive)
+	const handleIsActiveChange = (e) => {
+		setIsActive(!isActive)
+		resetPageAndItemPerPage()
+	}
 
 	const handleSearch = (value, event, info) => {
 		setTextQuery(value)
@@ -216,7 +219,7 @@ export default function FilterableProductTable() {
 				<h1>Products</h1>
 				<div className="flex items-center justify-between">
 					<Button
-						className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
+						className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600 my-2"
 						size="large"
 						onClick={() => setOpenProductModal(true)}
 					>
