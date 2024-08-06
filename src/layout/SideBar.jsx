@@ -6,6 +6,7 @@ import {
 	UserOutlined,
 	ShopOutlined,
 	AppstoreOutlined,
+	ProfileOutlined,
 } from "@ant-design/icons";
 import { USER_ROLES } from "../utils/constants";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -74,7 +75,7 @@ export const MENU_ITEMS = [
 	},
 	{
 		key: "banners",
-		icon: <AppstoreOutlined />,
+		icon: <ProfileOutlined />,
 		label: "Banners",
 		path: "/banners",
 		roles: [USER_ROLES.admin],

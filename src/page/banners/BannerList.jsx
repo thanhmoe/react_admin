@@ -15,7 +15,7 @@ const BannerList = () => {
     const [sortOrder, setSortOrder] = useState("DESC");
     const [error, setError] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    let initialProductNumberIndex = (currentPage - 1) * itemsPerPage + 1
+    let initialBannerNumberIndex = (currentPage - 1) * itemsPerPage + 1
 
 
     const fetchData = async () => {
@@ -78,12 +78,12 @@ const BannerList = () => {
     };
 
     const handlePageChange = (page) => {
-        initialProductNumberIndex = (page - 1) * itemsPerPage + 1
+        initialBannerNumberIndex = (page - 1) * itemsPerPage + 1
         setCurrentPage(page);
     };
 
     const onShowSizeChange = (current, pageSize) => {
-        initialProductNumberIndex = (current - 1) * pageSize + 1
+        initialBannerNumberIndex = (current - 1) * pageSize + 1
         setCurrentPage(current);
         setItemPerPage(pageSize);
     };
@@ -92,12 +92,12 @@ const BannerList = () => {
         <>
             <div style={{ margin: '1rem', minHeight: '90vh' }}>
                 <h1>Banners</h1>
-                <Button className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
+                <Button className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600 my-2"
                     size="large"
                     onClick={showAddModal}>
                     Add Banner
                 </Button>
-                <BannerTable banners={banners} onDelete={handleDelete} initialIndex={initialProductNumberIndex} />
+                <BannerTable banners={banners} onDelete={handleDelete} initialIndex={initialBannerNumberIndex} />
                 <BannerModal
                     open={isModalVisible}
                     onCancel={handleCancel}
