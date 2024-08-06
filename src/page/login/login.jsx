@@ -6,17 +6,17 @@ import { setUserData } from "../../utils/user_data_utils";
 import { notify } from "../../utils/notify_utils";
 import { NOTIFY_STATUS } from "../../utils/constants";
 import { useAuth } from "../../context/AuthContext";
+import { Button, Checkbox, Flex, Form, Input, Space } from "antd";
+import Title from "antd/es/typography/Title";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const Login = () => {
-	const [user, setUser] = useState({ email: "", password: "" });
 	const { login } = useAuth();
 	const navigate = useNavigate();
 
-	const handleLogin = async (e) => {
-		e.preventDefault();
-
+	const handleLogin = async (values) => {
 		try {
-			const response = await loginStaff(user);
+			const response = await loginStaff(values);
 			if (response.success) {
 				login(response.data);
 				navigate("/");
@@ -29,44 +29,84 @@ const Login = () => {
 		}
 	};
 
-	const handleInputChange = (type, value) => {
-		setUser({
-			...user,
-			[type]: value,
-		});
+	const onFinish = (values) => {
+		handleLogin(values)
 	};
 
+	const handleForgotPassword = () => {
+		navigate("/recover-password")
+	}
+
 	return (
-		<div className="login-container">
-			<form className="login-form" onSubmit={handleLogin}>
-				<h2>Login</h2>
-				<div className="form-group">
-					<label htmlFor="username">Username</label>
-					<input
-						type="text"
-						id="username"
-						value={user.email}
-						onChange={(e) =>
-							handleInputChange("email", e.target.value)
-						}
-					/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="password">Password</label>
-					<input
-						type="password"
-						id="password"
-						value={user.password}
-						onChange={(e) =>
-							handleInputChange("password", e.target.value)
-						}
-					/>
-				</div>
-				<button className="btn-login" type="submit">
+		<Flex
+			gap="middle"
+			align="center"
+			justify="center"
+			vertical
+
+		>
+			<Space
+				direction="vertical"
+				style={{
+					maxWidth: 600,
+					border: "2px solid #ccc",
+					padding: "20px 20px 0 20px",
+					borderRadius: "5px"
+				}}
+			>
+				<Title
+					level={2}
+					align="center"
+				>
 					Login
-				</button>
-			</form>
-		</div>
+				</Title>
+				<Form
+					name="basic"
+					onFinish={onFinish}
+				>
+					<Form.Item
+						name="email"
+						rules={[
+							{
+								required: true,
+								message: 'Please input your email!',
+							},
+						]}
+					>
+						<Input
+							prefix={<UserOutlined />}
+							placeholder="Email"
+							size="large"
+						/>
+					</Form.Item>
+
+					<Form.Item
+						name="password"
+						rules={[
+							{
+								required: true,
+								message: 'Please input your password!',
+							},
+						]}
+					>
+						<Input.Password
+							prefix={<LockOutlined />}
+							placeholder="Password"
+							size="large"
+						/>
+					</Form.Item>
+
+					<Form.Item>
+						<Flex justify="space-around" align="center">
+							<Button type="primary" htmlType="submit" style={{ width: 100 }}>
+								Login
+							</Button>
+							<Button onClick={handleForgotPassword}>Forgot Password</Button>
+						</Flex>
+					</Form.Item>
+				</Form>
+			</Space>
+		</Flex>
 	);
 };
 
