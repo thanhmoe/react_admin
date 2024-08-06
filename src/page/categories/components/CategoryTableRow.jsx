@@ -7,6 +7,7 @@ import {
 	getFormattedTime,
 } from "../../../utils/date_utils";
 import CategoryConfirmStatusChangeModal from "./CategoryConfirmStatusChangeModal";
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 
 const CategoryTableRow = ({ category, onAction, indexNumber }) => {
 	const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -51,28 +52,25 @@ const CategoryTableRow = ({ category, onAction, indexNumber }) => {
 						<span>{getFormattedTime(category.create_at)}</span>
 					</div>
 				</td>
-				<td className="border border-slate-600 p-2 flex-1 text-right">
-					<Space>
+				<td className="border border-slate-600 p-2 text-left whitespace-nowrap">
+					<Space className="" >
 						<Button
 							className="bg-transparent border !border-yellow-600 text-yellow-600 hover:!bg-yellow-600 hover:!text-white"
 							onClick={() => setOpenUpdateModal(true)}
-						>
-							Edit
-						</Button>
+							icon={<EditOutlined />}
+						/>
 						{category.is_active ? (
 							<Button
 								className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white"
 								onClick={() => setOpenConfirmModal(true)}
-							>
-								Disable
-							</Button>
+								icon={<CloseOutlined />}
+							/>
 						) : (
 							<Button
 								className="bg-transparent border !border-green-600 text-green-600 hover:!bg-green-600 hover:!text-white"
 								onClick={() => setOpenConfirmModal(true)}
-							>
-								Enable
-							</Button>
+								icon={<CheckOutlined />}
+							/>
 						)}
 					</Space>
 				</td>

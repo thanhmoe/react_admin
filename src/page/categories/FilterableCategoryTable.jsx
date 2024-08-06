@@ -163,7 +163,7 @@ const FilterableCategoryTable = () => {
 				<h1>Categories</h1>
 				<div className="flex items-center justify-between">
 					<Button
-						className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600"
+						className="bg-green-600 text-white hover:!text-green-600 hover:!border-green-600 my-2"
 						size="large"
 						onClick={() => setOpenCategoryModal(true)}
 					>
