@@ -138,12 +138,14 @@ export const RecoverPassword = () => {
          switch (current) {
             case 0:
                response = await requestRecoverPassword({ email: email })
+               message.success({ content: "OTP sent to your mail!", key: 'process', duration: 2 });
                break;
             case 1:
                response = await sendVerifyOTP({
                   email: email,
                   otp: otp
                })
+               message.success({ content: "OTP accepted!", key: 'process', duration: 2 });
                break
             case 2:
                if (newPass == newPassConfirm) {
@@ -152,6 +154,7 @@ export const RecoverPassword = () => {
                      newPass: newPass
                   })
                }
+               message.success({ content: "Password updated, login with new password!", key: 'process', duration: 2 });
                break
             default:
                break
@@ -159,7 +162,6 @@ export const RecoverPassword = () => {
          if (!response.success) {
             message.error({ content: response.message, key: "process" })
          } else {
-            message.success({ content: "OTP sent to your mail!", key: 'process', duration: 2 });
             if (current < steps.length - 1) {
                setCurrent(current + 1)
                setOTP(null)
@@ -181,9 +183,9 @@ export const RecoverPassword = () => {
          await requestRecoverPassword({ email: email })
          setResendDisabled(true)
          setCountDown(30)
-         message.success({ content: "OTP sent to your mail!", key: "process", duration: 2 })
+         message.success({ content: "New OTP sent to your mail!", key: "process", duration: 2 })
       } catch (error) {
-         message.error('Failed to resend OTP')
+         message.error({ content: 'Failed to resend OTP', key: "process", duration: 1.5 })
       }
    }
 
