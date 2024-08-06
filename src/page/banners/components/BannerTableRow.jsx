@@ -49,13 +49,12 @@ const BannerTableRow = ({ banner, onDelete, indexNumber }) => {
                         <span>{getFormattedTime(banner.create_at)}</span>
                     </div>
                 </td>
-                <td className="border border-slate-600 p-2 flex-1 text-right">
+                <td className="border border-slate-600 p-2 text-left whitespace-nowrap">
                     <Button
                         className="bg-transparent border !border-red-600 text-red-600 hover:!bg-red-600 hover:!text-white"
                         onClick={showDeleteModal}
-                    >
-                        <DeleteOutlined />
-                    </Button>
+                        icon={<DeleteOutlined />}
+                    />
                 </td>
             </tr>
             <Modal
