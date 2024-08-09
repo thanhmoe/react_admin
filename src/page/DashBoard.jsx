@@ -1,10 +1,9 @@
 import React from "react"
-
+import CustomerLoginTrafficChart from "../components/CustomerLoginTrafficChart"
 
 export default function Dashboard() {
     return <>
-        <h2>
-        customer
-        </h2>
+        <h2>DASH BOARD</h2>
+        <CustomerLoginTrafficChart />
     </>
 }
