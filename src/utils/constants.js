@@ -20,27 +20,27 @@ export const ORDER_STATUS = {
 
 export const CUSTOMER_LOGIN_FILTER =[
 	{
-        id: 0,
+		id: 0,
+		sortBy: 'date',
+		sortOrder: 'DESC',
+		name: 'Date DESC'
+	},
+	{
+        id: 1,
         sortBy: 'date',
         sortOrder: 'ASC',
         name: 'Date ASC'
     },
 	{
-        id: 1,
-        sortBy: 'date',
-        sortOrder: 'DESC',
-        name: 'Date DESC'
-    },
-	{
-        id: 2,
-        sortBy: 'count',
-        sortOrder: 'ASC',
-        name: 'Least Data'
-    },
+		id: 2,
+		sortBy: 'count',
+		sortOrder: 'DESC',
+		name: 'Most Data'
+	},
 	{
         id: 3,
         sortBy: 'count',
-        sortOrder: 'DESC',
-        name: 'Most Data'
+        sortOrder: 'ASC',
+        name: 'Least Data'
     },
 ]
