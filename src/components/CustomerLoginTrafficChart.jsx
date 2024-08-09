@@ -44,15 +44,21 @@ const CustomerLoginTrafficChart = () => {
         if (dates) {
             setStartDate(dateStrings[0]);
             setEndDate(dateStrings[1])
+            setCurrentPage(1)
         }
         if (dates === null) {
             setStartDate("2024-01-01");
             setEndDate("2025-01-01")
+            setCurrentPage(1)
         }
     }
     const handlePageChange = (page, pageSize) => {
         setCurrentPage(page);
         setItemsPerPage(pageSize);
+    }
+    const handleIntervalChange = (value) => {
+        setInterval(value)
+        setCurrentPage(1)
     }
     const handleSortChange = (value) => {
         setSortOption(value)
@@ -69,9 +75,7 @@ const CustomerLoginTrafficChart = () => {
                         <Segmented style={{ margin: '1rem' }}
                             defaultValue='day'
                             options={['day', 'week', 'month']}
-                            onChange={(value) => {
-                                setInterval(value)
-                            }}
+                            onChange={handleIntervalChange}
                         />
                         <Select placeholder={'Sort Option'} style={{ width: 200 }} onChange={handleSortChange}>
                             {CUSTOMER_LOGIN_FILTER.map(option => (
