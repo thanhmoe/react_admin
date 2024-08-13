@@ -31,3 +31,14 @@ export const getCustomerLoginTraffic = async(params) =>{
 		return error.response.data;
 	}
 }
+
+export const getCustomerRegistrationTraffic = async(params) =>{
+   const {page, limit,startDate,endDate, interval,sortBy, sortOrder} = params
+	try {
+      const url = `${API_PATH}/registration-traffic?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}&interval=${interval}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
+		const response = await axios_instance.get(url);
+      return response.data
+	} catch (error) {
+		return error.response.data;
+	}
+}

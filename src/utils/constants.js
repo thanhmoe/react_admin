@@ -18,7 +18,7 @@ export const ORDER_STATUS = {
 	cancelled: "cancelled",
 }
 
-export const CUSTOMER_LOGIN_FILTER =[
+export const CUSTOMER_TRAFFIC_SORT_FILTER =[
 	{
 		id: 0,
 		sortBy: 'date',
