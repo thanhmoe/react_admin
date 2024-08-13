@@ -78,3 +78,16 @@ export const enableProduct = async (id) => {
 		return error.response.data;
 	}
 };
+
+export const getTopSellingProductsForAdmin = async (params) => {
+    const { startDate, endDate, page, limit } = params;
+	try {
+		const url = `${API_PATH}/admin/top-selling/list?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}`;
+        const response = await axios_instance.get(url);
+		console.log(response.data);
+		
+            return response.data
+	} catch (error) {
+		return error.response.data;
+	}   
+};
