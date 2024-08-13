@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { getCustomerLoginTraffic } from '../services/customer_services';
-import { message, Segmented, Space, DatePicker, Flex, Card, Pagination, Select } from 'antd';
-import { CUSTOMER_TRAFFIC_SORT_FILTER } from '../utils/constants';
-import dayjs from 'dayjs';
+import React, { useEffect, useState } from "react"
+import { getCustomerRegistrationTraffic } from "../services/customer_services"
+import { CUSTOMER_TRAFFIC_SORT_FILTER } from "../utils/constants"
+import { Card, DatePicker, Flex, Pagination, Segmented, Select, Space } from "antd"
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
+import dayjs from "dayjs"
 
-const CustomerLoginTrafficChart = () => {
+const CustomerRegistrationTrafficChart = () => {
     const today = dayjs().format("YYYY-MM-DD")
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +17,7 @@ const CustomerLoginTrafficChart = () => {
     const [sortOption, setSortOption] = useState(0);
 
     const { RangePicker } = DatePicker;
+
     const onDateChange = (dates, dateStrings) => {
         if (dates) {
             setStartDate(dateStrings[0]);
@@ -44,7 +45,7 @@ const CustomerLoginTrafficChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await getCustomerLoginTraffic({
+                const res = await getCustomerRegistrationTraffic({
                     page: currentPage,
                     limit: itemsPerPage,
                     startDate: startDate,
@@ -67,8 +68,8 @@ const CustomerLoginTrafficChart = () => {
     }, [currentPage, itemsPerPage, startDate, endDate, interval, sortOption]);
 
     return (
-        <div className='customer-login-traffic p-4'>
-            <Card title="Customer Login Traffic">
+        <div className='customer-registration-traffic p-4'>
+            <Card title="Customer Registration traffic">
                 <Flex justify='flex-end'>
                     <Space>
                         <RangePicker
@@ -104,7 +105,7 @@ const CustomerLoginTrafficChart = () => {
                 />
             </Card>
         </div>
-    );
-};
+    )
+}
 
-export default CustomerLoginTrafficChart;
+export default CustomerRegistrationTrafficChart;
