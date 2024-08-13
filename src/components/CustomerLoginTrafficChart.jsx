@@ -25,7 +25,7 @@ const CustomerLoginTrafficChart = () => {
         }
         if (dates === null) {
             setStartDate("2024-01-01");
-            setEndDate("2025-01-01")
+            setEndDate(today)
             setCurrentPage(1)
         }
     }
