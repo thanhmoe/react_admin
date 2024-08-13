@@ -3,13 +3,16 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { getCustomerLoginTraffic } from '../services/customer_services';
 import { message, Segmented, Space, DatePicker, Flex, Card, Pagination, Select } from 'antd';
 import { CUSTOMER_LOGIN_FILTER } from '../utils/constants';
+import dayjs from 'dayjs';
+
 const CustomerLoginTrafficChart = () => {
+    const today = dayjs().format("YYYY-MM-DD")
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [totalItems, setTotalitems] = useState(null)
     const [startDate, setStartDate] = useState("2024-01-01");
-    const [endDate, setEndDate] = useState("2025-01-01");
+    const [endDate, setEndDate] = useState(today);
     const [interval, setInterval] = useState("day");
     const [sortOption, setSortOption] = useState(0);
 
