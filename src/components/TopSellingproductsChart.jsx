@@ -5,43 +5,34 @@ import { getTopSellingProductsForAdmin } from '../services/product_services';
 import dayjs from 'dayjs';
 
 const TopSellingProductsChart = () => {
-    const today = dayjs().format("YYYY-MM-DD")
-    const startOfWeek = dayjs().startOf('week').format("YYYY-MM-DD");
+    const dateFormat = "YYYY-MM-DD"
+
+    const today = dayjs().format(dateFormat)
+
+    const startOfWeek = dayjs().startOf('week').format(dateFormat);
+    const endOfWeek = dayjs().endOf('week').format(dateFormat);
+    const startOfMonth = dayjs().startOf('month').format(dateFormat);
+    const endOfMonth = dayjs().endOf('month').format(dateFormat);
+
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(4);
-    const [totalItems, setTotalitems] = useState(null)
     const [startDate, setStartDate] = useState(startOfWeek);
     const [endDate, setEndDate] = useState(today);
-    const [interval, setInterval] = useState("day");
 
-    // const { RangePicker } = DatePicker;
-    // const onDateChange = (dates, dateStrings) => {
-    //     if (dates) {
-    //         setStartDate(dateStrings[0]);
-    //         setEndDate(dateStrings[1])
-    //         setCurrentPage(1)
-    //     }
-    //     if (dates === null) {
-    //         setStartDate("2024-01-01");
-    //         setEndDate(today)
-    //         setCurrentPage(1)
-    //     }
-    // }
-    // const handlePageChange = (page, pageSize) => {
-    //     setCurrentPage(page);
-    //     setItemsPerPage(pageSize);
-    // }
     const handleIntervalChange = (value) => {
-        setInterval(value);
-        if (value === 'week') {
-            const startOfWeek = dayjs().startOf('week').format('YYYY-MM-DD');
-            setStartDate(startOfWeek);
-        } else if (value === 'month') {
-            const startOfMonth = dayjs().startOf('month').format('YYYY-MM-DD');
-            setStartDate(startOfMonth);
+        switch (value) {
+            case 'week':
+                setStartDate(startOfWeek);
+                setEndDate(endOfWeek);
+                break;
+            case 'month':
+                setStartDate(startOfMonth);
+                setEndDate(endOfMonth);
+                break;
+            default:
+                break;
         }
-        setEndDate(today);
         setCurrentPage(1);
     };
 
@@ -62,19 +53,17 @@ const TopSellingProductsChart = () => {
             }
         };
         fetchData();
-    }, [currentPage, itemsPerPage, startDate, endDate, interval]);
+    }, [currentPage, itemsPerPage, startDate, endDate]);
 
     return (
         <div className='top-selling-products p-4'>
             <Card title="Top Selling Products">
                 <Flex justify='flex-end'>
-                    <Space>
-                        <Segmented style={{ margin: '1rem' }}
-                            defaultValue='week'
-                            options={['week', 'month']}
-                            onChange={handleIntervalChange}
-                        />
-                    </Space>
+                    <Segmented style={{ margin: '1rem' }}
+                        defaultValue='week'
+                        options={['week', 'month']}
+                        onChange={handleIntervalChange}
+                    />
                 </Flex>
                 <ResponsiveContainer width="100%" height={400}>
                     <AreaChart data={data}>
