@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from 'recharts';
 import { message, Segmented, Space, DatePicker, Flex, Card, Pagination, Select } from 'antd';
 import { getTopSellingProductsForAdmin } from '../services/product_services';
 import dayjs from 'dayjs';
@@ -79,16 +79,26 @@ const TopSellingProductsChart = () => {
                     </Space>
                 </Flex>
                 <ResponsiveContainer width="100%" height={400}>
-                    <LineChart data={data}>
+                    <AreaChart data={data}>
+                        <defs>
+                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                            </linearGradient>
+                        </defs>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis
                             dataKey="name"
                         />
                         <YAxis />
                         <Tooltip />
-                        <Line type="monotone" dataKey="total_units_sold" stroke="#8884d8" />
-                        <Line type="monotone" dataKey="total_revenue" stroke="#82ca9d" />
-                    </LineChart>
+                        <Area type="monotone" dataKey="total_units_sold" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+                        <Area type="monotone" dataKey="total_revenue" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+                    </AreaChart>
                 </ResponsiveContainer>
             </Card>
         </div>
