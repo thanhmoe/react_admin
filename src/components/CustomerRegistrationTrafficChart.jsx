@@ -6,12 +6,13 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Toolti
 import dayjs from "dayjs"
 
 const CustomerRegistrationTrafficChart = () => {
-    const today = dayjs().format("YYYY-MM-DD")
+    const today = dayjs().format("YYYY-MM-DD");
+    const startOfWeek = dayjs().startOf('week').format("YYYY-MM-DD");
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [totalItems, setTotalitems] = useState(null)
-    const [startDate, setStartDate] = useState("2024-01-01");
+    const [startDate, setStartDate] = useState(startOfWeek);
     const [endDate, setEndDate] = useState(today);
     const [interval, setInterval] = useState("day");
     const [sortOption, setSortOption] = useState(0);
@@ -25,7 +26,7 @@ const CustomerRegistrationTrafficChart = () => {
             setCurrentPage(1)
         }
         if (dates === null) {
-            setStartDate("2024-01-01");
+            setStartDate(startOfWeek);
             setEndDate(today)
             setCurrentPage(1)
         }
@@ -73,6 +74,7 @@ const CustomerRegistrationTrafficChart = () => {
                 <Flex justify='flex-end'>
                     <Space>
                         <RangePicker
+                            defaultValue={[dayjs().startOf('week'), dayjs()]}
                             onChange={onDateChange}
                             format="YYYY-MM-DD" />
                         <Segmented style={{ margin: '1rem' }}

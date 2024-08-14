@@ -55,8 +55,6 @@ const TopSellingProductsChart = () => {
                     endDate: endDate,
                 });
                 if (res.success) {
-                    console.log(res.data);
-
                     setData(res.data);
                 }
             } catch (error) {
