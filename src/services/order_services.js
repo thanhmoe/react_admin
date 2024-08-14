@@ -41,3 +41,14 @@ export const updateOrderStatus = async (id, newStatus) => {
 		return error.response.data;
 	}
 };
+
+export const getOrdersTraffic = async (params) => {
+	const {startDate, endDate} = params
+	try {
+		const URL = `${API_PATH}/status-traffic?startDate=${startDate}&endDate=${endDate}`;
+		const response = await axios_instance.get(URL);		
+		return axios_response_handler(response);
+	} catch (error) {
+		return error.response.data;
+	}
+};
