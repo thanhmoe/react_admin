@@ -92,7 +92,7 @@ const StatisticCard = () => {
                 <Col span={6}>
                     <Card bordered={false}>
                         <Statistic
-                            title="Total User"
+                            title="Active User"
                             value={totalUsers}
                             prefix={<UserOutlined />}
                             valueStyle={{
@@ -106,7 +106,7 @@ const StatisticCard = () => {
                 <Col span={6}>
                     <Card bordered={false}>
                         <Statistic
-                            title="Total product"
+                            title="Products are being sold"
                             value={totalProducts}
                             prefix={<ProductOutlined />}
                             valueStyle={{
@@ -134,7 +134,7 @@ const StatisticCard = () => {
                 <Col span={6}>
                     <Card bordered={false}>
                         <Statistic
-                            title="Total Revenue This Month"
+                            title="Revenue This Month"
                             precision={2}
                             value={totalRevenue}
                             prefix={<CreditCardOutlined />}
