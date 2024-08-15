@@ -92,7 +92,7 @@ const StatisticCard = () => {
                 <Col span={6}>
                     <Card bordered={false}>
                         <Statistic
-                            title="Active User"
+                            title="Active Users"
                             value={totalUsers}
                             prefix={<UserOutlined />}
                             valueStyle={{
