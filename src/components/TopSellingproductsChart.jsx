@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area, Cell } from 'recharts';
 import { message, Segmented, Space, DatePicker, Flex, Card, Pagination, Select } from 'antd';
 import { getTopSellingProductsForAdmin } from '../services/product_services';
 import dayjs from 'dayjs';
@@ -55,6 +55,8 @@ const TopSellingProductsChart = () => {
         fetchData();
     }, [currentPage, itemsPerPage, startDate, endDate]);
 
+    const COLORS = ['#FFBB28', '#FF8042', '#0088FE', '#00C49F', '#FF0000', '#8884d8', '#82ca9d', '#d0ed57'];
+
     return (
         <div className='top-selling-products p-4'>
             <Card title="Top Selling Products">
@@ -66,26 +68,20 @@ const TopSellingProductsChart = () => {
                     />
                 </Flex>
                 <ResponsiveContainer width="100%" height={400}>
-                    <AreaChart data={data}>
-                        <defs>
-                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-                            </linearGradient>
-                        </defs>
+                    <BarChart data={data}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis
                             dataKey="name"
                         />
                         <YAxis />
                         <Tooltip />
-                        <Area type="monotone" dataKey="total_units_sold" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-                        <Area type="monotone" dataKey="total_revenue" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-                    </AreaChart>
+                        {/* <Bar type="monotone" dataKey="total_units_sold" fill="#8884d8" /> */}
+                        <Bar dataKey="total_revenue">
+                            {data.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                        </Bar>
+                    </BarChart>
                 </ResponsiveContainer>
             </Card>
         </div>

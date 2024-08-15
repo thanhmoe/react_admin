@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from 'recharts';
 import { getCustomerLoginTraffic } from '../services/customer_services';
 import { message, Segmented, Space, DatePicker, Flex, Card, Pagination, Select } from 'antd';
 import { CUSTOMER_TRAFFIC_SORT_FILTER } from '../utils/constants';
@@ -89,13 +89,19 @@ const CustomerLoginTrafficChart = () => {
                     </Space>
                 </Flex>
                 <ResponsiveContainer width="100%" height={400}>
-                    <BarChart data={data}>
+                    <AreaChart data={data}>
+                        <defs>
+                            <linearGradient id="colorLG" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                            </linearGradient>
+                        </defs>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="date" />
                         <YAxis />
                         <Tooltip />
-                        <Bar dataKey="count" fill="#8884d8" />
-                    </BarChart>
+                        <Area dataKey="count" stroke="#82ca9d" fillOpacity={1} fill="url(#colorLG)" />
+                    </AreaChart>
                 </ResponsiveContainer>
                 <Pagination
                     total={totalItems}
