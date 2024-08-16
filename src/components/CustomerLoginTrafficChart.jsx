@@ -6,27 +6,29 @@ import { CUSTOMER_TRAFFIC_SORT_FILTER } from '../utils/constants';
 import dayjs from 'dayjs';
 
 const CustomerLoginTrafficChart = () => {
-    const today = dayjs().format("YYYY-MM-DD")
-    const startOfWeek = dayjs().startOf('week').format("YYYY-MM-DD");
+    const dateFormat = "YYYY-MM-DD"
+    const today = dayjs().format(dateFormat)
+
+    const startOfWeek = dayjs().startOf('week').format(dateFormat);
+    const endOfWeek = dayjs().endOf('week').format(dateFormat);
+    const startOfMonth = dayjs().startOf('month').format(dateFormat);
+    const endOfMonth = dayjs().endOf('month').format(dateFormat);
+
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [totalItems, setTotalitems] = useState(null)
     const [startDate, setStartDate] = useState(startOfWeek);
     const [endDate, setEndDate] = useState(today);
-    const [interval, setInterval] = useState("day");
     const [sortOption, setSortOption] = useState(0);
+    const [selectedSegment, setSelectedSegment] = useState('week')
 
     const { RangePicker } = DatePicker;
     const onDateChange = (dates, dateStrings) => {
         if (dates) {
             setStartDate(dateStrings[0]);
             setEndDate(dateStrings[1])
-            setCurrentPage(1)
-        }
-        if (dates === null) {
-            setStartDate(startOfWeek);
-            setEndDate(today)
+            setSelectedSegment(null)
             setCurrentPage(1)
         }
     }
@@ -35,9 +37,25 @@ const CustomerLoginTrafficChart = () => {
         setItemsPerPage(pageSize);
     }
     const handleIntervalChange = (value) => {
-        setInterval(value)
         setCurrentPage(1)
-    }
+        setSelectedSegment(value)
+        switch (value) {
+            case 'today':
+                setStartDate(today);
+                setEndDate(today);
+                break;
+            case 'week':
+                setStartDate(startOfWeek);
+                setEndDate(endOfWeek);
+                break;
+            case 'month':
+                setStartDate(startOfMonth);
+                setEndDate(endOfMonth);
+                break;
+            default:
+                break;
+        }
+    };
     const handleSortChange = (value) => {
         setSortOption(value)
     };
@@ -50,7 +68,6 @@ const CustomerLoginTrafficChart = () => {
                     limit: itemsPerPage,
                     startDate: startDate,
                     endDate: endDate,
-                    interval: interval,
                     sortBy: CUSTOMER_TRAFFIC_SORT_FILTER[sortOption].sortBy,
                     sortOrder: CUSTOMER_TRAFFIC_SORT_FILTER[sortOption].sortOrder
                 });
@@ -65,7 +82,7 @@ const CustomerLoginTrafficChart = () => {
             }
         };
         fetchData();
-    }, [currentPage, itemsPerPage, startDate, endDate, interval, sortOption]);
+    }, [currentPage, itemsPerPage, startDate, endDate, sortOption]);
 
     return (
         <div className='customer-login-traffic p-4'>
@@ -73,12 +90,13 @@ const CustomerLoginTrafficChart = () => {
                 <Flex justify='flex-end'>
                     <Space>
                         <RangePicker
-                            defaultValue={[dayjs().startOf('week'), dayjs()]}
+                            allowClear={false}
+                            value={[dayjs(startDate, dateFormat), dayjs(endDate, dateFormat)]}
                             onChange={onDateChange}
                             format="YYYY-MM-DD" />
                         <Segmented style={{ margin: '1rem' }}
-                            defaultValue='day'
-                            options={['day', 'week', 'month']}
+                            value={selectedSegment}
+                            options={['today', 'week', 'month']}
                             onChange={handleIntervalChange}
                         />
                         <Select placeholder={'Sort Option'} style={{ width: 200 }} onChange={handleSortChange}>

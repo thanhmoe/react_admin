@@ -22,9 +22,9 @@ export const updateCustomer = async () => {
 };
 
 export const getCustomerLoginTraffic = async(params) =>{
-   const {page, limit,startDate,endDate, interval,sortBy, sortOrder} = params
+   const {page, limit,startDate,endDate,sortBy, sortOrder} = params
 	try {
-      const url = `${API_PATH}/loginTraffic?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}&interval=${interval}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
+      const url = `${API_PATH}/loginTraffic?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
 		const response = await axios_instance.get(url);
       return response.data
 	} catch (error) {
@@ -33,9 +33,9 @@ export const getCustomerLoginTraffic = async(params) =>{
 }
 
 export const getCustomerRegistrationTraffic = async(params) =>{
-   const {page, limit,startDate,endDate, interval,sortBy, sortOrder} = params
+   const {page, limit,startDate,endDate,sortBy, sortOrder} = params
 	try {
-      const url = `${API_PATH}/registration-traffic?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}&interval=${interval}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
+      const url = `${API_PATH}/registration-traffic?page=${page}&limit=${limit}&startDate=${startDate}&endDate=${endDate}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
 		const response = await axios_instance.get(url);
       return response.data
 	} catch (error) {
