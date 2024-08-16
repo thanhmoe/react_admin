@@ -25,7 +25,7 @@ export const MENU_ITEMS = [
 		icon: <ShopOutlined />,
 		label: "Products",
 		path: "/products",
-		roles: [USER_ROLES.admin],
+		roles: [USER_ROLES.admin, USER_ROLES.staff],
 	},
 	{
 		key: "categories",
@@ -39,7 +39,7 @@ export const MENU_ITEMS = [
 		icon: <AppstoreOutlined />,
 		label: "Orders",
 		path: "/orders/:status",
-		roles: [USER_ROLES.staff],
+		roles: [USER_ROLES.admin, USER_ROLES.staff],
 		children: [
 			{
 				key: "all",
