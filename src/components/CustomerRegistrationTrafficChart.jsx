@@ -21,6 +21,7 @@ const CustomerRegistrationTrafficChart = () => {
     const [startDate, setStartDate] = useState(startOfWeek);
     const [endDate, setEndDate] = useState(today);
     const [sortOption, setSortOption] = useState(0);
+    const [selectedSegment, setSelectedSegment] = useState('week')
 
     const { RangePicker } = DatePicker;
 
@@ -28,11 +29,7 @@ const CustomerRegistrationTrafficChart = () => {
         if (dates) {
             setStartDate(dateStrings[0]);
             setEndDate(dateStrings[1])
-            setCurrentPage(1)
-        }
-        if (dates === null) {
-            setStartDate(startOfWeek);
-            setEndDate(today)
+            setSelectedSegment(null)
             setCurrentPage(1)
         }
     }
@@ -41,6 +38,8 @@ const CustomerRegistrationTrafficChart = () => {
         setItemsPerPage(pageSize);
     }
     const handleIntervalChange = (value) => {
+        setCurrentPage(1)
+        setSelectedSegment(value)
         switch (value) {
             case 'today':
                 setStartDate(today);
@@ -92,11 +91,12 @@ const CustomerRegistrationTrafficChart = () => {
                 <Flex justify='flex-end'>
                     <Space>
                         <RangePicker
-                            defaultValue={[dayjs().startOf('week'), dayjs()]}
+                            allowClear={false}
+                            value={[dayjs(startDate, dateFormat), dayjs(endDate, dateFormat)]}
                             onChange={onDateChange}
                             format="YYYY-MM-DD" />
                         <Segmented style={{ margin: '1rem' }}
-                            defaultValue='day'
+                            value={selectedSegment}
                             options={['today', 'week', 'month']}
                             onChange={handleIntervalChange}
                         />
