@@ -46,7 +46,7 @@ const router = createBrowserRouter([
 	{
 		path: "/products",
 		element: (
-			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin, USER_ROLES.staff]}>
 				<MainLayout>
 					<FilterableProductTable />
 				</MainLayout>
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
 	{
 		path: "/products/:id",
 		element: (
-			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin, USER_ROLES.staff]}>
 				<MainLayout>
 					<ProductDetail />
 				</MainLayout>
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
 	{
 		path: "/orders/:status",
 		element: (
-			<ProtectedRoute allowedRoles={[USER_ROLES.staff]}>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin, USER_ROLES.staff]}>
 				<MainLayout>
 					<FilterableOrderTable />
 				</MainLayout>
@@ -86,7 +86,7 @@ const router = createBrowserRouter([
 	{
 		path: "/banners",
 		element: (
-			<ProtectedRoute allowedRoles={[USER_ROLES.admin]}>
+			<ProtectedRoute allowedRoles={[USER_ROLES.admin, USER_ROLES.staff]}>
 				<MainLayout>
 					<BannerList />
 				</MainLayout>
