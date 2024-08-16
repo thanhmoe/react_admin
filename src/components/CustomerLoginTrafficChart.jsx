@@ -30,6 +30,9 @@ const CustomerLoginTrafficChart = () => {
             setEndDate(dateStrings[1])
             setSelectedSegment(null)
             setCurrentPage(1)
+            if (dateStrings[0] === today && dateStrings[1] === today) {
+                setSelectedSegment('today')
+            }
         }
     }
     const handlePageChange = (page, pageSize) => {
