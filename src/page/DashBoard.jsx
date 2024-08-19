@@ -19,7 +19,7 @@ export default function Dashboard() {
                     <TopSellingProductsChart />
                 </Col>
             </Row>
-            <Flex horizontal>
+            <Flex vertical>
                 <CustomerRegistrationTrafficChart />
                 <CustomerLoginTrafficChart />
             </Flex>
