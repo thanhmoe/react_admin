@@ -19,7 +19,7 @@ const CustomerRegistrationTrafficChart = () => {
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [totalItems, setTotalitems] = useState(null)
     const [startDate, setStartDate] = useState(startOfWeek);
-    const [endDate, setEndDate] = useState(today);
+    const [endDate, setEndDate] = useState(endOfWeek);
     const [sortOption, setSortOption] = useState(0);
     const [selectedSegment, setSelectedSegment] = useState('week')
 
