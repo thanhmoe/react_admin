@@ -5,9 +5,9 @@ import { getTopSellingProductsForAdmin } from '../services/product_services';
 import dayjs from 'dayjs';
 
 const TopSellingProductsChart = () => {
-    const dateFormat = "YYYY-MM-DD"
+    const dateFormat = "YYYY-MM-DD";
 
-    const today = dayjs().format(dateFormat)
+    const today = dayjs().format(dateFormat);
 
     const startOfWeek = dayjs().startOf('week').format(dateFormat);
     const endOfWeek = dayjs().endOf('week').format(dateFormat);
@@ -57,11 +57,16 @@ const TopSellingProductsChart = () => {
 
     const COLORS = ['#FFBB28', '#FF8042', '#0088FE', '#00C49F', '#FF0000', '#8884d8', '#82ca9d', '#d0ed57'];
 
+    const truncate = (str, maxLength) => {
+        return str.length > maxLength ? str.substring(0, maxLength) + "..." : str;
+    };
+
     return (
         <div className='top-selling-products p-4'>
             <Card title="Top Selling Products">
                 <Flex justify='flex-end'>
-                    <Segmented style={{ margin: '1rem' }}
+                    <Segmented
+                        style={{ margin: '1rem' }}
                         defaultValue='week'
                         options={['week', 'month']}
                         onChange={handleIntervalChange}
@@ -72,10 +77,10 @@ const TopSellingProductsChart = () => {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis
                             dataKey="name"
+                            tickFormatter={(name) => truncate(name, 10)} // Truncate product names to 10 characters
                         />
                         <YAxis />
                         <Tooltip />
-                        {/* <Bar type="monotone" dataKey="total_units_sold" fill="#8884d8" /> */}
                         <Bar dataKey="total_revenue">
                             {data.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
