@@ -81,7 +81,7 @@ const TopSellingProductsChart = () => {
                         />
                         <YAxis />
                         <Tooltip />
-                        <Bar dataKey="total_revenue">
+                        <Bar dataKey="total_revenue" name="Total Revenue ($)">
                             {data.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
