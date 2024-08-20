@@ -16,7 +16,7 @@ const CustomerLoginTrafficChart = () => {
 
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     const [totalItems, setTotalitems] = useState(null)
     const [startDate, setStartDate] = useState(startOfWeek);
     const [endDate, setEndDate] = useState(endOfWeek);
