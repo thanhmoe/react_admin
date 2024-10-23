@@ -54,6 +54,7 @@ const TopSellingProductsChart = () => {
         };
         fetchData();
     }, [currentPage, itemsPerPage, startDate, endDate]);
+console.log(123123);
 
     const COLORS = ['#FFBB28', '#FF8042', '#0088FE', '#00C49F', '#FF0000', '#8884d8', '#82ca9d', '#d0ed57'];
 
