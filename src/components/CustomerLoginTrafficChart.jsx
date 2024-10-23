@@ -18,10 +18,10 @@ const CustomerLoginTrafficChart = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [totalItems, setTotalitems] = useState(null)
-    const [startDate, setStartDate] = useState(startOfWeek);
-    const [endDate, setEndDate] = useState(endOfWeek);
+    const [startDate, setStartDate] = useState(startOfMonth);
+    const [endDate, setEndDate] = useState(endOfMonth);
     const [sortOption, setSortOption] = useState(0);
-    const [selectedSegment, setSelectedSegment] = useState('week')
+    const [selectedSegment, setSelectedSegment] = useState('month')
 
     const { RangePicker } = DatePicker;
     const onDateChange = (dates, dateStrings) => {
