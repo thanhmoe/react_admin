@@ -77,9 +77,3 @@ Before you begin, ensure you have met the following requirements:
 - **package.json**: Project dependencies and scripts.
 - **vite.config.js**: The Vite configuration.
 - **tailwind.config.js**: The tailwind css configuration.
-
-## Contact
-
-If you have any questions, please contact me at
-
-- kien.pt@mor.com.vn
